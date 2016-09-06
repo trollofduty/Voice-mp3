@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vapp.Platform.Windows.Wpf", "Vapp.Platform.Windows.Wpf\Vapp.Platform.Windows.Wpf.csproj", "{35A5418F-B8CD-4942-AD34-A34F322D21A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{6D887E41-57AB-4424-80B1-FDE226AAAB8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vapp.IO", "Vapp.IO\Vapp.IO.csproj", "{0652A04C-B04F-4224-A070-43298CEC681E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A7F9D6BE-2075-4D5F-A1B8-76CDA69BB2BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vapp.Extensions", "Vapp.Extensions\Vapp.Extensions.csproj", "{876AB1E9-DF39-4DFD-88D5-758BF67DCD8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vapp.Audio", "Vapp.Audio\Vapp.Audio.csproj", "{38F6DB31-14CC-478B-8896-FBE0024ACEC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35A5418F-B8CD-4942-AD34-A34F322D21A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35A5418F-B8CD-4942-AD34-A34F322D21A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35A5418F-B8CD-4942-AD34-A34F322D21A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35A5418F-B8CD-4942-AD34-A34F322D21A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0652A04C-B04F-4224-A070-43298CEC681E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0652A04C-B04F-4224-A070-43298CEC681E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0652A04C-B04F-4224-A070-43298CEC681E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0652A04C-B04F-4224-A070-43298CEC681E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{876AB1E9-DF39-4DFD-88D5-758BF67DCD8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{876AB1E9-DF39-4DFD-88D5-758BF67DCD8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{876AB1E9-DF39-4DFD-88D5-758BF67DCD8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{876AB1E9-DF39-4DFD-88D5-758BF67DCD8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F6DB31-14CC-478B-8896-FBE0024ACEC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F6DB31-14CC-478B-8896-FBE0024ACEC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F6DB31-14CC-478B-8896-FBE0024ACEC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F6DB31-14CC-478B-8896-FBE0024ACEC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{35A5418F-B8CD-4942-AD34-A34F322D21A5} = {6D887E41-57AB-4424-80B1-FDE226AAAB8A}
+		{0652A04C-B04F-4224-A070-43298CEC681E} = {A7F9D6BE-2075-4D5F-A1B8-76CDA69BB2BD}
+		{876AB1E9-DF39-4DFD-88D5-758BF67DCD8E} = {A7F9D6BE-2075-4D5F-A1B8-76CDA69BB2BD}
+		{38F6DB31-14CC-478B-8896-FBE0024ACEC3} = {A7F9D6BE-2075-4D5F-A1B8-76CDA69BB2BD}
+	EndGlobalSection
+EndGlobal
