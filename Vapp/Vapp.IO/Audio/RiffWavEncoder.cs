@@ -9,9 +9,9 @@ using Vapp.IO.Audio.Waveform;
 
 namespace Vapp.IO.Audio
 {
-    public class RiffWavEncoder : IEncoder<Sound>
+    public class RiffWavEncoder : IEncoder<Track>
     {
-        public bool TryEncode(Stream stream, Sound input)
+        public bool TryEncode(Stream stream, Track input)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace Vapp.IO.Audio
             return false;
         }
 
-        public void Encode(Stream stream, Sound input)
+        public void Encode(Stream stream, Track input)
         {
             WaveFile wav = new WaveFile();
 

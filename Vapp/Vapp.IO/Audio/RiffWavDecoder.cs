@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Vapp.IO.Audio
 {
-    public class RiffWavDecoder : IDecoder<Sound>
+    public class RiffWavDecoder : IDecoder<Track>
     {
-        public bool TryDecode(Stream stream, out Sound output)
+        public bool TryDecode(Stream stream, out Track output)
         {
             try
             {
@@ -25,10 +25,10 @@ namespace Vapp.IO.Audio
             return false;
         }
 
-        public Sound Decode(Stream stream)
+        public Track Decode(Stream stream)
         {
             WaveFile wav = WaveFile.Import(stream);
-            Sound sound = new Sound();
+            Track sound = new Track();
 
             sound.AudioFormat = wav.FmtHeader.AudioFormat;
             sound.SampleRate = wav.FmtHeader.SampleRate;

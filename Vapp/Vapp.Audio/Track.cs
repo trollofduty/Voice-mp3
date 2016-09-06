@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vapp.Audio
 {
-    public class Sound
+    public class Track
     {
         #region Properties
 
