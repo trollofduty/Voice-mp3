@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Vapp.Platform.Windows.Wpf.Views.MediaPlayerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Vapp.Platform.Windows.Wpf.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="480" d:DesignWidth="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0">
+            <Border.Background>
+                <SolidColorBrush Color="Black"/>
+            </Border.Background>
+
+            <MediaElement x:Name="MediaElement" Source="{Binding MediaSource}" LoadedBehavior="{Binding LoadedBehaviour}" ScrubbingEnabled="True"/>
+        </Border>
+
+        <Slider Grid.Row="1" Margin="15 5 15 0" Maximum="{Binding SliderMaxTime}" SmallChange="{Binding SliderSmallChange}" LargeChange="{Binding SliderLargeChange}"
+                Value="{Binding SliderValue}" Thumb.DragStarted="DragStartedEventHandler" Thumb.DragCompleted="DragCompletedEventHandler"/>
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Margin="5 5 5 5" Content="Open" Command="{Binding OpenMediaCommand}"/>
+            <Button Grid.Column="1" Margin="5 5 5 5" Content="Back" Command="{Binding PreviousMediaCommand}"/>
+            <Button Grid.Column="2" Margin="5 5 5 5" Content="Play" Command="{Binding PlayMediaCommand}"/>
+            <Button Grid.Column="3" Margin="5 5 5 5" Content="Pause" Command="{Binding PauseMediaCommand}"/>
+            <Button Grid.Column="4" Margin="5 5 5 5" Content="Stop" Command="{Binding StopMediaCommand}"/>
+            <Button Grid.Column="5" Margin="5 5 5 5" Content="Next" Command="{Binding NextMediaCommand}"/>
+        </Grid>
+    </Grid>
+</UserControl>

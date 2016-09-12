@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Vapp.Platform.Windows.Wpf.ViewModels;
 
 namespace Vapp.Platform.Windows.Wpf
 {
@@ -23,6 +24,7 @@ namespace Vapp.Platform.Windows.Wpf
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext = new MainWindowViewModel();
         }
     }
 }
