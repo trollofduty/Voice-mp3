@@ -1,4 +1,4 @@
-﻿using Vapp.Audio;
+﻿using Vapp.Media.Audio;
 using Vapp.IO.Audio.Waveform;
 using System;
 using System.Collections.Generic;

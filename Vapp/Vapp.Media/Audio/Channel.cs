@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vapp.Audio
+namespace Vapp.Media.Audio
 {
     public class Channel
     {

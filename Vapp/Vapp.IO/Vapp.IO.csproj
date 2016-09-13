@@ -35,13 +35,13 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\Vapp.Audio\Vapp.Audio.csproj">
-      <Project>{38f6db31-14cc-478b-8896-fbe0024acec3}</Project>
-      <Name>Vapp.Audio</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vapp.Extensions\Vapp.Extensions.csproj">
       <Project>{876ab1e9-df39-4dfd-88d5-758bf67dcd8e}</Project>
       <Name>Vapp.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vapp.Media\Vapp.Media.csproj">
+      <Project>{ff91460e-e1ef-4f99-954a-7f61985b31ca}</Project>
+      <Name>Vapp.Media</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
