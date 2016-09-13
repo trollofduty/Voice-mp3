@@ -180,19 +180,25 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public void NextMedia()
         {
-            string filepath = this.MediaSource.AbsolutePath;
-            this.PlayedMedia.Add(filepath);
+            string filepath = null;
+            if (this.MediaSource != null)
+            {
+                filepath = this.MediaSource.AbsolutePath;
+                this.PlayedMedia.Add(filepath);
+            }
 
             if (this.QueuedMedia.Count > 0)
                 this.OpenMediaSource(this.QueuedMedia.Dequeue());
             else if (this.IsShuffle)
                 this.OpenMediaSource(this.Playlist[(int) (new Random().NextDouble() * this.Playlist.Count)]);
-            else if (this.RepeatMode == RepeatMode.Once)
+            else if (this.RepeatMode == RepeatMode.Once && filepath != null)
                 this.OpenMediaSource(filepath);
             else
             {
-                int index = this.Playlist.IndexOf(filepath);
-                this.OpenMediaSource(this.Playlist[index >= this.Playlist.Count && this.RepeatMode != RepeatMode.None ? 0 : index]);
+                int index = filepath == null ? 0 : this.Playlist.IndexOf(filepath);
+
+                if (this.Playlist.Count > 0)
+                    this.OpenMediaSource(this.Playlist[index >= this.Playlist.Count && this.RepeatMode != RepeatMode.None ? 0 : index]);
             }
         }
 
