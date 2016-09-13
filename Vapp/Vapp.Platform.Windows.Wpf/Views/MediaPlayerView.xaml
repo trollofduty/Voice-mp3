@@ -21,8 +21,17 @@
             <MediaElement x:Name="MediaElement" Source="{Binding MediaSource}" LoadedBehavior="{Binding LoadedBehaviour}" ScrubbingEnabled="True"/>
         </Border>
 
-        <Slider Grid.Row="1" Margin="15 5 15 0" Maximum="{Binding SliderMaxTime}" SmallChange="{Binding SliderSmallChange}" LargeChange="{Binding SliderLargeChange}"
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+
+            <Slider Grid.Column="0" Margin="15 5 15 0" Maximum="{Binding SliderMaxTime}" SmallChange="{Binding SliderSmallChange}" LargeChange="{Binding SliderLargeChange}"
                 Value="{Binding SliderValue}" Thumb.DragStarted="DragStartedEventHandler" Thumb.DragCompleted="DragCompletedEventHandler"/>
+
+            <TextBlock Grid.Column="1" Margin="15 5 15 0" Text="Time" HorizontalAlignment="Right"/>
+        </Grid>
         
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
