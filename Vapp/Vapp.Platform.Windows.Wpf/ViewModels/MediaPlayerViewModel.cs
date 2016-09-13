@@ -139,9 +139,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         private void TimerTick(object sender, EventArgs e)
         {
-            TimeSpan played = TimeSpan.FromSeconds(this.RequestMediaTotalSeconds.Invoke());
-            this.TimePlayedText = played.ToString(@"hh\:mm\:ss");
-            this.TimeLeftText = this.RequestMediaTimespan.Invoke().Subtract(played).ToString(@"hh\:mm\:ss");
+            if (this.RequestMediaHasTimespan.Invoke())
+            {
+                TimeSpan played = TimeSpan.FromSeconds(this.RequestMediaTotalSeconds.Invoke());
+                this.TimePlayedText = played.ToString(@"hh\:mm\:ss");
+                this.TimeLeftText = this.RequestMediaTimespan.Invoke().Subtract(played).ToString(@"hh\:mm\:ss");
+            }
 
             if (!this.isDragging)
                 this.SliderValue = this.RequestMediaTotalSeconds.Invoke();
