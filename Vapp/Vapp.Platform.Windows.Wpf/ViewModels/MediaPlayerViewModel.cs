@@ -26,6 +26,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.PreviousMediaCommand = new RelayCommand(this.PreviousMedia);
             this.NextMediaCommand = new RelayCommand(this.NextMedia);
             this.LoadedBehaviour = MediaState.Manual;
+            this.TimePlayedText = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
+            this.TimeLeftText = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(200);
             timer.Tick += this.TimerTick;
@@ -38,6 +40,20 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         private bool isDragging = false;
 
         private DispatcherTimer timer;
+
+        private string timePlayedText;
+        public string TimePlayedText
+        {
+            get { return this.timePlayedText; }
+            set { this.Set(ref this.timePlayedText, value); }
+        }
+
+        private string timeLeftText;
+        public string TimeLeftText
+        {
+            get { return this.timeLeftText; }
+            set { this.Set(ref this.timeLeftText, value); }
+        }
 
         private double sliderMaxTime;
         public double SliderMaxTime
@@ -116,6 +132,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         private void TimerTick(object sender, EventArgs e)
         {
+            TimeSpan played = TimeSpan.FromSeconds(this.RequestMediaTotalSeconds.Invoke());
+            this.TimePlayedText = played.ToString(@"hh\:mm\:ss");
+            this.TimeLeftText = this.RequestMediaTimespan.Invoke().Subtract(played).ToString(@"hh\:mm\:ss");
+
             if (!this.isDragging)
                 this.SliderValue = this.RequestMediaTotalSeconds.Invoke();
         }
@@ -141,9 +161,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             if (this.MediaSource == null && this.Playlist.Count > 0)
                 this.NextMedia();
 
-            this.LoadedBehaviour = MediaState.Play;
-            this.SetTimeSpan();
-            this.timer.Start();
+            if (this.MediaSource != null)
+            {
+                this.LoadedBehaviour = MediaState.Play;
+                this.SetTimeSpan();
+                this.timer.Start();
+            }
         }
 
         public void PauseMedia()
