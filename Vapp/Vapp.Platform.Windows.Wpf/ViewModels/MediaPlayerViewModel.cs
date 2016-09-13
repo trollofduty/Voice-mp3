@@ -10,16 +10,16 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Vapp.Media;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels
 {
-    class MediaPlayerViewModel : ViewModelBase
+    class MediaPlayerViewModel : ViewModelBase, IMediaPlayer
     {
         #region Constructor
 
         public MediaPlayerViewModel()
         {
-            this.OpenMediaCommand = new RelayCommand(this.OpenMedia);
             this.PlayMediaCommand = new RelayCommand(this.PlayMedia);
             this.PauseMediaCommand = new RelayCommand(this.PauseMedia);
             this.StopMediaCommand = new RelayCommand(this.StopMedia);
@@ -45,7 +45,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             get { return this.sliderMaxTime; }
             set { this.Set(ref this.sliderMaxTime, value); }
         }
-        
+
         private double sliderSmallChange;
         public double SliderSmallChange
         {
@@ -82,8 +82,6 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             set { this.Set(ref this.loadedBehaviour, value); }
         }
 
-        public ICommand OpenMediaCommand { get; set; }
-
         public ICommand PreviousMediaCommand { get; set; }
 
         public ICommand PlayMediaCommand { get; set; }
@@ -102,6 +100,16 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public Action<TimeSpan> SetMediaPosition { get; set; }
 
+        public Queue<string> QueuedMedia { get; private set; } = new Queue<string>();
+
+        public List<string> PlayedMedia { get; private set; } = new List<string>();
+
+        public List<string> Playlist { get; private set; } = new List<string>();
+
+        public bool IsShuffle { get; set; } = false;
+
+        public RepeatMode RepeatMode { get; set; } = RepeatMode.None;
+
         #endregion
 
         #region Methods
@@ -110,19 +118,6 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             if (!this.isDragging)
                 this.SliderValue = this.RequestMediaTotalSeconds.Invoke();
-        }
-
-        private void OpenMedia()
-        {
-            using (OpenFileDialog dlg = new OpenFileDialog())
-            {
-                dlg.Filter = @"All Files(*.*) | *.*";
-                dlg.Multiselect = false;
-                DialogResult result = dlg.ShowDialog();
-
-                if (result == DialogResult.OK)
-                    this.OpenMediaSource(dlg.FileName);
-            }
         }
 
         public void SetTimeSpan()
@@ -141,20 +136,20 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.MediaSource = new Uri(filePath);
         }
 
-        private void PlayMedia()
+        public void PlayMedia()
         {
             this.LoadedBehaviour = MediaState.Play;
             this.SetTimeSpan();
             this.timer.Start();
         }
 
-        private void PauseMedia()
+        public void PauseMedia()
         {
             this.LoadedBehaviour = MediaState.Pause;
             this.timer.Stop();
         }
 
-        private void StopMedia()
+        public void StopMedia()
         {
             this.LoadedBehaviour = MediaState.Stop;
             this.timer.Stop();
@@ -172,12 +167,41 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.SetMediaPosition.Invoke(TimeSpan.FromSeconds(this.SliderValue));
         }
 
-        private void PreviousMedia()
+        public void PreviousMedia()
         {
+            if (this.PlayedMedia.Count > 0)
+            {
+                string last = this.PlayedMedia.Last();
+                this.OpenMediaSource(last);
+                this.PlayedMedia.RemoveAt(this.PlayedMedia.Count - 1);
+                this.QueuedMedia.Enqueue(last);
+            }
         }
 
-        private void NextMedia()
+        public void NextMedia()
         {
+            string filepath = this.MediaSource.AbsolutePath;
+            this.PlayedMedia.Add(filepath);
+
+            if (this.QueuedMedia.Count > 0)
+                this.OpenMediaSource(this.QueuedMedia.Dequeue());
+            else if (this.IsShuffle)
+                this.OpenMediaSource(this.Playlist[(int) (new Random().NextDouble() * this.Playlist.Count)]);
+            else
+            {
+                int index = this.Playlist.IndexOf(filepath);
+                this.OpenMediaSource(this.Playlist[index >= this.Playlist.Count ? 0 : index]);
+            }
+        }
+
+        public void AddToPlaylist(string filePath)
+        {
+            this.Playlist.Add(filePath);
+        }
+
+        public void RemoveFromPlaylist(string filePath)
+        {
+            this.Playlist.Remove(filePath);
         }
 
         #endregion
