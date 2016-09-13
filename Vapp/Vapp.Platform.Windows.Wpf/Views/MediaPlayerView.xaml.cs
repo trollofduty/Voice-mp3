@@ -54,8 +54,7 @@ namespace Vapp.Platform.Windows.Wpf.Views
             this.sliderTrack = (Track) this.Slider.Template.FindName("PART_Track", this.Slider);
         }
 
-        // Calculate the tooltip value based on the mouse position and the slider's size, and values.
-        void SliderMouseMove(object sender, MouseEventArgs e)
+        private void SliderMouseMove(object sender, MouseEventArgs e)
         {
             Point positionUnderMouse = e.GetPosition(this.sliderTrack);
             double predictedValue = PixelsToValue(positionUnderMouse.X, this.Slider.Minimum, this.Slider.Maximum, this.sliderTrack.ActualWidth);
@@ -64,9 +63,16 @@ namespace Vapp.Platform.Windows.Wpf.Views
 
         private double PixelsToValue(double pixels, double minValue, double maxValue, double width)
         {
-            var range = maxValue - minValue;
+            double range = maxValue - minValue;
             double percentage = ((double) pixels / width) * 100;
             return ((percentage / 100) * range) + minValue;
+        }
+
+        private void SliderMouseLeftClick(object sender, MouseButtonEventArgs e)
+        {
+            Point positionUnderMouse = e.GetPosition(this.sliderTrack);
+            double predictedValue = PixelsToValue(positionUnderMouse.X, this.Slider.Minimum, this.Slider.Maximum, this.sliderTrack.ActualWidth);
+            this.MediaElement.Position = TimeSpan.FromSeconds(predictedValue);
         }
     }
 }
