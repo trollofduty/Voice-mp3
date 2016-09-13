@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="800">
     <Grid>
-        <UserControl Content="{Binding MediaPlayerControl}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Width="70" Margin="0 5 0 5" Content="Open" Command="{Binding OpenCommand}"/>
+
+        <UserControl Grid.Row="1" Content="{Binding MediaPlayerControl}"/>
     </Grid>
 </Window>

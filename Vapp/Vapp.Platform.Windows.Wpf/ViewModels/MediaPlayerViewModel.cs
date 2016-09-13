@@ -138,6 +138,9 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public void PlayMedia()
         {
+            if (this.MediaSource == null && this.Playlist.Count > 0)
+                this.NextMedia();
+
             this.LoadedBehaviour = MediaState.Play;
             this.SetTimeSpan();
             this.timer.Start();
@@ -182,10 +185,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             string filepath = null;
             if (this.MediaSource != null)
-            {
-                filepath = this.MediaSource.AbsolutePath;
-                this.PlayedMedia.Add(filepath);
-            }
+                filepath = this.MediaSource.AbsoluteUri.Replace("file:///", "").Replace("/", "\\").Replace("%20", " ");
 
             if (this.QueuedMedia.Count > 0)
                 this.OpenMediaSource(this.QueuedMedia.Dequeue());
@@ -195,16 +195,30 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 this.OpenMediaSource(filepath);
             else
             {
-                int index = filepath == null ? 0 : this.Playlist.IndexOf(filepath);
+                int index = filepath == null ? 0 : this.Playlist.IndexOf(this.Playlist.Where(t => t.Equals(filepath)).FirstOrDefault()) + 1;
 
-                if (this.Playlist.Count > 0)
-                    this.OpenMediaSource(this.Playlist[index >= this.Playlist.Count && this.RepeatMode != RepeatMode.None ? 0 : index]);
+                if (this.Playlist.Count == 0 || (index >= this.Playlist.Count && this.RepeatMode == RepeatMode.None))
+                    return;
+
+                if (index >= this.Playlist.Count && this.RepeatMode != RepeatMode.None)
+                    this.OpenMediaSource(this.Playlist[0]);
+                else
+                    this.OpenMediaSource(this.Playlist[index]);
+
             }
+
+            if (this.MediaSource != null)
+                this.PlayedMedia.Add(filepath);
         }
 
         public void AddToPlaylist(string filePath)
         {
             this.Playlist.Add(filePath);
+        }
+
+        public void AddToPlaylist(IEnumerable<string> filePath)
+        {
+            this.Playlist.AddRange(filePath);
         }
 
         public void RemoveFromPlaylist(string filePath)

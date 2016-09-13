@@ -31,6 +31,7 @@ namespace Vapp.Platform.Windows.Wpf.Views
             this.viewModel.RequestMediaTotalSeconds += () => this.MediaElement.Position.TotalSeconds;
             this.viewModel.SetMediaPosition += t => this.MediaElement.Position = t;
             this.MediaElement.MediaOpened += (sender, e) => this.viewModel.SetTimeSpan();
+            this.MediaElement.MediaEnded += (sender, e) => this.viewModel.NextMedia();
             this.DataContext = viewModel;
         }
 

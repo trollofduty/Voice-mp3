@@ -25,6 +25,7 @@ namespace Vapp.Media
         #region Methods
 
         void AddToPlaylist(string filePath);
+        void AddToPlaylist(IEnumerable<string> filePath);
         void RemoveFromPlaylist(string filePath);
         void OpenMediaSource(string filePath);
         void PlayMedia();
