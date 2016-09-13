@@ -41,6 +41,13 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         private DispatcherTimer timer;
 
+        private string sliderTooltip;
+        public string SliderTooltip
+        {
+            get { return this.sliderTooltip; }
+            set { this.Set(ref this.sliderTooltip, value); }
+        }
+
         private string timePlayedText;
         public string TimePlayedText
         {

@@ -196,8 +196,8 @@
                 <ColumnDefinition Width="75"/>
             </Grid.ColumnDefinitions>
 
-            <Slider Grid.Column="1" Margin="15 5 15 0" Maximum="{Binding SliderMaxTime}" SmallChange="{Binding SliderSmallChange}" LargeChange="{Binding SliderLargeChange}"
-                Value="{Binding SliderValue}" Thumb.DragStarted="DragStartedEventHandler" Thumb.DragCompleted="DragCompletedEventHandler"/>
+            <Slider x:Name="Slider" Grid.Column="1" Margin="15 5 15 0" Maximum="{Binding SliderMaxTime}" SmallChange="{Binding SliderSmallChange}" LargeChange="{Binding SliderLargeChange}"
+                Value="{Binding SliderValue}" Thumb.DragStarted="DragStartedEventHandler" Thumb.DragCompleted="DragCompletedEventHandler" Loaded="SliderLoaded" MouseMove="SliderMouseMove" ToolTip="{Binding SliderTooltip}"/>
 
             <TextBlock Grid.Column="0" Margin="15 5 15 0" Text="{Binding TimePlayedText}" HorizontalAlignment="Left"/>
             <TextBlock Grid.Column="2" Margin="15 5 15 0" Text="{Binding TimeLeftText}" HorizontalAlignment="Right"/>
