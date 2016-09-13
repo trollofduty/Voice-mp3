@@ -187,10 +187,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 this.OpenMediaSource(this.QueuedMedia.Dequeue());
             else if (this.IsShuffle)
                 this.OpenMediaSource(this.Playlist[(int) (new Random().NextDouble() * this.Playlist.Count)]);
+            else if (this.RepeatMode == RepeatMode.Once)
+                this.OpenMediaSource(filepath);
             else
             {
                 int index = this.Playlist.IndexOf(filepath);
-                this.OpenMediaSource(this.Playlist[index >= this.Playlist.Count ? 0 : index]);
+                this.OpenMediaSource(this.Playlist[index >= this.Playlist.Count && this.RepeatMode != RepeatMode.None ? 0 : index]);
             }
         }
 
