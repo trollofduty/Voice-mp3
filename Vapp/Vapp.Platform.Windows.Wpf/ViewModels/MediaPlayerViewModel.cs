@@ -15,24 +15,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 {
     class MediaPlayerViewModel : ViewModelBase
     {
-        #region Constructor
-
-        public MediaPlayerViewModel()
-        {
-            this.LoadedBehaviour = MediaState.Manual;
-        }
-
-        #endregion
-
         #region Properties
-
-        private MediaState loadedBehaviour;
-
-        public MediaState LoadedBehaviour
-        {
-            get { return this.loadedBehaviour; }
-            set { this.Set(ref this.loadedBehaviour, value); }
-        }
 
         public Func<TimeSpan> RequestMediaTimespan { get; set; }
 
@@ -46,6 +29,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public Func<Uri> GetSource { get; set; }
 
+        public Action Play { get; set; }
+
+        public Action Pause { get; set; }
+
+        public Action Stop { get; set; }
+
         #endregion
 
         #region Methods
@@ -58,17 +47,17 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         public void PlayMedia()
         {
             if (this.GetSource.Invoke() != null)
-                this.LoadedBehaviour = MediaState.Play;
+                this.Play();
         }
 
         public void PauseMedia()
         {
-            this.LoadedBehaviour = MediaState.Pause;
+            this.Pause();
         }
 
         public void StopMedia()
         {
-            this.LoadedBehaviour = MediaState.Stop;
+            this.Stop();
         }
 
         #endregion

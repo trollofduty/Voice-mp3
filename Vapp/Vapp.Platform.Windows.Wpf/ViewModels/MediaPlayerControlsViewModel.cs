@@ -119,7 +119,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         #region Methods
 
-        private void TimerTick(object sender, EventArgs e)
+        private void UpdateTimeTextBlocks()
         {
             if (this.mediaPlayer.RequestMediaHasTimespan.Invoke())
             {
@@ -127,6 +127,16 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 this.TimePlayedText = played.ToString(@"hh\:mm\:ss");
                 this.TimeLeftText = this.mediaPlayer.RequestMediaTimespan.Invoke().Subtract(played).ToString(@"hh\:mm\:ss");
             }
+            else
+            {
+                this.TimePlayedText = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
+                this.TimeLeftText = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
+            }
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            this.UpdateTimeTextBlocks();
 
             if (!this.isDragging)
                 this.SliderValue = this.mediaPlayer.RequestMediaTotalSeconds.Invoke();
@@ -183,6 +193,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.mediaPlayer.StopMedia();
             this.timer.Stop();
             this.SliderValue = 0.0;
+            this.UpdateTimeTextBlocks();
         }
 
         public void SliderDragEnter()

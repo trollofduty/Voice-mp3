@@ -12,7 +12,7 @@
                 <SolidColorBrush Color="Black"/>
             </Border.Background>
 
-            <MediaElement x:Name="MediaElement" LoadedBehavior="{Binding LoadedBehaviour}" ScrubbingEnabled="True"/>
+            <MediaElement x:Name="MediaElement" LoadedBehavior="Manual" ScrubbingEnabled="True"/>
         </Border>
     </Grid>
 </UserControl>

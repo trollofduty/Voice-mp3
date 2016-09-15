@@ -34,6 +34,9 @@ namespace Vapp.Platform.Windows.Wpf.Views
             this.viewModel.SetMediaPosition += t => this.MediaElement.Position = t;
             this.viewModel.SetSource += t => this.MediaElement.Source = t;
             this.viewModel.GetSource += () => this.MediaElement.Source;
+            this.viewModel.Play += () => this.MediaElement.Play();
+            this.viewModel.Stop += () => this.MediaElement.Stop();
+            this.viewModel.Pause += () => this.MediaElement.Pause();
         }
 
         private MediaPlayerViewModel viewModel;
