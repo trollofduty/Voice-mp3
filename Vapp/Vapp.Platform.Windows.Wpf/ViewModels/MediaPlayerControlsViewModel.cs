@@ -23,6 +23,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.StopMediaCommand = new RelayCommand(this.Stop);
             this.PreviousMediaCommand = new RelayCommand(this.Previous);
             this.NextMediaCommand = new RelayCommand(this.Next);
+            this.RandomMediaCommand = new RelayCommand(this.Random);
+            this.LoopMediaCommand = new RelayCommand(this.Loop);
             this.TimePlayedText = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
             this.TimeLeftText = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
             timer = new DispatcherTimer();
@@ -99,6 +101,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public ICommand NextMediaCommand { get; set; }
 
+        public ICommand RandomMediaCommand { get; set; }
+
+        public ICommand LoopMediaCommand { get; set; }
+
         public Queue<string> QueuedMedia { get; private set; } = new Queue<string>();
 
         public List<string> PlayedMedia { get; private set; } = new List<string>();
@@ -140,6 +146,16 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         public void OpenSource(string filePath)
         {
             this.mediaPlayer.OpenMediaSource(filePath);
+        }
+
+        public void Random()
+        {
+            this.IsShuffle = !this.IsShuffle;
+        }
+
+        public void Loop()
+        {
+            this.RepeatMode = this.RepeatMode == RepeatMode.Once ? RepeatMode.None : RepeatMode.Once;
         }
 
         public void Play()
