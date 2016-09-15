@@ -27,12 +27,12 @@ namespace Vapp.Media
         void AddToPlaylist(string filePath);
         void AddToPlaylist(IEnumerable<string> filePath);
         void RemoveFromPlaylist(string filePath);
-        void OpenMediaSource(string filePath);
-        void PlayMedia();
-        void PauseMedia();
-        void StopMedia();
-        void PreviousMedia();
-        void NextMedia();
+        void OpenSource(string filePath);
+        void Play();
+        void Pause();
+        void Stop();
+        void Previous();
+        void Next();
 
         #endregion
     }

@@ -77,7 +77,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\MediaPlayerControlsViewModel.cs" />
+    <Compile Include="ViewModels\MediaPlayerGroupViewModel.cs" />
     <Compile Include="ViewModels\MediaPlayerViewModel.cs" />
+    <Compile Include="Views\MediaPlayerControlsView.xaml.cs">
+      <DependentUpon>MediaPlayerControlsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MediaPlayerGroupView.xaml.cs">
+      <DependentUpon>MediaPlayerGroupView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MediaPlayerView.xaml.cs">
       <DependentUpon>MediaPlayerView.xaml</DependentUpon>
     </Compile>
@@ -93,6 +101,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MediaPlayerControlsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MediaPlayerGroupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MediaPlayerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

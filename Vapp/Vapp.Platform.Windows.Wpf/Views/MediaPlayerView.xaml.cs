@@ -27,52 +27,15 @@ namespace Vapp.Platform.Windows.Wpf.Views
         {
             InitializeComponent();
             this.viewModel = new MediaPlayerViewModel();
+            this.DataContext = this.viewModel;
             this.viewModel.RequestMediaTimespan += () => this.MediaElement.NaturalDuration.TimeSpan;
             this.viewModel.RequestMediaHasTimespan += () => this.MediaElement.NaturalDuration.HasTimeSpan;
             this.viewModel.RequestMediaTotalSeconds += () => this.MediaElement.Position.TotalSeconds;
             this.viewModel.SetMediaPosition += t => this.MediaElement.Position = t;
-            this.MediaElement.MediaOpened += (sender, e) => this.viewModel.SetTimeSpan();
-            this.MediaElement.MediaEnded += (sender, e) => this.viewModel.NextMedia();
-            this.DataContext = viewModel;
+            this.viewModel.SetSource += t => this.MediaElement.Source = t;
+            this.viewModel.GetSource += () => this.MediaElement.Source;
         }
 
         private MediaPlayerViewModel viewModel;
-        private Track sliderTrack;
-
-        private void DragStartedEventHandler(object sender, RoutedEventArgs e)
-        {
-            this.viewModel.SliderDragEnter();
-        }
-
-        private void DragCompletedEventHandler(object sender, RoutedEventArgs e)
-        {
-            this.viewModel.SliderDragExit();
-        }
-
-        private void SliderLoaded(object sender, RoutedEventArgs e)
-        {
-            this.sliderTrack = (Track) this.Slider.Template.FindName("PART_Track", this.Slider);
-        }
-
-        private void SliderMouseMove(object sender, MouseEventArgs e)
-        {
-            Point positionUnderMouse = e.GetPosition(this.sliderTrack);
-            double predictedValue = PixelsToValue(positionUnderMouse.X, this.Slider.Minimum, this.Slider.Maximum, this.sliderTrack.ActualWidth);
-            this.viewModel.SliderTooltip = TimeSpan.FromSeconds(predictedValue).ToString(@"hh\:mm\:ss");
-        }
-
-        private double PixelsToValue(double pixels, double minValue, double maxValue, double width)
-        {
-            double range = maxValue - minValue;
-            double percentage = ((double) pixels / width) * 100;
-            return ((percentage / 100) * range) + minValue;
-        }
-
-        private void SliderMouseLeftClick(object sender, MouseButtonEventArgs e)
-        {
-            Point positionUnderMouse = e.GetPosition(this.sliderTrack);
-            double predictedValue = PixelsToValue(positionUnderMouse.X, this.Slider.Minimum, this.Slider.Maximum, this.sliderTrack.ActualWidth);
-            this.MediaElement.Position = TimeSpan.FromSeconds(predictedValue);
-        }
     }
 }

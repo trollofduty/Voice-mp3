@@ -27,10 +27,13 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         private IMediaPlayer MediaPlayer
         {
-            get { return (IMediaPlayer) this.MediaPlayerControl.DataContext; }
+            get
+            {
+                return (MediaPlayerControlsViewModel) (((MediaPlayerGroupViewModel) this.MediaPlayerControls.DataContext).MediaControls.DataContext);
+            }
         }
 
-        public UserControl MediaPlayerControl { get; set; } = new MediaPlayerView();
+        public UserControl MediaPlayerControls { get; set; } = new MediaPlayerGroupView();
 
         public ICommand OpenCommand { get; set; }
 
