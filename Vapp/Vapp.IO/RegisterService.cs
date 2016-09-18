@@ -16,6 +16,12 @@ namespace Vapp.IO
 
         #region Methods
 
+        public void Hook(V value, params K[] keys)
+        {
+            foreach (K key in keys)
+                this.Cache.Add(key, value);
+        }
+
         public void Hook(K key, V value)
         {
             this.Cache.Add(key, value);
