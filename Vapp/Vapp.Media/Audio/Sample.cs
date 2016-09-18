@@ -7,16 +7,27 @@ using Vapp.Core;
 
 namespace Vapp.Media.Audio
 {
+    /// <summary>
+    /// Audio data sample
+    /// </summary>
     public class Sample : IDeepCloneable<Sample>
     {
         #region Constructor
 
+        /// <summary>
+        /// Sample constructor
+        /// </summary>
+        /// <param name="sampleSize">Sample size in bytes</param>
         public Sample(SampleSize sampleSize)
             : this((int) sampleSize)
         {
             // Skip
         }
 
+        /// <summary>
+        /// Sample constructor
+        /// </summary>
+        /// <param name="sampleSize">Sample size in bytes</param>
         protected Sample(int sampleSize)
         {
             this.Data = new byte[sampleSize];
@@ -32,8 +43,14 @@ namespace Vapp.Media.Audio
         private const int Format32 = 4;
         private const int Format64 = 8;
 
+        /// <summary>
+        /// Raw audio data
+        /// </summary>
         public byte[] Data { get; private set; }
         
+        /// <summary>
+        /// Value of sample ranging from +1.0 to -1.0
+        /// </summary>
         public double Value
         {
             get { return this.GetValue(); }
@@ -44,7 +61,11 @@ namespace Vapp.Media.Audio
 
         #region Methods
 
-        private void SetValue(double value)
+        /// <summary>
+        /// Stores value in the form of the Data array
+        /// </summary>
+        /// <param name="value">Value of sample ranging from +1.0 to -1.0</param>
+        protected void SetValue(double value)
         {
             switch (this.Data.Length)
             {
@@ -68,7 +89,11 @@ namespace Vapp.Media.Audio
             }
         }
 
-        private double GetValue()
+        /// <summary>
+        /// Gets stored value in the data array in the form of a double
+        /// </summary>
+        /// <returns>Value of sample ranging from +1.0 to -1.0</returns>
+        protected double GetValue()
         {
             switch (this.Data.Length)
             {
@@ -88,6 +113,13 @@ namespace Vapp.Media.Audio
             }
         }
 
+        /// <summary>
+        /// Converts sample size format to specified sample size, if
+        /// sample size is not supported will throw a FormatException.
+        /// Good idea to surround with a try catch block if you don't
+        /// know the specified sample size
+        /// </summary>
+        /// <param name="sampleSize">Size of sample in bytes</param>
         public void ConvertTo(SampleSize sampleSize)
         {
             if (this.Data.Length == (int) sampleSize)
@@ -101,6 +133,10 @@ namespace Vapp.Media.Audio
             throw new FormatException();
         }
 
+        /// <summary>
+        /// Data clone of Sample class
+        /// </summary>
+        /// <returns>Cloned Sample class instance</returns>
         public Sample DeepClone()
         {
             Sample clone = new Sample(this.Data.Length);
