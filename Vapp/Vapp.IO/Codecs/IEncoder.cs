@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vapp.IO
+namespace Vapp.IO.Codecs
 {
     public interface IEncoder<T>
     {

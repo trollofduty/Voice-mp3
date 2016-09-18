@@ -45,17 +45,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio\RiffWavDecoder.cs" />
-    <Compile Include="Audio\RiffWavEncoder.cs" />
-    <Compile Include="Audio\Codecs\Wav\FmtChunk.cs" />
-    <Compile Include="Audio\Codecs\Wav\GenericChunk.cs" />
-    <Compile Include="Audio\Codecs\Wav\RiffChunk.cs" />
-    <Compile Include="Audio\Codecs\Wav\WaveDataChunk.cs" />
-    <Compile Include="Audio\Codecs\Wav\WaveFile.cs" />
-    <Compile Include="DecoderRegisterService.cs" />
-    <Compile Include="EncoderRegisterService.cs" />
-    <Compile Include="IDecoder.cs" />
-    <Compile Include="IEncoder.cs" />
+    <Compile Include="Codecs\Audio\RiffWavDecoder.cs" />
+    <Compile Include="Codecs\Audio\RiffWavEncoder.cs" />
+    <Compile Include="Codecs\Audio\Wav\FmtChunk.cs" />
+    <Compile Include="Codecs\Audio\Wav\GenericChunk.cs" />
+    <Compile Include="Codecs\Audio\Wav\RiffChunk.cs" />
+    <Compile Include="Codecs\Audio\Wav\WaveDataChunk.cs" />
+    <Compile Include="Codecs\Audio\Wav\WaveFile.cs" />
+    <Compile Include="Codecs\DecoderRegisterService.cs" />
+    <Compile Include="Codecs\EncoderRegisterService.cs" />
+    <Compile Include="Codecs\IDecoder.cs" />
+    <Compile Include="Codecs\IEncoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterService.cs" />
   </ItemGroup>

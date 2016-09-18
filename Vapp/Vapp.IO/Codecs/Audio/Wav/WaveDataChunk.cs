@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vapp.Extensions;
 
-namespace Vapp.IO.Audio.Codecs.Wav
+namespace Vapp.IO.Codecs.Audio.Wav
 {
     internal class WaveDataChunk : GenericChunk
     {

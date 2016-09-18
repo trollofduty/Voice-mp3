@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Vapp.IO.Audio.Codecs.Wav;
+using Vapp.IO.Codecs.Audio.Wav;
 
-namespace Vapp.IO.Audio
+namespace Vapp.IO.Codecs.Audio
 {
     public class RiffWavEncoder : IEncoder<Waveformat>
     {

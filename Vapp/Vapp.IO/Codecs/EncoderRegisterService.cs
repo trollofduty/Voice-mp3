@@ -5,27 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vapp.IO
+namespace Vapp.IO.Codecs
 {
-    public class DecoderRegisterService<T> : RegisterService<string, IDecoder<T>>
+    public class EncoderRegisterService<T> : RegisterService<string, IEncoder<T>>
     {
         #region Methods
 
-        public bool TryDecode(out T result, Stream stream, string format = "")
+        public bool TryEncode(T data, Stream stream, string format = "")
         {
-            result = default(T);
             if (format != null && format.Length > 0)
             {
                 if (!this.Cache.ContainsKey(format))
                     return false;
                 else
-                    return this.Cache[format].TryDecode(stream, out result);
+                    return this.Cache[format].TryEncode(stream, data);
             }
             else
             {
-                foreach (IDecoder<T> decoder in this.Cache.Select(t => t.Value))
+                foreach (IEncoder<T> encoder in this.Cache.Select(t => t.Value))
                 {
-                    if (decoder.TryDecode(stream, out result))
+                    if (encoder.TryEncode(stream, data))
                         return true;
                 }
             }
