@@ -47,8 +47,7 @@ namespace Vapp.IO.Audio
 
             for (int index = 0; index < wav.DataChunk.Size; index += bytesPerSample)
             {
-                Sample sample = new Sample();
-                sample.Data = new byte[bytesPerSample];
+                Sample sample = new Sample(bytesPerSample);
 
                 for (int dataIndex = 0; dataIndex < sample.Data.Length; dataIndex++)
                     sample.Data[dataIndex] = wav.DataChunk.Data[index + dataIndex];
