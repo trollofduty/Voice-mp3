@@ -9,9 +9,24 @@ namespace Vapp.Media.Audio
 {
     public class Sample : IDeepCloneable<Sample>
     {
+        public enum SampleSize
+        {
+            Null,
+            Format8 = 1,
+            Format16 = 2,
+            Format32 = 4,
+            Format64 = 8
+        }
+
         #region Constructor
 
-        public Sample(int sampleSize)
+        public Sample(SampleSize sampleSize)
+            : this((int) sampleSize)
+        {
+            // Skip
+        }
+
+        protected Sample(int sampleSize)
         {
             this.Data = new byte[sampleSize];
         }
@@ -80,6 +95,19 @@ namespace Vapp.Media.Audio
                     long lValue = BitConverter.ToInt64(this.Data, 0);
                     return lValue >= 0 ? lValue / (double) long.MaxValue : lValue / (double) long.MinValue;
             }
+        }
+
+        public void ConvertTo(SampleSize sampleSize)
+        {
+            if (this.Data.Length == (int) sampleSize)
+                return;
+            else
+            {
+                double value = this.GetValue();
+                this.Data = new byte[(int) sampleSize];
+                this.SetValue(value);
+            }
+            throw new FormatException();
         }
 
         public Sample DeepClone()
