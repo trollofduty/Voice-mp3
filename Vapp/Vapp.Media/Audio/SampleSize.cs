@@ -11,6 +11,7 @@ namespace Vapp.Media.Audio
         Null,
         Format8 = 1,
         Format16 = 2,
+        Format24 = 3,
         Format32 = 4,
         Format64 = 8
     }
