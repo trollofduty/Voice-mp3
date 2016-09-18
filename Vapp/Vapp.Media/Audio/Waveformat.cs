@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vapp.Media.Audio
 {
-    public class Track
+    public class Waveformat
     {
         #region Properties
 

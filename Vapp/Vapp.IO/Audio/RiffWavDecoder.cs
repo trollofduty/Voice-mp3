@@ -1,17 +1,17 @@
 ﻿using Vapp.Media.Audio;
-using Vapp.IO.Audio.Waveform;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vapp.IO.Audio.Codecs.Wav;
 
 namespace Vapp.IO.Audio
 {
-    public class RiffWavDecoder : IDecoder<Track>
+    public class RiffWavDecoder : IDecoder<Waveformat>
     {
-        public bool TryDecode(Stream stream, out Track output)
+        public bool TryDecode(Stream stream, out Waveformat output)
         {
             try
             {
@@ -25,10 +25,10 @@ namespace Vapp.IO.Audio
             return false;
         }
 
-        public Track Decode(Stream stream)
+        public Waveformat Decode(Stream stream)
         {
             WaveFile wav = WaveFile.Import(stream);
-            Track sound = new Track();
+            Waveformat sound = new Waveformat();
 
             sound.AudioFormat = wav.FmtHeader.AudioFormat;
             sound.SampleRate = wav.FmtHeader.SampleRate;

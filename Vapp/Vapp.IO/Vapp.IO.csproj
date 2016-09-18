@@ -47,11 +47,11 @@
   <ItemGroup>
     <Compile Include="Audio\RiffWavDecoder.cs" />
     <Compile Include="Audio\RiffWavEncoder.cs" />
-    <Compile Include="Audio\Waveform\FmtChunk.cs" />
-    <Compile Include="Audio\Waveform\GenericChunk.cs" />
-    <Compile Include="Audio\Waveform\RiffChunk.cs" />
-    <Compile Include="Audio\Waveform\WaveDataChunk.cs" />
-    <Compile Include="Audio\Waveform\WaveFile.cs" />
+    <Compile Include="Audio\Codecs\Wav\FmtChunk.cs" />
+    <Compile Include="Audio\Codecs\Wav\GenericChunk.cs" />
+    <Compile Include="Audio\Codecs\Wav\RiffChunk.cs" />
+    <Compile Include="Audio\Codecs\Wav\WaveDataChunk.cs" />
+    <Compile Include="Audio\Codecs\Wav\WaveFile.cs" />
     <Compile Include="DecoderRegisterService.cs" />
     <Compile Include="EncoderRegisterService.cs" />
     <Compile Include="IDecoder.cs" />

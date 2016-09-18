@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Vapp.IO.Audio.Waveform;
+using Vapp.IO.Audio.Codecs.Wav;
 
 namespace Vapp.IO.Audio
 {
-    public class RiffWavEncoder : IEncoder<Track>
+    public class RiffWavEncoder : IEncoder<Waveformat>
     {
-        public bool TryEncode(Stream stream, Track input)
+        public bool TryEncode(Stream stream, Waveformat input)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace Vapp.IO.Audio
             return false;
         }
 
-        public void Encode(Stream stream, Track input)
+        public void Encode(Stream stream, Waveformat input)
         {
             WaveFile wav = new WaveFile();
 

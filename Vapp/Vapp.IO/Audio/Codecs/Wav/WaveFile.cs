@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vapp.Extensions;
 
-namespace Vapp.IO.Audio.Waveform
+namespace Vapp.IO.Audio.Codecs.Wav
 {
     internal class WaveFile
     {
