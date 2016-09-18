@@ -9,15 +9,6 @@ namespace Vapp.Media.Audio
 {
     public class Sample : IDeepCloneable<Sample>
     {
-        public enum SampleSize
-        {
-            Null,
-            Format8 = 1,
-            Format16 = 2,
-            Format32 = 4,
-            Format64 = 8
-        }
-
         #region Constructor
 
         public Sample(SampleSize sampleSize)

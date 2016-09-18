@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Audio\Channel.cs" />
     <Compile Include="Audio\Sample.cs" />
+    <Compile Include="Audio\SampleSize.cs" />
     <Compile Include="Audio\Waveformat.cs" />
     <Compile Include="IMediaPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
