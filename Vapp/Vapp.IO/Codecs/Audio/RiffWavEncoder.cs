@@ -11,7 +11,7 @@ namespace Vapp.IO.Codecs.Audio
 {
     public class RiffWavEncoder : EncoderBase<Waveformat>
     {
-        public void Encode(Stream stream, Waveformat input)
+        public override void Encode(Stream stream, Waveformat input)
         {
             WaveFile wav = new WaveFile();
 
