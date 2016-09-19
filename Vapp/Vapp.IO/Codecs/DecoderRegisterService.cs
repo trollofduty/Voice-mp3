@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Vapp.IO.Codecs
 {
-    public class DecoderRegisterService<T> : RegisterService<string, IDecoder<T>>
+    public class DecoderRegisterService<T> : RegisterService<string, DecoderBase<T>>
     {
         #region Methods
 
@@ -23,7 +23,7 @@ namespace Vapp.IO.Codecs
             }
             else
             {
-                foreach (IDecoder<T> decoder in this.Cache.Select(t => t.Value))
+                foreach (DecoderBase<T> decoder in this.Cache.Select(t => t.Value))
                 {
                     if (decoder.TryDecode(stream, out result))
                         return true;

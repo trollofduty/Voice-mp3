@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Vapp.IO.Codecs
 {
-    public class EncoderRegisterService<T> : RegisterService<string, IEncoder<T>>
+    public class EncoderRegisterService<T> : RegisterService<string, EncoderBase<T>>
     {
         #region Methods
 
@@ -22,7 +22,7 @@ namespace Vapp.IO.Codecs
             }
             else
             {
-                foreach (IEncoder<T> encoder in this.Cache.Select(t => t.Value))
+                foreach (EncoderBase<T> encoder in this.Cache.Select(t => t.Value))
                 {
                     if (encoder.TryEncode(stream, data))
                         return true;

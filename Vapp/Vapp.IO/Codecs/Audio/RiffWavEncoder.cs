@@ -9,22 +9,8 @@ using Vapp.IO.Codecs.Audio.Wav;
 
 namespace Vapp.IO.Codecs.Audio
 {
-    public class RiffWavEncoder : IEncoder<Waveformat>
+    public class RiffWavEncoder : EncoderBase<Waveformat>
     {
-        public bool TryEncode(Stream stream, Waveformat input)
-        {
-            try
-            {
-                this.Encode(stream, input);
-                return true;
-            }
-            catch
-            {
-                // Skip
-            }
-            return false;
-        }
-
         public void Encode(Stream stream, Waveformat input)
         {
             WaveFile wav = new WaveFile();
