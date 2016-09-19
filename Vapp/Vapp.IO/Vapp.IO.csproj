@@ -61,6 +61,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Codecs\Audio\Mp3\" />
+    <Folder Include="Codecs\Gaps\Rgap\" />
+    <Folder Include="Codecs\Subtitles\Srt\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

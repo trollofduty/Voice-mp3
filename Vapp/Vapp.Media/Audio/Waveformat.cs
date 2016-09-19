@@ -49,6 +49,34 @@ namespace Vapp.Media.Audio
 
         #region Methods
 
+
+        /// <summary>
+        /// Duals multiple channel pcm's to mono channel by taking
+        /// the averages of all channels.
+        /// </summary>
+        public void ConvertToMono()
+        {
+            Channel channel = new Channel(0);
+            int max = this.Channels.Max(c => c.Samples.Count);
+            
+            for (int index = 0; index < max; index++)
+            {
+                int count = 0;
+                double total = 0;
+
+                foreach (Channel iChannel in this.Channels)
+                {
+                    count++;
+                    total += iChannel.Samples[index].Value;
+                }
+
+                Sample sample = new Sample((SampleSize) (this.BitsPerSample / 8));
+                sample.Value = total / count;
+                channel.Samples.Add(sample);
+            }
+            this.Channels = new Channel[1] { channel };
+        }
+
         /// <summary>
         /// Returns a data clone of the Waveformat class object
         /// </summary>
