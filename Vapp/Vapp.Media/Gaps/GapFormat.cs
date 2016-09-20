@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,16 +52,16 @@ namespace Vapp.Media.Gaps
                     pauseCount++;
                     if ((wasBelow || wasThreshold) && isAbove)
                     {
-                        if (pauseCount >= minPause)
-                            pauseFormat.Pauses.Add(new Pause(TimeSpan.FromSeconds(pauseStart / pcm.SampleRate), TimeSpan.FromSeconds((value - 1) / pcm.SampleRate)));
+                        if (pauseCount >= sMinPause)
+                            pauseFormat.Pauses.Add(new Pause(TimeSpan.FromSeconds(pauseStart / pcm.SampleRate), TimeSpan.FromSeconds((index - 1) / pcm.SampleRate)));
 
                         wasCrossed = false;
                     }
                 }
-                if (wasAbove && (isBelow || isThreshold))
+                if (wasAbove && isBelow)
                 {
                     pauseCount = 0;
-                    pauseStart = value;
+                    pauseStart = index;
                     wasCrossed = true;
                 }
 
