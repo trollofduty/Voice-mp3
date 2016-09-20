@@ -67,12 +67,13 @@ namespace Vapp.Media.Audio
         /// <param name="value">Value of sample ranging from +1.0 to -1.0</param>
         protected void SetValue(double value)
         {
+            value = (value + 1.0) / 2.0;
             switch (this.Data.Length)
             {
                 default:
                     throw new FormatException();
                 case Format8:
-                    this.Data[0] = (byte) (((value + 1.0) / 2.0) * 0xF);
+                    this.Data[0] = (byte) (value * 0xF);
                     break;
                 case Format16:
                     short sValue = (short) (value >= 0 ? value * short.MaxValue : value * short.MinValue);
@@ -103,13 +104,13 @@ namespace Vapp.Media.Audio
                     return ((this.Data[0] / (double) 0xF) * 2.0) - 1.0;
                 case Format16:
                     short sValue = BitConverter.ToInt16(this.Data, 0);
-                    return sValue >= 0 ? sValue / (double) short.MaxValue : sValue / (double) short.MinValue;
+                    return ((sValue >= 0 ? sValue / (double) short.MaxValue : sValue / (double) short.MinValue) * 2.0) - 1.0;
                 case Format32:
                     int iValue = BitConverter.ToInt32(this.Data, 0);
-                    return iValue >= 0 ? iValue / (double) int.MaxValue : iValue / (double) int.MinValue;
+                    return ((iValue >= 0 ? iValue / (double) int.MaxValue : iValue / (double) int.MinValue) * 2.0) - 1.0;
                 case Format64:
                     long lValue = BitConverter.ToInt64(this.Data, 0);
-                    return lValue >= 0 ? lValue / (double) long.MaxValue : lValue / (double) long.MinValue;
+                    return ((lValue >= 0 ? lValue / (double) long.MaxValue : lValue / (double) long.MinValue) * 2.0) - 1.0;
             }
         }
 

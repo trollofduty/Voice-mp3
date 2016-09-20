@@ -53,7 +53,7 @@ namespace Vapp.Media.Gaps
                     if ((wasBelow || wasThreshold) && isAbove)
                     {
                         if (pauseCount >= sMinPause)
-                            pauseFormat.Pauses.Add(new Pause(TimeSpan.FromSeconds(pauseStart / pcm.SampleRate), TimeSpan.FromSeconds((index - 1) / pcm.SampleRate)));
+                            pauseFormat.Pauses.Add(new Pause(TimeSpan.FromSeconds(pauseStart / pcm.SampleRate), TimeSpan.FromSeconds((index - 1) / (double) pcm.SampleRate)));
 
                         wasCrossed = false;
                     }
