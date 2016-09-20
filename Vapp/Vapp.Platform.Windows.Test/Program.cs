@@ -4,8 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vapp.IO.Codecs;
+using Vapp.IO.Codecs.Audio;
 using Vapp.IO.Codecs.Subtitles;
 using Vapp.Media;
+using Vapp.Media.Audio;
+using Vapp.Media.Gaps;
 
 namespace Vapp.Platform.Windows.Test
 {
@@ -15,12 +19,15 @@ namespace Vapp.Platform.Windows.Test
         {
             Console.BufferHeight = 2000;
 
+            RegisterDecoderServices();
             RegisterSpecialCharacters();
             RegisterCommands();
 
             while (!done)
                 Prompt();
         }
+
+        static DecoderRegisterService<Waveformat> AudioDecoderService { get; set; }
 
         static IEnumerable<string> SpecialCharacterList { get; set; }
 
@@ -30,12 +37,19 @@ namespace Vapp.Platform.Windows.Test
 
         static bool done = false;
 
+        static void RegisterDecoderServices()
+        {
+            AudioDecoderService = new DecoderRegisterService<Waveformat>();
+            AudioDecoderService.Hook(new RiffWavDecoder(), ".wav");
+        }
+
         static void RegisterCommands()
         {
             CommandMapping = new Dictionary<string, Action<IEnumerable<string>>>();
             CommandMapping.Add("cd", ChangeDirectoryCommand);
             CommandMapping.Add("exit", ExitCommand);
             CommandMapping.Add("srt", SrtTestCommand);
+            CommandMapping.Add("rgap", GapTestCommand);
         }
 
         static void RegisterSpecialCharacters()
@@ -167,12 +181,14 @@ namespace Vapp.Platform.Windows.Test
                 return;
             }
 
-            Console.WriteLine("SRT TEST--------");
+            Console.WriteLine("\n[Srt Test]");
+
             string path = dir.FullName + "\\" + input.ElementAt(0);
             if (File.Exists(path))
             {
                 IEnumerable<Subtitle> subtitles;
                 Console.WriteLine("Opening stream");
+
                 using (Stream stream = File.OpenRead(path))
                 {
                     if (new SrtDecoder().TryDecode(stream, out subtitles))
@@ -186,23 +202,75 @@ namespace Vapp.Platform.Windows.Test
                     Console.WriteLine("Closing stream");
                     stream.Close();
                 }
+
                 Console.WriteLine("Stream closed");
 
                 if (subtitles != null)
                 {
-                    Console.WriteLine("VALUES----------");
+                    Console.WriteLine("\n[Subtitle Data]");
 
                     foreach (Subtitle subtitle in subtitles)
                         Console.WriteLine(string.Format("Start: {0}, End: {1}, Text: {2}", subtitle.Start.ToString(@"hh\:mm\:ss\:fff"), subtitle.End.ToString(@"hh\:mm\:ss\:fff"), subtitle.Text));
-                    
-                    Console.WriteLine("----------------");
+
+                    Console.WriteLine("Subtitle Count: {0}", subtitles.Count());
                 }
             }
             else
-            {
                 ErrorWriteLine("File does not exist");
+
+            GC.Collect();
+            GC.Collect();
+        }
+
+        static void GapTestCommand(IEnumerable<string> input)
+        {
+            if (input.Count() != 1)
+            {
+                ErrorWriteLine("Invalid arguments provided");
+                return;
             }
-            Console.WriteLine("----------------");
+            
+            Console.WriteLine("\n[Gap Test]");
+
+            string path = dir.FullName + "\\" + input.ElementAt(0);
+            if (File.Exists(path))
+            {
+                Waveformat waveformat;
+                Console.WriteLine("Opening stream");
+
+                using (Stream stream = File.OpenRead(path))
+                {
+                    if (AudioDecoderService.TryDecode(out waveformat, stream, new FileInfo(path).Extension))
+                        Console.WriteLine("Stream decoded");
+                    else
+                    {
+                        waveformat = null;
+                        ErrorWriteLine("Could not decode stream");
+                    }
+
+                    Console.WriteLine("Closing stream");
+                    stream.Close();
+                }
+
+                Console.WriteLine("Stream closed");
+
+                if (waveformat != null)
+                {
+                    Console.WriteLine("\n[Creating Gap]");
+
+                    GapFormat gap = GapFormat.CreateFrom(waveformat);
+
+                    foreach (Pause pause in gap.Pauses)
+                        Console.WriteLine("Start: {0}, End: {1}", pause.Start.ToString(@"hh\:mm\:ss\:fff"), pause.End.ToString(@"hh\:mm\:ss\:fff"));
+
+                    Console.WriteLine("Gap Count: {0}", gap.Pauses.Count());
+                }
+            }
+            else
+                ErrorWriteLine("File does not exist");
+
+            GC.Collect();
+            GC.Collect();
         }
     }
 }

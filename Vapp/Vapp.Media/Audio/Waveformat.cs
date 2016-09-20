@@ -66,8 +66,11 @@ namespace Vapp.Media.Audio
 
                 foreach (Channel iChannel in this.Channels)
                 {
-                    count++;
-                    total += iChannel.Samples[index].Value;
+                    if (index < iChannel.Samples.Count())
+                    {
+                        count++;
+                        total += iChannel.Samples[index].Value;
+                    }
                 }
 
                 Sample sample = new Sample((SampleSize) (this.BitsPerSample / 8));
