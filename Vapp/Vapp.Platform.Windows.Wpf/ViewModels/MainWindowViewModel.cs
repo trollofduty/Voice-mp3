@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Vapp.Media;
@@ -18,22 +19,77 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public MainWindowViewModel()
         {
+            this.IsFullscreen = false;
             this.OpenCommand = new RelayCommand(this.Open);
+            this.SetFullscreenCommand = new RelayCommand(() => this.IsFullscreen = !this.IsFullscreen);
         }
 
         #endregion
 
         #region Properties
 
+        private WindowStyle windowStyle;
+        public WindowStyle WindowStyle
+        {
+            get { return this.windowStyle; }
+            set { this.Set(ref this.windowStyle, value); }
+        }
+
+        private ResizeMode windowResizeMode;
+        public ResizeMode WindowResizeMode
+        {
+            get { return this.windowResizeMode; }
+            set { this.Set(ref this.windowResizeMode, value); }
+        }
+
+        private WindowState windowState;
+        public WindowState WindowState
+        {
+            get { return this.windowState; }
+            set { this.Set(ref this.windowState, value); }
+        }
+
+        public ICommand SetFullscreenCommand { get; set; }
+
+        private bool isFullscreen;
+        public bool IsFullscreen
+        {
+            get { return this.isFullscreen; }
+            set
+            {
+                this.isFullscreen = value;
+
+                if (this.isFullscreen)
+                {
+                    this.WindowStyle = WindowStyle.None;
+                    this.WindowResizeMode = ResizeMode.NoResize;
+                    this.WindowState = WindowState.Maximized;
+                    this.MediaPlayerControlsViewModel.IsFullscreen = true;
+                }
+                else
+                {
+                    this.WindowStyle = WindowStyle.SingleBorderWindow;
+                    this.WindowResizeMode = ResizeMode.CanResize;
+                    this.WindowState = WindowState.Normal;
+                    this.MediaPlayerControlsViewModel.IsFullscreen = false;
+                }
+            }
+        }
+
         private IMediaPlayer MediaPlayer
         {
             get
             {
-                return (MediaPlayerControlsViewModel) (((MediaPlayerGroupViewModel) this.MediaPlayerControls.DataContext).MediaControls.DataContext);
+                return (MediaPlayerControlsViewModel) this.MediaPlayerControlsViewModel.MediaControls.DataContext;
             }
         }
 
         public UserControl MediaPlayerControls { get; set; } = new MediaPlayerGroupView();
+
+        public MediaPlayerGroupViewModel MediaPlayerControlsViewModel
+        {
+            get { return (MediaPlayerGroupViewModel) this.MediaPlayerControls.DataContext; }
+        }
 
         public ICommand OpenCommand { get; set; }
 

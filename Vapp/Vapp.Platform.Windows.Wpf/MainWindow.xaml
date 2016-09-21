@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Vapp.Platform.Windows.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        WindowStyle="{Binding WindowStyle}" ResizeMode="{Binding WindowResizeMode}"
+        WindowState="{Binding WindowState}" Title="MainWindow" Height="600" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="18"/>
@@ -36,7 +37,7 @@
             </MenuItem>
 
             <MenuItem Header="Edit">
-                <MenuItem Header="Open Command Console" Command="{Binding ConsoleCommand}"/>
+                <MenuItem Header="Open Command Console"/>
                 <MenuItem Header="Open Script Editor"/>
                 <MenuItem Header="Open Gap Editor"/>
                 <Separator/>
@@ -44,7 +45,7 @@
             </MenuItem>
 
             <MenuItem Header="View">
-                <MenuItem Header="Toggle Fullscreen"/>
+                <MenuItem Header="Go Fullscreen" Command="{Binding SetFullscreenCommand}"/>
             </MenuItem>
         </Menu>
 

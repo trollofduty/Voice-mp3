@@ -4,37 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Vapp.Platform.Windows.Wpf.Views"
+             xmlns:converters="clr-namespace:Vapp.Platform.Windows.Wpf.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="480" d:DesignWidth="640">
     <UserControl.Resources>
+        <converters:MediaGroupFullscreenOpacityConverter x:Key="MediaGroupFullscreenOpacityConverter"/>
 
         <Style x:Key="PropertyTriggerControlStyle" TargetType="{x:Type UserControl}">
-
-            <Setter Property="Opacity" Value="0.0" />
-
             <Style.Triggers>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
-                        <Condition Binding="{Binding IsFullscreen}" Value="True"/>
-                    </MultiDataTrigger.Conditions>
-                    
-                    <MultiDataTrigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:1"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </MultiDataTrigger.EnterActions>
-
-                    <MultiDataTrigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:1"/>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </MultiDataTrigger.ExitActions>
-                </MultiDataTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="{Binding IsFullscreen, Converter={StaticResource MediaGroupFullscreenOpacityConverter}, ConverterParameter=True}"/>
+                </Trigger>
+                
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Opacity" Value="{Binding IsFullscreen, Converter={StaticResource MediaGroupFullscreenOpacityConverter}, ConverterParameter=False}"/>
+                </Trigger>
             </Style.Triggers>
         </Style>
         

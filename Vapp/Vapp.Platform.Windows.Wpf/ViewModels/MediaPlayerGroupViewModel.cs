@@ -22,7 +22,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             MediaPlayerView mediaPlayerView = new MediaPlayerView();
             this.MediaOutput = mediaPlayerView;
             this.MediaControls = new MediaPlayerControlsView(ref mediaPlayerView);
-            this.IsFullscreen = true;
+            this.IsFullscreen = false;
             this.Timer.Tick += TimerTick;
             this.Timer.Interval = TimeSpan.FromMilliseconds(200);
         }
