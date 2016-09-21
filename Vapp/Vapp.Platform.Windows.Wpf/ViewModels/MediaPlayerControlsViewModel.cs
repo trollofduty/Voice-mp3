@@ -27,9 +27,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.LoopMediaCommand = new RelayCommand(this.Loop);
             this.TimePlayedText = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
             this.TimeLeftText = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(200);
-            timer.Tick += this.TimerTick;
+            Timer.Interval = TimeSpan.FromMilliseconds(200);
+            Timer.Tick += this.TimerTick;
         }
 
         #endregion
@@ -40,7 +39,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         private bool isDragging = false;
 
-        private DispatcherTimer timer;
+        private DispatcherTimer Timer { get; set; } = new DispatcherTimer();
 
         private string sliderTooltip;
         public string SliderTooltip
@@ -181,20 +180,20 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             if (this.mediaPlayer.GetSource.Invoke() != null)
             {
                 this.SetTimeSpan();
-                this.timer.Start();
+                this.Timer.Start();
             }
         }
 
         public void Pause()
         {
             this.mediaPlayer.PauseMedia();
-            this.timer.Stop();
+            this.Timer.Stop();
         }
 
         public void Stop()
         {
             this.mediaPlayer.StopMedia();
-            this.timer.Stop();
+            this.Timer.Stop();
             this.SliderValue = 0.0;
             this.UpdateTimeTextBlocks();
         }

@@ -1,10 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Threading;
 using Vapp.Platform.Windows.Wpf.Views;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels
@@ -19,11 +23,17 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.MediaOutput = mediaPlayerView;
             this.MediaControls = new MediaPlayerControlsView(ref mediaPlayerView);
             this.IsFullscreen = true;
+            this.Timer.Tick += TimerTick;
+            this.Timer.Interval = TimeSpan.FromMilliseconds(200);
         }
 
         #endregion
 
         #region Properties
+
+        private DispatcherTimer Timer { get; set; } = new DispatcherTimer();
+
+        private TimeSpan WaitTime { get; set; } = TimeSpan.FromSeconds(5);
 
         private bool isFullscreen;
         public bool IsFullscreen
@@ -34,9 +44,17 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 this.Set(ref this.isFullscreen, value);
 
                 if (this.isFullscreen)
+                {
+                    Mouse.OverrideCursor = Cursors.Arrow;
+                    Timer.Start();
                     this.RowSpan = 2;
+                }
                 else
+                {
+                    Mouse.OverrideCursor = Cursors.Arrow;
+                    Timer.Stop();
                     this.RowSpan = 1;
+                }
             }
         }
 
@@ -59,6 +77,45 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             get { return this.mediaControls; }
             set { this.Set(ref this.mediaControls, value); }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            if (this.IsFullscreen)
+            {
+                if (GetLastInputTime() > WaitTime)
+                    Mouse.OverrideCursor = Cursors.None;
+                else
+                    Mouse.OverrideCursor = Cursors.Arrow;
+            }
+        }
+
+        private static TimeSpan GetLastInputTime()
+        {
+            var plii = new LastInputInfo();
+            plii.cbSize = (uint) Marshal.SizeOf(plii);
+
+            if (GetLastInputInfo(ref plii))
+                return TimeSpan.FromMilliseconds(Environment.TickCount - plii.dwTime);
+            else
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+        }
+
+        #endregion
+
+        #region Import
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool GetLastInputInfo(ref LastInputInfo plii);
+
+        private struct LastInputInfo
+        {
+            public uint cbSize;
+            public uint dwTime;
         }
 
         #endregion
