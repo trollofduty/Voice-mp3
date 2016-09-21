@@ -49,9 +49,9 @@ namespace Vapp.Media.Audio
         public byte[] Data { get; private set; }
         
         /// <summary>
-        /// Value of sample ranging from +1.0 to -1.0
+        /// Value of sample ranging from +1.0 to 0.0
         /// </summary>
-        public double Value
+        public decimal Value
         {
             get { return this.GetValue(); }
             set { this.SetValue(value); }
@@ -64,10 +64,9 @@ namespace Vapp.Media.Audio
         /// <summary>
         /// Stores value in the form of the Data array
         /// </summary>
-        /// <param name="value">Value of sample ranging from +1.0 to -1.0</param>
-        protected void SetValue(double value)
+        /// <param name="value">Value of sample ranging from +1.0 to 0.0</param>
+        protected void SetValue(decimal value)
         {
-            value = (value + 1.0) / 2.0;
             switch (this.Data.Length)
             {
                 default:
@@ -76,41 +75,35 @@ namespace Vapp.Media.Audio
                     this.Data[0] = (byte) (value * 0xF);
                     break;
                 case Format16:
-                    short sValue = (short) (value >= 0 ? value * short.MaxValue : value * short.MinValue);
-                    this.Data = BitConverter.GetBytes(sValue);
+                    this.Data = BitConverter.GetBytes((ushort) (value * ushort.MaxValue));
                     break;
                 case Format32:
-                    int iValue = (int) (value >= 0 ? value * int.MaxValue : value * int.MinValue);
-                    this.Data = BitConverter.GetBytes(iValue);
+                    this.Data = BitConverter.GetBytes((uint) (value * uint.MaxValue));
                     break;
                 case Format64:
-                    int lValue = (int) (value >= 0 ? value * long.MaxValue : value * long.MinValue);
-                    this.Data = BitConverter.GetBytes(lValue);
+                    this.Data = BitConverter.GetBytes((ulong) (value * ulong.MaxValue));
                     break;
             }
         }
 
         /// <summary>
-        /// Gets stored value in the data array in the form of a double
+        /// Gets stored value in the data array in the form of a decimal
         /// </summary>
-        /// <returns>Value of sample ranging from +1.0 to -1.0</returns>
-        protected double GetValue()
+        /// <returns>Value of sample ranging from 1.0 to 0.0</returns>
+        protected decimal GetValue()
         {
             switch (this.Data.Length)
             {
                 default:
                     throw new FormatException();
                 case Format8:
-                    return ((this.Data[0] / (double) 0xF) * 2.0) - 1.0;
+                    return (this.Data[0] / (decimal) 0xF);
                 case Format16:
-                    short sValue = BitConverter.ToInt16(this.Data, 0);
-                    return ((sValue >= 0 ? sValue / (double) short.MaxValue : sValue / (double) short.MinValue) * 2.0) - 1.0;
+                    return BitConverter.ToUInt16(this.Data, 0) / (decimal) ushort.MaxValue;
                 case Format32:
-                    int iValue = BitConverter.ToInt32(this.Data, 0);
-                    return ((iValue >= 0 ? iValue / (double) int.MaxValue : iValue / (double) int.MinValue) * 2.0) - 1.0;
+                    return BitConverter.ToUInt32(this.Data, 0) / (decimal) uint.MaxValue;
                 case Format64:
-                    long lValue = BitConverter.ToInt64(this.Data, 0);
-                    return ((lValue >= 0 ? lValue / (double) long.MaxValue : lValue / (double) long.MinValue) * 2.0) - 1.0;
+                    return BitConverter.ToUInt64(this.Data, 0) / (decimal) ulong.MaxValue;
             }
         }
 
@@ -127,7 +120,7 @@ namespace Vapp.Media.Audio
                 return;
             else
             {
-                double value = this.GetValue();
+                decimal value = this.GetValue();
                 this.Data = new byte[(int) sampleSize];
                 this.SetValue(value);
             }

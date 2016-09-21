@@ -68,7 +68,7 @@ namespace Vapp.Media.Audio
             for (int index = 0; index < max; index++)
             {
                 int count = 0;
-                double total = 0;
+                decimal total = 0;
 
                 foreach (Channel iChannel in this.Channels)
                 {

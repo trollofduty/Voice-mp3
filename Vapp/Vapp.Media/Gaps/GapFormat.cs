@@ -18,7 +18,7 @@ namespace Vapp.Media.Gaps
 
         #region Methods
 
-        public static GapFormat CreateFrom(Waveformat pcm, double threshold = 0.0, double minPause = 0.2)
+        public static GapFormat CreateFrom(Waveformat pcm, decimal threshold = 0.0m, double minPause = 0.2)
         {
             GapFormat pauseFormat = new GapFormat();
 
@@ -41,7 +41,7 @@ namespace Vapp.Media.Gaps
 
             for (int index = 1; index < pcm.Channels[0].Samples.Count; index++)
             {
-                double value = pcm.Channels[0].Samples[index].Value;
+                decimal value = pcm.Channels[0].Samples[index].Value;
 
                 bool isAbove = value > threshold ? true : false;
                 bool isBelow = value < threshold ? true : false;
