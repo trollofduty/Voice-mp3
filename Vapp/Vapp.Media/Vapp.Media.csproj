@@ -43,6 +43,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\AudioFormat.cs" />
     <Compile Include="Audio\Channel.cs" />
     <Compile Include="Audio\Sample.cs" />
     <Compile Include="Audio\SampleSize.cs" />

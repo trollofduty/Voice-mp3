@@ -23,7 +23,7 @@ namespace Vapp.Media.Audio
         /// <summary>
         /// Format of audio
         /// </summary>
-        public short AudioFormat { get; set; }
+        public AudioFormat AudioFormat { get; set; }
 
         /// <summary>
         /// Samples per second

@@ -11,12 +11,23 @@ namespace Vapp.IO.Codecs.Audio
 {
     public class RiffWavDecoder : DecoderBase<Waveformat>
     {
+        private AudioFormat GetFormat(int input)
+        {
+            switch (input)
+            {
+                default:
+                    return AudioFormat.Unknown;
+                case 1:
+                    return AudioFormat.Pcm;
+            }
+        }
+
         public override Waveformat Decode(Stream stream)
         {
             WaveFile wav = WaveFile.Import(stream);
             Waveformat sound = new Waveformat();
 
-            sound.AudioFormat = wav.FmtHeader.AudioFormat;
+            sound.AudioFormat = this.GetFormat(wav.FmtHeader.AudioFormat);
             sound.SampleRate = wav.FmtHeader.SampleRate;
             sound.BitsPerSample = wav.FmtHeader.BitsPerSample;
 

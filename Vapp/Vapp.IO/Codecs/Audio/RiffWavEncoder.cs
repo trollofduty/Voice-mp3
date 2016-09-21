@@ -11,6 +11,17 @@ namespace Vapp.IO.Codecs.Audio
 {
     public class RiffWavEncoder : EncoderBase<Waveformat>
     {
+        private short GetFormat (AudioFormat input)
+        {
+            switch (input)
+            {
+                default:
+                    throw new FormatException();
+                case AudioFormat.Pcm:
+                    return 1;
+            }
+        }
+
         public override void Encode(Stream stream, Waveformat input)
         {
             WaveFile wav = new WaveFile();
@@ -19,7 +30,7 @@ namespace Vapp.IO.Codecs.Audio
             wav.RiffHeader = new RiffChunk();
             wav.DataChunk = new WaveDataChunk();
 
-            wav.FmtHeader.AudioFormat = input.AudioFormat;
+            wav.FmtHeader.AudioFormat = this.GetFormat(input.AudioFormat);
             wav.FmtHeader.SampleRate = input.SampleRate;
             wav.FmtHeader.ByteRate = input.ByteRate;
             wav.FmtHeader.BlockAlign = input.BlockAlign;
