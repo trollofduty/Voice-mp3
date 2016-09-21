@@ -21,7 +21,7 @@ namespace Vapp.Media.Audio
 
 
         /// <summary>
-        /// Format of PCM audio
+        /// Format of audio
         /// </summary>
         public short AudioFormat { get; set; }
 
@@ -33,12 +33,18 @@ namespace Vapp.Media.Audio
         /// <summary>
         /// Bytes per second (SampleRate * BlockAlign)
         /// </summary>
-        public int ByteRate { get; set; }
+        public int ByteRate
+        {
+            get { return this.SampleRate * this.BlockAlign; }
+        }
 
         /// <summary>
-        /// Size of Sample block in bytes
+        /// Size of Sample block in bytes (Channels.Length * BitsPerSample)
         /// </summary>
-        public short BlockAlign { get; set; }
+        public short BlockAlign
+        {
+            get { return (short) (this.Channels.Length * this.BitsPerSample); }
+        }
 
         /// <summary>
         /// Bits per sample
@@ -94,8 +100,6 @@ namespace Vapp.Media.Audio
 
             clone.AudioFormat = this.AudioFormat;
             clone.SampleRate = this.SampleRate;
-            clone.ByteRate = this.ByteRate;
-            clone.BlockAlign = this.BlockAlign;
             clone.BitsPerSample = this.BitsPerSample;
 
             return clone;

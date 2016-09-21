@@ -18,9 +18,10 @@ namespace Vapp.IO.Codecs.Audio
 
             sound.AudioFormat = wav.FmtHeader.AudioFormat;
             sound.SampleRate = wav.FmtHeader.SampleRate;
-            sound.ByteRate = wav.FmtHeader.ByteRate;
-            sound.BlockAlign = wav.FmtHeader.BlockAlign;
             sound.BitsPerSample = wav.FmtHeader.BitsPerSample;
+
+            if (sound.ByteRate != wav.FmtHeader.ByteRate || sound.BlockAlign != wav.FmtHeader.BlockAlign)
+                throw new FormatException();
 
             int bytesPerSample = wav.FmtHeader.BitsPerSample / 8;
 
