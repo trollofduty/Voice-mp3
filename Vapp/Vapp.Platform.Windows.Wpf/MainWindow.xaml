@@ -3,22 +3,40 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:Vapp.Platform.Windows.Wpf.Converters"
         xmlns:local="clr-namespace:Vapp.Platform.Windows.Wpf"
         mc:Ignorable="d"
         WindowStyle="{Binding WindowStyle}" ResizeMode="{Binding WindowResizeMode}"
         WindowState="{Binding WindowState}" Title="MainWindow" Height="600" Width="800">
+    <Window.Resources>
+        <converters:MediaGroupFullscreenOpacityConverter x:Key="MediaGroupFullscreenOpacityConverter"/>
+
+        <Style x:Key="HideControlFullscreenStyle" TargetType="{x:Type Menu}">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="{Binding IsFullscreen, Converter={StaticResource MediaGroupFullscreenOpacityConverter}, ConverterParameter=True}"/>
+                </Trigger>
+
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Opacity" Value="{Binding IsFullscreen, Converter={StaticResource MediaGroupFullscreenOpacityConverter}, ConverterParameter=False}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="18"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Menu Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Background="White">
+        <UserControl Grid.Row="{Binding MediaPlayerRow}" Grid.RowSpan="{Binding MediaPlayerRowSpan}" Content="{Binding MediaPlayerControls}"/>
+
+        <Menu Grid.Row="0" Background="White" Style="{StaticResource HideControlFullscreenStyle}">
             <MenuItem Header="File">
                 <MenuItem Header="New">
                     <MenuItem Header="Script File"/>
                 </MenuItem>
-                
+
                 <Separator/>
 
                 <MenuItem Header="Import Wizard">
@@ -45,10 +63,8 @@
             </MenuItem>
 
             <MenuItem Header="View">
-                <MenuItem Header="Go Fullscreen" Command="{Binding SetFullscreenCommand}"/>
+                <MenuItem Header="Toggle Fullscreen" Command="{Binding SetFullscreenCommand}"/>
             </MenuItem>
         </Menu>
-
-        <UserControl Grid.Row="1" Content="{Binding MediaPlayerControls}"/>
     </Grid>
 </Window>

@@ -10,18 +10,17 @@
     <UserControl.Resources>
         <converters:MediaGroupFullscreenOpacityConverter x:Key="MediaGroupFullscreenOpacityConverter"/>
 
-        <Style x:Key="PropertyTriggerControlStyle" TargetType="{x:Type UserControl}">
+        <Style x:Key="HideControlFullscreenStyle" TargetType="{x:Type UserControl}">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Opacity" Value="{Binding IsFullscreen, Converter={StaticResource MediaGroupFullscreenOpacityConverter}, ConverterParameter=True}"/>
                 </Trigger>
-                
+
                 <Trigger Property="IsMouseOver" Value="False">
                     <Setter Property="Opacity" Value="{Binding IsFullscreen, Converter={StaticResource MediaGroupFullscreenOpacityConverter}, ConverterParameter=False}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
     </UserControl.Resources>
     
     <Grid>
@@ -31,6 +30,6 @@
         </Grid.RowDefinitions>
         <UserControl Grid.Row="0" Grid.RowSpan="{Binding RowSpan}" Content="{Binding MediaOutput}"/>
 
-        <UserControl Grid.Row="1" Content="{Binding MediaControls}" Style="{StaticResource PropertyTriggerControlStyle}"/>
+        <UserControl Grid.Row="1" Content="{Binding MediaControls}" Style="{StaticResource HideControlFullscreenStyle}"/>
     </Grid>
 </UserControl>

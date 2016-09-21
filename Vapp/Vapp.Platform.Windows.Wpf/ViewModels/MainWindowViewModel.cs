@@ -22,6 +22,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.IsFullscreen = false;
             this.OpenCommand = new RelayCommand(this.Open);
             this.SetFullscreenCommand = new RelayCommand(() => this.IsFullscreen = !this.IsFullscreen);
+            this.MediaPlayerRow = 1;
+            this.MediaPlayerRowSpan = 1;
         }
 
         #endregion
@@ -57,7 +59,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             get { return this.isFullscreen; }
             set
             {
-                this.isFullscreen = value;
+                this.Set(ref this.isFullscreen, value);
 
                 if (this.isFullscreen)
                 {
@@ -65,6 +67,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                     this.WindowResizeMode = ResizeMode.NoResize;
                     this.WindowState = WindowState.Maximized;
                     this.MediaPlayerControlsViewModel.IsFullscreen = true;
+                    this.MediaPlayerRow = 0;
+                    this.MediaPlayerRowSpan = 2;
                 }
                 else
                 {
@@ -72,8 +76,24 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                     this.WindowResizeMode = ResizeMode.CanResize;
                     this.WindowState = WindowState.Normal;
                     this.MediaPlayerControlsViewModel.IsFullscreen = false;
+                    this.MediaPlayerRow = 1;
+                    this.MediaPlayerRowSpan = 1;
                 }
             }
+        }
+
+        private int mediaPlayerRow;
+        public int MediaPlayerRow
+        {
+            get { return this.mediaPlayerRow; }
+            set { this.Set(ref this.mediaPlayerRow, value); }
+        }
+
+        private int mediaPlayerRowSpan;
+        public int MediaPlayerRowSpan
+        {
+            get { return this.mediaPlayerRowSpan; }
+            set { this.Set(ref this.mediaPlayerRowSpan, value); }
         }
 
         private IMediaPlayer MediaPlayer
