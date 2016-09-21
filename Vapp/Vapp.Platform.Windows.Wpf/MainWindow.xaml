@@ -8,11 +8,45 @@
         Title="MainWindow" Height="600" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="18"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" Width="70" Margin="0 5 0 5" Content="Open" Command="{Binding OpenCommand}"/>
+        <Menu Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Background="White">
+            <MenuItem Header="File">
+                <MenuItem Header="New">
+                    <MenuItem Header="Script File"/>
+                </MenuItem>
+                
+                <Separator/>
+
+                <MenuItem Header="Import Wizard">
+                    <MenuItem Header="Bible"/>
+                    <MenuItem Header="Readings"/>
+                    <MenuItem Header="Variant Readings"/>
+                    <MenuItem Header="Script File"/>
+                </MenuItem>
+
+                <MenuItem Header="Export Wizard">
+                    <MenuItem Header="Bible"/>
+                    <MenuItem Header="Readings"/>
+                    <MenuItem Header="Variant Readings"/>
+                    <MenuItem Header="Script File"/>
+                </MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="Edit">
+                <MenuItem Header="Open Command Console" Command="{Binding ConsoleCommand}"/>
+                <MenuItem Header="Open Script Editor"/>
+                <MenuItem Header="Open Gap Editor"/>
+                <Separator/>
+                <MenuItem Header="Settings"/>
+            </MenuItem>
+
+            <MenuItem Header="View">
+                <MenuItem Header="Toggle Fullscreen"/>
+            </MenuItem>
+        </Menu>
 
         <UserControl Grid.Row="1" Content="{Binding MediaPlayerControls}"/>
     </Grid>

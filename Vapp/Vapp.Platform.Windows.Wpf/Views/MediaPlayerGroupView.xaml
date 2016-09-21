@@ -6,13 +6,47 @@
              xmlns:local="clr-namespace:Vapp.Platform.Windows.Wpf.Views"
              mc:Ignorable="d" 
              d:DesignHeight="480" d:DesignWidth="640">
-    <Grid Background="Gray">
+    <UserControl.Resources>
+
+        <Style x:Key="PropertyTriggerControlStyle" TargetType="{x:Type UserControl}">
+
+            <Setter Property="Opacity" Value="0.0" />
+
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True"/>
+                        <Condition Binding="{Binding IsFullscreen}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    
+                    <MultiDataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiDataTrigger.EnterActions>
+
+                    <MultiDataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiDataTrigger.ExitActions>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+    </UserControl.Resources>
+    
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="65"/>
         </Grid.RowDefinitions>
+        <UserControl Grid.Row="0" Grid.RowSpan="{Binding RowSpan}" Content="{Binding MediaOutput}"/>
 
-        <UserControl Grid.Row="0" Content="{Binding MediaOutput}"/>
-        <UserControl Grid.Row="1" Content="{Binding MediaControls}"/>
+        <UserControl Grid.Row="1" Content="{Binding MediaControls}" Style="{StaticResource PropertyTriggerControlStyle}"/>
     </Grid>
 </UserControl>

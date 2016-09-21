@@ -240,7 +240,7 @@
         </Style>
     </UserControl.Resources>
     
-    <Grid>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="35"/>
