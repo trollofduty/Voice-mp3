@@ -111,6 +111,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public List<string> Playlist { get; private set; } = new List<string>();
 
+        public string Playing { get; private set; }
+
         public bool IsShuffle { get; set; } = false;
 
         public RepeatMode RepeatMode { get; set; } = RepeatMode.None;
@@ -156,6 +158,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         public void OpenSource(string filePath)
         {
             this.mediaPlayer.OpenMediaSource(filePath);
+            this.Playing = filePath;
         }
 
         public void Random()
@@ -211,15 +214,18 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             if (this.PlayedMedia.Count > 0)
             {
+                this.QueuedMedia.Enqueue(this.Playing);
                 string last = this.PlayedMedia.Last();
                 this.OpenSource(last);
                 this.PlayedMedia.RemoveAt(this.PlayedMedia.Count - 1);
-                this.QueuedMedia.Enqueue(last);
             }
         }
 
         public void Next()
         {
+            if (this.Playlist.Count == 0)
+                return;
+
             string filepath = null;
             if (this.mediaPlayer.GetSource.Invoke() != null)
                 filepath = this.mediaPlayer.GetSource.Invoke().AbsoluteUri.Replace("file:///", "").Replace("/", "\\").Replace("%20", " ");
@@ -234,7 +240,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             {
                 int index = filepath == null ? 0 : this.Playlist.IndexOf(this.Playlist.Where(t => t.Equals(filepath)).FirstOrDefault()) + 1;
 
-                if (this.Playlist.Count == 0 || (index >= this.Playlist.Count && this.RepeatMode == RepeatMode.None))
+                if (index >= this.Playlist.Count && this.RepeatMode == RepeatMode.None)
                     return;
 
                 if (index >= this.Playlist.Count && this.RepeatMode != RepeatMode.None)
