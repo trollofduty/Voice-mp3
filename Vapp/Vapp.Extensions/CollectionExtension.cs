@@ -24,5 +24,11 @@ namespace Vapp.Extensions
             foreach (T item in items)
                 host.Add(item);
         }
+
+        public static void RemoveRange<T>(this Collection<T> host, IEnumerable<T> items)
+        {
+            foreach (T item in items)
+                host.Remove(item);
+        }
     }
 }

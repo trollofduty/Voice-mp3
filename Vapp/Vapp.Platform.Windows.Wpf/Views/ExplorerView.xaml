@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Vapp.Platform.Windows.Wpf.Views.ExplorerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Vapp.Platform.Windows.Wpf.Views"
+             xmlns:viewModels="clr-namespace:Vapp.Platform.Windows.Wpf.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Explorer"/>
+
+            <Button Grid.Column="2" Content="Refresh" Command="{Binding RefreshCommand}"/>
+        </Grid>
+        
+        <TreeView Grid.Row="1" ItemsSource="{Binding TreeItems}">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type viewModels:TreeDirectoryItemViewModel}" ItemsSource="{Binding Items}">
+                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Path}" />
+                </HierarchicalDataTemplate>
+
+                <DataTemplate DataType="{x:Type viewModels:TreeFileItemViewModel}">
+                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Path}" />
+                </DataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+    </Grid>
+</UserControl>

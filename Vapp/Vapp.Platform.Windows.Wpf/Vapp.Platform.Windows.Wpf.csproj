@@ -79,12 +79,19 @@
     <Compile Include="Models\ConsoleBlockModel.cs" />
     <Compile Include="Converters\MediaGroupFullscreenOpacityConverter.cs" />
     <Compile Include="ViewModels\CommandConsoleViewModel.cs" />
+    <Compile Include="ViewModels\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MediaPlayerControlsViewModel.cs" />
     <Compile Include="ViewModels\MediaPlayerGroupViewModel.cs" />
     <Compile Include="ViewModels\MediaPlayerViewModel.cs" />
+    <Compile Include="ViewModels\TreeDirectoryItemViewModel.cs" />
+    <Compile Include="ViewModels\TreeFileItemViewModel.cs" />
+    <Compile Include="ViewModels\TreeItemViewModel.cs" />
     <Compile Include="Views\CommandConsoleView.xaml.cs">
       <DependentUpon>CommandConsoleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExplorerView.xaml.cs">
+      <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MediaPlayerControlsView.xaml.cs">
       <DependentUpon>MediaPlayerControlsView.xaml</DependentUpon>
@@ -108,6 +115,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\CommandConsoleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExplorerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -153,6 +164,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Vapp.Extensions\Vapp.Extensions.csproj">
+      <Project>{876ab1e9-df39-4dfd-88d5-758bf67dcd8e}</Project>
+      <Name>Vapp.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Vapp.Media\Vapp.Media.csproj">
       <Project>{ff91460e-e1ef-4f99-954a-7f61985b31ca}</Project>
       <Name>Vapp.Media</Name>

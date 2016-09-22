@@ -111,6 +111,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public UserControl MediaPlayerControls { get; set; } = new MediaPlayerGroupView();
 
+        public UserControl ExplorerView { get; set; } = new ExplorerView();
+
         public MediaPlayerGroupViewModel MediaPlayerControlsViewModel
         {
             get { return (MediaPlayerGroupViewModel) this.MediaPlayerControls.DataContext; }

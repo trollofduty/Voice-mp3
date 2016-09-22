@@ -30,7 +30,8 @@
         </Grid.RowDefinitions>
 
         <UserControl Grid.Row="{Binding MediaPlayerRow}" Grid.RowSpan="{Binding MediaPlayerRowSpan}" Content="{Binding MediaPlayerControls}"/>
-
+        <UserControl Grid.Row="{Binding MediaPlayerRow}" Grid.RowSpan="{Binding MediaPlayerRowSpan}" Content="{Binding ExplorerView}"/>
+        
         <Menu Grid.Row="0" Background="White" Style="{StaticResource HideControlFullscreenStyle}">
             <MenuItem Header="File">
                 <MenuItem Header="New">
