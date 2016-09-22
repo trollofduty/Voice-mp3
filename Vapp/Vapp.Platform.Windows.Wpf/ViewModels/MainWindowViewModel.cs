@@ -2,7 +2,9 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +24,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.IsFullscreen = false;
             this.OpenCommand = new RelayCommand(this.Open);
             this.SetFullscreenCommand = new RelayCommand(() => this.IsFullscreen = !this.IsFullscreen);
+            this.OpenConsoleCommand = new RelayCommand(this.OnOpenConsoleCommand);
             this.MediaPlayerRow = 1;
             this.MediaPlayerRowSpan = 1;
         }
@@ -52,6 +55,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         }
 
         public ICommand SetFullscreenCommand { get; set; }
+
+        public ICommand OpenConsoleCommand { get; set; }
 
         private bool isFullscreen;
         public bool IsFullscreen
@@ -116,6 +121,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         #endregion
 
         #region Methods
+
+        private void OnOpenConsoleCommand()
+        {
+            CommandConsoleView view = new CommandConsoleView();
+            view.Show();
+        }
 
         private void Open()
         {

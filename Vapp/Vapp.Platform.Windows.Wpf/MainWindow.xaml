@@ -37,6 +37,8 @@
                     <MenuItem Header="Script File"/>
                 </MenuItem>
 
+                <MenuItem Header="Debug Open" Command="{Binding OpenCommand}"/>
+
                 <Separator/>
 
                 <MenuItem Header="Import Wizard">
@@ -55,7 +57,7 @@
             </MenuItem>
 
             <MenuItem Header="Edit">
-                <MenuItem Header="Open Command Console"/>
+                <MenuItem Header="Open Command Console" Command="{Binding OpenConsoleCommand}"/>
                 <MenuItem Header="Open Script Editor"/>
                 <MenuItem Header="Open Gap Editor"/>
                 <Separator/>
