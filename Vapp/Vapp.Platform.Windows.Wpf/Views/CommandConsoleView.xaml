@@ -20,14 +20,14 @@
 
             <TextBlock Grid.Column="0" Text=">"/>
 
-            <TextBox Grid.Column="1" Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox Grid.Column="1" Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0">
                 <TextBox.InputBindings>
                     <KeyBinding Command="{Binding ReadInputCommand}" Key="Enter"/>
                 </TextBox.InputBindings>
             </TextBox>
         </Grid>
 
-        <ListBox Grid.Row="1" ItemsSource="{Binding Buffer}">
+        <ListBox x:Name="BufferListBox"  Grid.Row="1" ItemsSource="{Binding Buffer}" BorderThickness="0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Text}" Foreground="{Binding Colour}"/>

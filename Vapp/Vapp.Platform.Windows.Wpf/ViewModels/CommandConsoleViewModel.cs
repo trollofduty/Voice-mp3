@@ -40,6 +40,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public ICommand CloseWindow { get; set; }
 
+        public ICommand ScrollIntoBottom { get; set; }
+
         #endregion
 
         #region Methods
@@ -104,11 +106,13 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         private void WriteLine(string line, Color colour)
         {
             this.Buffer.Add(new ConsoleBlockModel() { Text = line, Colour = colour });
+            this.ScrollIntoBottom.Execute(null);
         }
 
         private void ErrorWriteLine(string line)
         {
             this.Buffer.Add(new ConsoleBlockModel() { Text = line, Colour = Colors.Red });
+            this.ScrollIntoBottom.Execute(null);
         }
 
         public void OnReadInputCommand()
