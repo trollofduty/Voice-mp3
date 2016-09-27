@@ -22,7 +22,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.ReadInputCommand = new RelayCommand(this.OnReadInputCommand);
 
             this.RegisterCommands();
-            this.WriteLine("Vapp beta console");
+            this.Output += "Vapp beta console\n";
 
             if (SpecialCharacterList == null)
                 RegisterSpecialCharacters();
@@ -147,7 +147,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         private void WriteLine(string line)
         {
-            this.Output += string.Format("{0}\n", line);
+            this.Output += string.Format("\n{0}", line);
         }
 
         public void OnReadInputCommand()
