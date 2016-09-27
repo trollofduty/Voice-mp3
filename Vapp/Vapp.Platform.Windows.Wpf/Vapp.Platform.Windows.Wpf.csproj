@@ -76,6 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\CommandValidationColorConverter.cs" />
     <Compile Include="Models\ConsoleBlockModel.cs" />
     <Compile Include="Converters\MediaGroupFullscreenOpacityConverter.cs" />
     <Compile Include="ViewModels\CommandConsoleViewModel.cs" />

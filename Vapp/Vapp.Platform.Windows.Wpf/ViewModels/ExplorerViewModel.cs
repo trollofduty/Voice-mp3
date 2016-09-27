@@ -31,11 +31,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public ICommand RefreshCommand { get; set; }
 
-        private ObservableCollection<TreeItemViewModel> treeitems;
+        private ObservableCollection<TreeItemViewModel> treeItems;
         public ObservableCollection<TreeItemViewModel> TreeItems
         {
-            get { return this.treeitems; }
-            set { this.Set(ref this.treeitems, value); }
+            get { return this.treeItems; }
+            set { this.Set(ref this.treeItems, value); }
         }
 
         private string Path { get; set; } = "D:\\Users\\James\\Desktop";
