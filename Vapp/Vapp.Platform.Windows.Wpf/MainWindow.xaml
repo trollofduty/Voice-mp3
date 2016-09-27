@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:Vapp.Platform.Windows.Wpf.Converters"
         xmlns:local="clr-namespace:Vapp.Platform.Windows.Wpf"
+        xmlns:views="clr-namespace:Vapp.Platform.Windows.Wpf.Views"
         mc:Ignorable="d"
         WindowStyle="{Binding WindowStyle}" ResizeMode="{Binding WindowResizeMode}"
         WindowState="{Binding WindowState}" Title="MainWindow" Height="600" Width="800">
@@ -36,11 +37,15 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <UserControl Grid.Column="0" Content="{Binding ExplorerView}"/>
-            
+            <Grid Grid.Column="0">
+                <views:ExplorerView x:Name="ExplorerView"/>
+            </Grid>
+
             <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Left" />
-            
-            <UserControl Grid.Column="{Binding MediaPlayerColumn}" Grid.ColumnSpan="{Binding MediaPlayerColumnSpan}" Content="{Binding MediaPlayerControls}"/>
+
+            <Grid Grid.Column="{Binding MediaPlayerColumn}" Grid.ColumnSpan="{Binding MediaPlayerColumnSpan}">
+                <views:MediaPlayerGroupView x:Name="MediaPlayerGroupView"/>
+            </Grid>
         </Grid>
         
         <Menu Grid.Row="0" Background="White" Style="{StaticResource HideControlFullscreenStyle}">

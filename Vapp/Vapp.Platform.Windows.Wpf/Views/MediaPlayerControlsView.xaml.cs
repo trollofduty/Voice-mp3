@@ -22,21 +22,67 @@ namespace Vapp.Platform.Windows.Wpf.Views
     /// </summary>
     public partial class MediaPlayerControlsView : UserControl
     {
-        public MediaPlayerControlsView(ref MediaPlayerView mediaView)
+        #region Constructor
+
+        public MediaPlayerControlsView()
         {
             InitializeComponent();
-            this.mediaView = mediaView;
-            this.viewModel = new MediaPlayerControlsViewModel((MediaPlayerViewModel) this.mediaView.DataContext);
-            this.DataContext = this.viewModel; 
-            this.mediaView.MediaElement.MediaOpened += (sender, e) => this.viewModel.SetTimeSpan();
-            this.mediaView.MediaElement.MediaEnded += (sender, e) => this.viewModel.Next();
-            this.mediaView.DataContext = viewModel;
+            this.viewModel = new MediaPlayerControlsViewModel();
+            this.DataContext = this.viewModel;
         }
+
+        #endregion
+
+        #region Properties
 
         private MediaPlayerView mediaView;
         private MediaPlayerControlsViewModel viewModel;
 
         private Track sliderTrack;
+
+        internal MediaPlayerView MediaPlayerView
+        {
+            get { return this.mediaView; }
+            set
+            {
+                if (this.mediaView != null)
+                {
+                    this.mediaView.MediaElement.MediaOpened -= this.SetTimespanDelegate;
+                    this.mediaView.MediaElement.MediaEnded -= this.NextDelegate;
+                }
+
+                this.mediaView = value;
+
+                if (this.mediaView != null)
+                {
+                    this.mediaView.MediaElement.MediaOpened += this.SetTimespanDelegate;
+                    this.mediaView.MediaElement.MediaEnded += this.NextDelegate;
+                    this.MediaPlayerViewModel = (MediaPlayerViewModel) this.mediaView.DataContext;
+                }
+                else
+                    this.MediaPlayerViewModel = null;
+            }
+        }
+
+        internal MediaPlayerViewModel MediaPlayerViewModel
+        {
+            get { return ((MediaPlayerControlsViewModel) this.DataContext).MediaPlayer; }
+            set { ((MediaPlayerControlsViewModel) this.DataContext).MediaPlayer = value; }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void SetTimespanDelegate(object sender, EventArgs e)
+        {
+            this.viewModel.SetTimeSpan();
+        }
+
+        private void NextDelegate(object sender, EventArgs e)
+        {
+            this.viewModel.Next();
+        }
 
         private void DragStartedEventHandler(object sender, RoutedEventArgs e)
         {
@@ -73,5 +119,7 @@ namespace Vapp.Platform.Windows.Wpf.Views
             double predictedValue = PixelsToValue(positionUnderMouse.X, this.Slider.Minimum, this.Slider.Maximum, this.sliderTrack.ActualWidth);
             this.mediaView.MediaElement.Position = TimeSpan.FromSeconds(predictedValue);
         }
+
+        #endregion
     }
 }

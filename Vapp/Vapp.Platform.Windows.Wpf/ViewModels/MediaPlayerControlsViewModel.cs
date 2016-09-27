@@ -15,10 +15,9 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
     {
         #region Constructor
 
-        public MediaPlayerControlsViewModel(MediaPlayerViewModel mediaPlayer)
+        public MediaPlayerControlsViewModel()
         {
             this.OnContentProvided = this.ContentProvided;
-            this.mediaPlayer = mediaPlayer;
             this.PlayMediaCommand = new RelayCommand(this.Play);
             this.PauseMediaCommand = new RelayCommand(this.Pause);
             this.StopMediaCommand = new RelayCommand(this.Stop);
@@ -36,7 +35,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         #region Properties
 
-        private MediaPlayerViewModel mediaPlayer;
+        public MediaPlayerViewModel MediaPlayer { get; set; }
 
         private bool isDragging = false;
 
@@ -134,11 +133,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         private void UpdateTimeTextBlocks()
         {
-            if (this.mediaPlayer.RequestMediaHasTimespan.Invoke())
+            if (this.MediaPlayer.RequestMediaHasTimespan.Invoke())
             {
-                TimeSpan played = TimeSpan.FromSeconds(this.mediaPlayer.RequestMediaTotalSeconds.Invoke());
+                TimeSpan played = TimeSpan.FromSeconds(this.MediaPlayer.RequestMediaTotalSeconds.Invoke());
                 this.TimePlayedText = played.ToString(@"hh\:mm\:ss");
-                this.TimeLeftText = this.mediaPlayer.RequestMediaTimespan.Invoke().Subtract(played).ToString(@"hh\:mm\:ss");
+                this.TimeLeftText = this.MediaPlayer.RequestMediaTimespan.Invoke().Subtract(played).ToString(@"hh\:mm\:ss");
             }
             else
             {
@@ -152,14 +151,14 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.UpdateTimeTextBlocks();
 
             if (!this.isDragging)
-                this.SliderValue = this.mediaPlayer.RequestMediaTotalSeconds.Invoke();
+                this.SliderValue = this.MediaPlayer.RequestMediaTotalSeconds.Invoke();
         }
 
         public void SetTimeSpan()
         {
-            if (this.mediaPlayer.RequestMediaHasTimespan.Invoke())
+            if (this.MediaPlayer.RequestMediaHasTimespan.Invoke())
             {
-                TimeSpan timespan = this.mediaPlayer.RequestMediaTimespan.Invoke();
+                TimeSpan timespan = this.MediaPlayer.RequestMediaTimespan.Invoke();
                 this.SliderMaxTime = timespan.TotalSeconds;
                 this.SliderSmallChange = 1;
                 this.SliderLargeChange = Math.Min(10, timespan.Seconds / 10);
@@ -168,7 +167,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public void OpenSource(string filePath)
         {
-            this.mediaPlayer.OpenMediaSource(filePath);
+            this.MediaPlayer.OpenMediaSource(filePath);
             this.Playing = filePath;
         }
 
@@ -184,12 +183,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public void Play()
         {
-            if (this.mediaPlayer.GetSource.Invoke() == null && this.Playlist.Count > 0)
+            if (this.MediaPlayer.GetSource.Invoke() == null && this.Playlist.Count > 0)
                 this.Next();
 
-            this.mediaPlayer.PlayMedia();
+            this.MediaPlayer.PlayMedia();
 
-            if (this.mediaPlayer.GetSource.Invoke() != null)
+            if (this.MediaPlayer.GetSource.Invoke() != null)
             {
                 this.SetTimeSpan();
                 this.Timer.Start();
@@ -198,13 +197,13 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public void Pause()
         {
-            this.mediaPlayer.PauseMedia();
+            this.MediaPlayer.PauseMedia();
             this.Timer.Stop();
         }
 
         public void Stop()
         {
-            this.mediaPlayer.StopMedia();
+            this.MediaPlayer.StopMedia();
             this.Timer.Stop();
             this.SliderValue = 0.0;
             this.UpdateTimeTextBlocks();
@@ -218,7 +217,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         public void SliderDragExit()
         {
             this.isDragging = false;
-            this.mediaPlayer.SetMediaPosition.Invoke(TimeSpan.FromSeconds(this.SliderValue));
+            this.MediaPlayer.SetMediaPosition.Invoke(TimeSpan.FromSeconds(this.SliderValue));
         }
 
         public void Previous()
@@ -238,8 +237,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 return;
 
             string filepath = null;
-            if (this.mediaPlayer.GetSource.Invoke() != null)
-                filepath = this.mediaPlayer.GetSource.Invoke().AbsoluteUri.Replace("file:///", "").Replace("/", "\\").Replace("%20", " ");
+            if (this.MediaPlayer.GetSource.Invoke() != null)
+                filepath = this.MediaPlayer.GetSource.Invoke().AbsoluteUri.Replace("file:///", "").Replace("/", "\\").Replace("%20", " ");
 
             if (this.QueuedMedia.Count > 0)
                 this.OpenSource(this.QueuedMedia.Dequeue());
@@ -261,7 +260,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
             }
 
-            if (this.mediaPlayer.GetSource.Invoke() != null)
+            if (this.MediaPlayer.GetSource.Invoke() != null)
                 this.PlayedMedia.Add(filepath);
         }
 

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Vapp.Media;
 using Vapp.Platform.Windows.Wpf.ViewModels;
 
 namespace Vapp.Platform.Windows.Wpf
@@ -21,10 +22,32 @@ namespace Vapp.Platform.Windows.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Constructor
+
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = new MainWindowViewModel();
+            MainWindowViewModel viewModel = new MainWindowViewModel();
+            viewModel.RequestMediaPlayer = this.GetMediaPlayer;
+            viewModel.RequestMediaPlayerGroupViewModel = this.GetMediaPlayerGroupViewModel;
+            viewModel.IsFullscreen = false;
+            this.DataContext = viewModel;
         }
+
+        #endregion
+
+        #region Methods
+
+        private IMediaPlayer GetMediaPlayer()
+        {
+            return (MediaPlayerControlsViewModel) this.GetMediaPlayerGroupViewModel().MediaControls.DataContext;
+        }
+
+        private MediaPlayerGroupViewModel GetMediaPlayerGroupViewModel()
+        {
+            return (MediaPlayerGroupViewModel) this.MediaPlayerGroupView.DataContext;
+        }
+
+        #endregion
     }
 }

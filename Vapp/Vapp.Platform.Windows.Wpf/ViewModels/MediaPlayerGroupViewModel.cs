@@ -21,7 +21,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             MediaPlayerView mediaPlayerView = new MediaPlayerView();
             this.MediaOutput = mediaPlayerView;
-            this.MediaControls = new MediaPlayerControlsView(ref mediaPlayerView);
+            this.MediaControls = new MediaPlayerControlsView();
+            ((MediaPlayerControlsView) this.MediaControls).MediaPlayerView = mediaPlayerView;
             this.IsFullscreen = false;
             this.Timer.Tick += TimerTick;
             this.Timer.Interval = TimeSpan.FromMilliseconds(200);
@@ -64,6 +65,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             get { return this.rowSpan; }
             set { this.Set(ref rowSpan, value); }
         }
+        
 
         private UserControl mediaOutput;
         public UserControl MediaOutput

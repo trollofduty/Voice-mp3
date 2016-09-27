@@ -21,7 +21,6 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public MainWindowViewModel()
         {
-            this.IsFullscreen = false;
             this.OpenCommand = new RelayCommand(this.Open);
             this.SetFullscreenCommand = new RelayCommand(() => this.IsFullscreen = !this.IsFullscreen);
             this.OpenConsoleCommand = new RelayCommand(this.OnOpenConsoleCommand);
@@ -71,7 +70,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                     this.WindowStyle = WindowStyle.None;
                     this.WindowResizeMode = ResizeMode.NoResize;
                     this.WindowState = WindowState.Maximized;
-                    this.MediaPlayerControlsViewModel.IsFullscreen = true;
+                    this.MediaPlayerGroupViewModel.IsFullscreen = true;
                     this.MediaPlayerRow = 0;
                     this.MediaPlayerRowSpan = 2;
                     this.MediaPlayerColumn = 0;
@@ -82,7 +81,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                     this.WindowStyle = WindowStyle.SingleBorderWindow;
                     this.WindowResizeMode = ResizeMode.CanResize;
                     this.WindowState = WindowState.Normal;
-                    this.MediaPlayerControlsViewModel.IsFullscreen = false;
+                    this.MediaPlayerGroupViewModel.IsFullscreen = false;
                     this.MediaPlayerRow = 1;
                     this.MediaPlayerRowSpan = 1;
                     this.MediaPlayerColumn = 2;
@@ -119,21 +118,18 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             set { this.Set(ref this.mediaPlayerColumnSpan, value); }
         }
 
+        public Func<IMediaPlayer> RequestMediaPlayer { get; set; }
+
+        public Func<MediaPlayerGroupViewModel> RequestMediaPlayerGroupViewModel { get; set; }
+        
         private IMediaPlayer MediaPlayer
         {
-            get
-            {
-                return (MediaPlayerControlsViewModel) this.MediaPlayerControlsViewModel.MediaControls.DataContext;
-            }
+            get { return this.RequestMediaPlayer.Invoke(); }
         }
 
-        public UserControl MediaPlayerControls { get; set; } = new MediaPlayerGroupView();
-
-        public UserControl ExplorerView { get; set; } = new ExplorerView();
-
-        public MediaPlayerGroupViewModel MediaPlayerControlsViewModel
+        public MediaPlayerGroupViewModel MediaPlayerGroupViewModel
         {
-            get { return (MediaPlayerGroupViewModel) this.MediaPlayerControls.DataContext; }
+            get { return this.RequestMediaPlayerGroupViewModel.Invoke(); }
         }
 
         public ICommand OpenCommand { get; set; }
