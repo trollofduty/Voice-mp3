@@ -32,6 +32,8 @@ namespace Vapp.Platform.Windows.Wpf
             viewModel.RequestMediaPlayerGroupViewModel = this.GetMediaPlayerGroupViewModel;
             viewModel.IsFullscreen = false;
             this.DataContext = viewModel;
+
+            this.Closing += (sender, e) => App.Current.Shutdown();
         }
 
         #endregion
