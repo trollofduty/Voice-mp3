@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Vapp.Core;
 using Vapp.Media;
 using Vapp.Platform.Windows.Wpf.Views;
 
@@ -21,9 +22,6 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public MainWindowViewModel()
         {
-            this.OpenCommand = new RelayCommand(this.Open);
-            this.SetFullscreenCommand = new RelayCommand(() => this.IsFullscreen = !this.IsFullscreen);
-            this.OpenConsoleCommand = new RelayCommand(this.OnOpenConsoleCommand);
             this.MediaPlayerRow = 1;
             this.MediaPlayerRowSpan = 1;
         }
@@ -31,6 +29,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         #endregion
 
         #region Properties
+        
+        public ICommand SetFullscreenCommand { get; set; }
+
+        public ICommand OpenConsoleCommand { get; set; }
+
+        public ICommand OpenCommand { get; set; }
 
         private WindowStyle windowStyle;
         public WindowStyle WindowStyle
@@ -52,10 +56,6 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             get { return this.windowState; }
             set { this.Set(ref this.windowState, value); }
         }
-
-        public ICommand SetFullscreenCommand { get; set; }
-
-        public ICommand OpenConsoleCommand { get; set; }
 
         private WindowState previousState = WindowState.Normal;
 
@@ -136,13 +136,32 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             get { return this.RequestMediaPlayerGroupViewModel.Invoke(); }
         }
 
-        public ICommand OpenCommand { get; set; }
-
         #endregion
 
         #region Methods
 
-        private void OnOpenConsoleCommand()
+        private void RegisterCommands()
+        {
+            this.OpenCommand = new RelayCommand(this.Open);
+            this.SetFullscreenCommand = new RelayCommand(this.ToggleFullscreen);
+            this.OpenConsoleCommand = new RelayCommand(this.OpenConsole);
+
+            App.CommandRegisterService.Hook(new VappCommand(o => this.ToggleFullscreen()), "Toggle Fullscreen");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.OpenConsole()), "Open Console");
+        }
+
+        private void UnregisterCommands()
+        {
+            App.CommandRegisterService.Unhook("Toggle Fullscreen");
+            App.CommandRegisterService.Unhook("Open Console");
+        }
+
+        private void ToggleFullscreen()
+        {
+            this.IsFullscreen = !this.IsFullscreen;
+        }
+
+        private void OpenConsole()
         {
             CommandConsoleView view = new CommandConsoleView();
             view.Show();

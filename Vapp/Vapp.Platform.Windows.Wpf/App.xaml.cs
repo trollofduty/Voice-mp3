@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Vapp.Core;
 
 namespace Vapp.Platform.Windows.Wpf
 {
@@ -13,5 +14,6 @@ namespace Vapp.Platform.Windows.Wpf
     /// </summary>
     public partial class App : Application
     {
+        public static RegisterService<string, VappCommand> CommandRegisterService { get; set; }
     }
 }

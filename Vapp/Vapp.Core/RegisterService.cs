@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vapp.IO
+namespace Vapp.Core
 {
-    public abstract class RegisterService<K, V>
+    public class RegisterService<K, V>
     {
         #region Properties
 

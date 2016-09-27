@@ -24,6 +24,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="18"/>
@@ -50,10 +51,6 @@
         
         <Menu Grid.Row="0" Background="White" Style="{StaticResource HideControlFullscreenStyle}">
             <MenuItem Header="File">
-                <MenuItem Header="New">
-                    <MenuItem Header="Script File"/>
-                </MenuItem>
-
                 <MenuItem Header="Debug Open" Command="{Binding OpenCommand}"/>
 
                 <Separator/>
@@ -75,8 +72,7 @@
 
             <MenuItem Header="Edit">
                 <MenuItem Header="Open Command Console" Command="{Binding OpenConsoleCommand}"/>
-                <MenuItem Header="Open Script Editor"/>
-                <MenuItem Header="Open Gap Editor"/>
+                <MenuItem Header="Open Editor" Command="{Binding OpenEditorCommand}"/>
                 <Separator/>
                 <MenuItem Header="Settings"/>
             </MenuItem>

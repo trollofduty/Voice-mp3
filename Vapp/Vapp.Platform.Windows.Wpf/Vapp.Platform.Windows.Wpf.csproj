@@ -167,6 +167,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Vapp.Core\Vapp.Core.csproj">
+      <Project>{782c55d9-4231-4ab6-9406-62f549061049}</Project>
+      <Name>Vapp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Vapp.Extensions\Vapp.Extensions.csproj">
       <Project>{876ab1e9-df39-4dfd-88d5-758bf67dcd8e}</Project>
       <Name>Vapp.Extensions</Name>

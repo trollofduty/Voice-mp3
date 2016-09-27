@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Vapp.Core;
 using Vapp.Media;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels
@@ -18,17 +19,16 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         public MediaPlayerControlsViewModel()
         {
             this.OnContentProvided = this.ContentProvided;
-            this.PlayMediaCommand = new RelayCommand(this.Play);
-            this.PauseMediaCommand = new RelayCommand(this.Pause);
-            this.StopMediaCommand = new RelayCommand(this.Stop);
-            this.PreviousMediaCommand = new RelayCommand(this.Previous);
-            this.NextMediaCommand = new RelayCommand(this.Next);
-            this.RandomMediaCommand = new RelayCommand(this.Random);
-            this.LoopMediaCommand = new RelayCommand(this.Loop);
+            this.RegisterCommands();
             this.TimePlayedText = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
             this.TimeLeftText = TimeSpan.FromSeconds(0).ToString(@"hh\:mm\:ss");
             Timer.Interval = TimeSpan.FromMilliseconds(200);
             Timer.Tick += this.TimerTick;
+        }
+
+        ~MediaPlayerControlsViewModel()
+        {
+            this.UnregisterCommands();
         }
 
         #endregion
@@ -125,6 +125,36 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         #endregion
 
         #region Methods
+
+        private void RegisterCommands()
+        {
+            this.PlayMediaCommand = new RelayCommand(this.Play);
+            this.PauseMediaCommand = new RelayCommand(this.Pause);
+            this.StopMediaCommand = new RelayCommand(this.Stop);
+            this.PreviousMediaCommand = new RelayCommand(this.Previous);
+            this.NextMediaCommand = new RelayCommand(this.Next);
+            this.RandomMediaCommand = new RelayCommand(this.Random);
+            this.LoopMediaCommand = new RelayCommand(this.Loop);
+
+            App.CommandRegisterService.Hook(new VappCommand(o => this.Play()), "play");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.Pause()), "pause");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.Stop()), "stop");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.Previous()), "previous");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.Next()), "next");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.Random()), "random");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.Loop()), "loop");
+        }
+
+        private void UnregisterCommands()
+        {
+            App.CommandRegisterService.Unhook("play");
+            App.CommandRegisterService.Unhook("pause");
+            App.CommandRegisterService.Unhook("stop");
+            App.CommandRegisterService.Unhook("previous");
+            App.CommandRegisterService.Unhook("next");
+            App.CommandRegisterService.Unhook("random");
+            App.CommandRegisterService.Unhook("loop");
+        }
 
         private void ContentProvided(object sender, ContentProvidedEventArgs args)
         {

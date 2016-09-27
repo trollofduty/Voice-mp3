@@ -38,7 +38,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             set { this.Set(ref this.treeItems, value); }
         }
 
-        private string Path { get; set; } = "D:\\Users\\James\\Desktop";
+        private string Path { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Vapp";
 
         public IFileContentProvider FileContentProvider { get; set; }
 
@@ -50,6 +50,9 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             ObservableCollection<TreeItemViewModel> items = new ObservableCollection<TreeItemViewModel>();
             DirectoryInfo dInfo = new DirectoryInfo(path);
+
+            if (!dInfo.Exists)
+                dInfo.Create();
 
             foreach (DirectoryInfo directory in dInfo.GetDirectories())
                 items.Add(new TreeDirectoryItemViewModel(directory.Name, directory.FullName) { Items = GetItems(directory.FullName) });
