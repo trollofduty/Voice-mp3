@@ -29,8 +29,19 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <UserControl Grid.Row="{Binding MediaPlayerRow}" Grid.RowSpan="{Binding MediaPlayerRowSpan}" Content="{Binding MediaPlayerControls}"/>
-        <UserControl Grid.Row="{Binding MediaPlayerRow}" Grid.RowSpan="{Binding MediaPlayerRowSpan}" Content="{Binding ExplorerView}"/>
+        <Grid Grid.Row="{Binding MediaPlayerRow}" Grid.RowSpan="{Binding MediaPlayerRowSpan}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <UserControl Grid.Column="0" Content="{Binding ExplorerView}"/>
+            
+            <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Left" />
+            
+            <UserControl Grid.Column="{Binding MediaPlayerColumn}" Grid.ColumnSpan="{Binding MediaPlayerColumnSpan}" Content="{Binding MediaPlayerControls}"/>
+        </Grid>
         
         <Menu Grid.Row="0" Background="White" Style="{StaticResource HideControlFullscreenStyle}">
             <MenuItem Header="File">

@@ -74,6 +74,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                     this.MediaPlayerControlsViewModel.IsFullscreen = true;
                     this.MediaPlayerRow = 0;
                     this.MediaPlayerRowSpan = 2;
+                    this.MediaPlayerColumn = 0;
+                    this.MediaPlayerColumnSpan = 3;
                 }
                 else
                 {
@@ -83,6 +85,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                     this.MediaPlayerControlsViewModel.IsFullscreen = false;
                     this.MediaPlayerRow = 1;
                     this.MediaPlayerRowSpan = 1;
+                    this.MediaPlayerColumn = 2;
+                    this.MediaPlayerColumnSpan = 1;
                 }
             }
         }
@@ -99,6 +103,20 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             get { return this.mediaPlayerRowSpan; }
             set { this.Set(ref this.mediaPlayerRowSpan, value); }
+        }
+
+        private int mediaPlayerColumn;
+        public int MediaPlayerColumn
+        {
+            get { return this.mediaPlayerColumn; }
+            set { this.Set(ref this.mediaPlayerColumn, value); }
+        }
+
+        private int mediaPlayerColumnSpan;
+        public int MediaPlayerColumnSpan
+        {
+            get { return this.mediaPlayerColumnSpan; }
+            set { this.Set(ref this.mediaPlayerColumnSpan, value); }
         }
 
         private IMediaPlayer MediaPlayer
