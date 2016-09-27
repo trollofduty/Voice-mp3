@@ -173,10 +173,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                     });
                 }
                 else
-                    ErrorWriteLine("Command does not exist");
+                    this.ErrorWriteLine("Command does not exist");
             }
             else
-                ErrorWriteLine("No input provided");
+                this.ErrorWriteLine("No input provided");
         }
 
         #endregion
