@@ -14,6 +14,6 @@ namespace Vapp.Platform.Windows.Wpf
     /// </summary>
     public partial class App : Application
     {
-        public static RegisterService<string, VappCommand> CommandRegisterService { get; set; }
+        public static RegisterService<string, VappCommand> CommandRegisterService { get; set; } = new RegisterService<string, VappCommand>();
     }
 }

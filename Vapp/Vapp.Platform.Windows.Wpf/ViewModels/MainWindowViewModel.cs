@@ -22,8 +22,14 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public MainWindowViewModel()
         {
+            this.RegisterCommands();
             this.MediaPlayerRow = 1;
             this.MediaPlayerRowSpan = 1;
+        }
+
+        ~MainWindowViewModel()
+        {
+            this.UnregisterCommands();
         }
 
         #endregion
@@ -146,14 +152,14 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.SetFullscreenCommand = new RelayCommand(this.ToggleFullscreen);
             this.OpenConsoleCommand = new RelayCommand(this.OpenConsole);
 
-            App.CommandRegisterService.Hook(new VappCommand(o => this.ToggleFullscreen()), "Toggle Fullscreen");
-            App.CommandRegisterService.Hook(new VappCommand(o => this.OpenConsole()), "Open Console");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.ToggleFullscreen()), "toggle fullscreen");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.OpenConsole()), "open console", "open cmd");
         }
 
         private void UnregisterCommands()
         {
-            App.CommandRegisterService.Unhook("Toggle Fullscreen");
-            App.CommandRegisterService.Unhook("Open Console");
+            App.CommandRegisterService.Unhook("toggle fullscreen");
+            App.CommandRegisterService.Unhook("open console", "open cmd");
         }
 
         private void ToggleFullscreen()

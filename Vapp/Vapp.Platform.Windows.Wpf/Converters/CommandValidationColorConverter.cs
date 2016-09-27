@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
+using Vapp.Platform.Windows.Wpf.ViewModels;
 
 namespace Vapp.Platform.Windows.Wpf.Converters
 {
@@ -13,8 +14,9 @@ namespace Vapp.Platform.Windows.Wpf.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string input = (string) value;
-            return input != null && input.Length > 0 ? Brushes.Green : Brushes.Red;
+            IEnumerable<string> input = CommandConsoleViewModel.GetArguments(((string) value == null ? "" : (string) value).ToLower().Trim());
+            string key = input.Count() > 0 ? input.ElementAt(0) : "";
+            return key.Length > 0 && App.CommandRegisterService.Contains(key) ? Brushes.Green : Brushes.Red;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

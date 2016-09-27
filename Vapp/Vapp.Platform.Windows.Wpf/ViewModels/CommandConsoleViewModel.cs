@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using Vapp.Core;
 using Vapp.Platform.Windows.Wpf.Models;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels
@@ -19,6 +20,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         public CommandConsoleViewModel()
         {
             this.ReadInputCommand = new RelayCommand(this.OnReadInputCommand);
+
+            this.RegisterCommands();
+
+            if (SpecialCharacterList == null)
+                RegisterSpecialCharacters();
         }
 
         #endregion
@@ -46,7 +52,42 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         #region Methods
 
-        private static string RemoveSpecialCharacters(string input)
+        private void RegisterCommands()
+        {
+            App.CommandRegisterService.Hook(new VappCommand(o => this.Close()), "close console", "close cmd");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.Help()), "help");
+        }
+
+        private void UnregisterCommands()
+        {
+            App.CommandRegisterService.Unhook("close console", "close cmd");
+            App.CommandRegisterService.Unhook("help");
+        }
+
+        private void Close()
+        {
+            this.CloseWindow.Execute(null);
+            this.UnregisterCommands();
+        }
+
+        private void Help()
+        {
+            foreach (KeyValuePair<string, VappCommand> keyPair in App.CommandRegisterService.AsEnumerable())
+                this.Buffer.Add(new ConsoleBlockModel()
+                {
+                    Text = string.Format("Command: {0}, arguments: {1}", keyPair.Key, keyPair.Value.Parameters),
+                    Colour = Brushes.Black
+                });
+        }
+
+        private static void RegisterSpecialCharacters()
+        {
+            List<string> special = new List<string>();
+            special.Add("\\\"");
+            SpecialCharacterList = special;
+        }
+
+        internal static string RemoveSpecialCharacters(string input)
         {
             string output = input;
             foreach (string character in SpecialCharacterList)
@@ -55,11 +96,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             return output;
         }
 
-        private static IEnumerable<string> GetArguments(string input)
+        internal static IEnumerable<string> GetArguments(string input)
         {
-            string key = input.Split(' ').FirstOrDefault();
-            input = input.Remove(0, key.Length).Trim();
-
             List<string> args = new List<string>();
             int start = 0;
             bool block = false;
@@ -94,7 +132,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                     reading = true;
                 }
 
-                if (index == input.Length - 1 && reading)
+                if (index == input.Length - 1 && reading && input.Length != 1)
                     args.Add(input.Substring(block ? start + 1 : start, block ? index - start - 1 : index - start + 1));
 
                 p = c;
@@ -103,7 +141,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             return args;
         }
 
-        private void WriteLine(string line, Color colour)
+        private void WriteLine(string line, Brush colour)
         {
             this.Buffer.Add(new ConsoleBlockModel() { Text = line, Colour = colour });
             this.ScrollIntoBottom.Execute(null);
@@ -111,7 +149,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         private void ErrorWriteLine(string line)
         {
-            this.Buffer.Add(new ConsoleBlockModel() { Text = line, Colour = Colors.Red });
+            this.Buffer.Add(new ConsoleBlockModel() { Text = line, Colour = Brushes.Red });
             this.ScrollIntoBottom.Execute(null);
         }
 
@@ -121,11 +159,14 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.Input = "";
             if (input != null && input.Length > 0)
             {
-                string key = input.Split(' ').FirstOrDefault();
                 IEnumerable<string> args = GetArguments(input);
+                string key = args.First();
+                args = args.Where(arg => args.ElementAt(0) != arg);
 
                 if (key == "exit")
                     this.CloseWindow.Execute(null);
+                else if (App.CommandRegisterService.Contains(key))
+                    App.CommandRegisterService[key].Invoke(args);
                 else
                     ErrorWriteLine("Command does not exist");
             }

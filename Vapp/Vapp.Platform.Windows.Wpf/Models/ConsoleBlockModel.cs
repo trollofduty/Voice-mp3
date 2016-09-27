@@ -13,7 +13,7 @@ namespace Vapp.Platform.Windows.Wpf.Models
 
         public string Text { get; set; }
 
-        public Color Colour { get; set; } = Colors.Black;
+        public Brush Colour { get; set; } = Brushes.Black;
 
         #endregion
     }

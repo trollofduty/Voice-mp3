@@ -12,6 +12,12 @@ namespace Vapp.Core
 
         protected Dictionary<K, V> Cache { get; set; } = new Dictionary<K, V>();
 
+        public V this[K key]
+        {
+            get { return this.GetValue(key); }
+            set { this.SetValue(key, value); }
+        }
+
         #endregion
 
         #region Methods
@@ -32,6 +38,12 @@ namespace Vapp.Core
             this.Cache.Remove(key);
         }
 
+        public void Unhook(params K[] keys)
+        {
+            foreach (K key in keys)
+                this.Cache.Remove(key);
+        }
+
         public bool Contains(K key)
         {
             return this.Cache.ContainsKey(key);
@@ -42,9 +54,24 @@ namespace Vapp.Core
             return this.Cache.ContainsValue(value);
         }
 
+        public V GetValue(K key)
+        {
+            return this.Cache[key];
+        }
+
+        public void SetValue(K key, V value)
+        {
+            this.Cache[key] = value;
+        }
+
         public void Clear()
         {
             this.Cache.Clear();
+        }
+
+        public IEnumerable<KeyValuePair<K, V>> AsEnumerable()
+        {
+            return this.Cache.AsEnumerable();
         }
 
         #endregion
