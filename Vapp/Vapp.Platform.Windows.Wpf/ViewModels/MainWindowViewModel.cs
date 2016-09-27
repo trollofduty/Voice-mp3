@@ -57,6 +57,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public ICommand OpenConsoleCommand { get; set; }
 
+        private WindowState previousState = WindowState.Normal;
+
         private bool isFullscreen;
         public bool IsFullscreen
         {
@@ -67,6 +69,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
                 if (this.isFullscreen)
                 {
+                    this.previousState = this.WindowState;
+                    this.WindowState = WindowState.Normal;
                     this.WindowStyle = WindowStyle.None;
                     this.WindowResizeMode = ResizeMode.NoResize;
                     this.WindowState = WindowState.Maximized;
@@ -80,7 +84,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 {
                     this.WindowStyle = WindowStyle.SingleBorderWindow;
                     this.WindowResizeMode = ResizeMode.CanResize;
-                    this.WindowState = WindowState.Normal;
+                    this.WindowState = this.previousState;
                     this.MediaPlayerGroupViewModel.IsFullscreen = false;
                     this.MediaPlayerRow = 1;
                     this.MediaPlayerRowSpan = 1;
