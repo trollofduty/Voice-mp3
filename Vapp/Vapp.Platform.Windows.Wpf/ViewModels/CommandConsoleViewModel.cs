@@ -163,10 +163,15 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 string key = args.First();
                 args = args.Where(arg => args.ElementAt(0) != arg);
 
-                if (key == "exit")
-                    this.CloseWindow.Execute(null);
-                else if (App.CommandRegisterService.Contains(key))
+                if (App.CommandRegisterService.Contains(key))
+                {
                     App.CommandRegisterService[key].Invoke(args);
+                    this.Buffer.Add(new ConsoleBlockModel()
+                    {
+                        Text = "Command Executed",
+                        Colour = Brushes.Black,
+                    });
+                }
                 else
                     ErrorWriteLine("Command does not exist");
             }
