@@ -73,11 +73,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         private void Help()
         {
             foreach (KeyValuePair<string, VappCommand> keyPair in App.CommandRegisterService.AsEnumerable())
-                this.Buffer.Add(new ConsoleBlockModel()
-                {
-                    Text = string.Format("Command: {0}, arguments: {1}", keyPair.Key, keyPair.Value.Parameters),
-                    Colour = Brushes.Black
-                });
+                this.WriteLine(string.Format("Command: {0}, arguments: {1}", keyPair.Key, keyPair.Value.Parameters), Brushes.Black);
         }
 
         private static void RegisterSpecialCharacters()
@@ -160,17 +156,13 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             if (input != null && input.Length > 0)
             {
                 IEnumerable<string> args = GetArguments(input);
-                string key = args.First();
+                string key = args.FirstOrDefault();
                 args = args.Where(arg => args.ElementAt(0) != arg);
 
-                if (App.CommandRegisterService.Contains(key))
+                if (!string.IsNullOrEmpty(key) && App.CommandRegisterService.Contains(key))
                 {
                     App.CommandRegisterService[key].Invoke(args);
-                    this.Buffer.Add(new ConsoleBlockModel()
-                    {
-                        Text = "Command Executed",
-                        Colour = Brushes.Black,
-                    });
+                    this.WriteLine("Command Executed", Brushes.Black);
                 }
                 else
                     this.ErrorWriteLine("Command does not exist");
