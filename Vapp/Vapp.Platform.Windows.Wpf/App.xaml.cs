@@ -15,5 +15,10 @@ namespace Vapp.Platform.Windows.Wpf
     public partial class App : Application
     {
         public static RegisterService<string, VappCommand> CommandRegisterService { get; set; } = new RegisterService<string, VappCommand>();
+
+        public static bool IsWindowOpen<T>(string name = "") where T : Window
+        {
+            return string.IsNullOrEmpty(name) ? Current.Windows.OfType<T>().Any() : Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
+        }
     }
 }

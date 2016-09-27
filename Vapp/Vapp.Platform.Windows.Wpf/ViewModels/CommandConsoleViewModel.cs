@@ -31,6 +31,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         #region Properties
 
+        public ICommand CloseWindow { get; set; }
+
+        public ICommand ScrollIntoBottom { get; set; }
+
+        public ICommand ReadInputCommand { get; set; }
+
         public string input;
         public string Input
         {
@@ -38,15 +44,9 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             set { this.Set(ref this.input, value); }
         }
 
-        public ICommand ReadInputCommand { get; set; }
-
         public ObservableCollection<ConsoleBlockModel> Buffer { get; set; } = new ObservableCollection<ConsoleBlockModel>();
 
         private static IEnumerable<string> SpecialCharacterList { get; set; }
-
-        public ICommand CloseWindow { get; set; }
-
-        public ICommand ScrollIntoBottom { get; set; }
 
         #endregion
 
@@ -58,7 +58,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             App.CommandRegisterService.Hook(new VappCommand(o => this.Help()), "help");
         }
 
-        private void UnregisterCommands()
+        internal void UnregisterCommands()
         {
             App.CommandRegisterService.Unhook("close console", "close cmd");
             App.CommandRegisterService.Unhook("help");

@@ -169,8 +169,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         private void OpenConsole()
         {
-            CommandConsoleView view = new CommandConsoleView();
-            view.Show();
+            if (!App.IsWindowOpen<CommandConsoleView>())
+                new CommandConsoleView().Show();
         }
 
         private void Open()

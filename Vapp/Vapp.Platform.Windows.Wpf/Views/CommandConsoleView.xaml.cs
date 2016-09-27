@@ -24,6 +24,7 @@ namespace Vapp.Platform.Windows.Wpf.Views
         public CommandConsoleView()
         {
             InitializeComponent();
+
             CommandConsoleViewModel vm = new CommandConsoleViewModel();
             this.DataContext = vm;
             vm.CloseWindow = new RelayCommand(this.Close);
@@ -36,6 +37,8 @@ namespace Vapp.Platform.Windows.Wpf.Views
                     scrollViewer.ScrollToBottom();
                 }
             });
+
+            this.Closing += (sender, e) => vm.UnregisterCommands();
         }
     }
 }
