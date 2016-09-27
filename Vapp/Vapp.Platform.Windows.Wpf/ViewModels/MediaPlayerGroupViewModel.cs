@@ -52,7 +52,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 }
                 else
                 {
-                    Mouse.OverrideCursor = Cursors.Arrow;
+                    Mouse.OverrideCursor = null;
                     Timer.Stop();
                     this.RowSpan = 1;
                 }
