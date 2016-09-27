@@ -21,10 +21,24 @@ namespace Vapp.Platform.Windows.Wpf.Views
     /// </summary>
     public partial class ExplorerView : UserControl
     {
+        #region Constructor
+
         public ExplorerView()
         {
             InitializeComponent();
             this.DataContext = new ExplorerViewModel();
         }
+
+        #endregion
+
+        #region Properties
+        
+        internal IFileContentProvider FileContentProvider
+        {
+            get { return ((ExplorerViewModel) this.DataContext).FileContentProvider; }
+            set { ((ExplorerViewModel) this.DataContext).FileContentProvider = value; }
+        }
+
+        #endregion
     }
 }

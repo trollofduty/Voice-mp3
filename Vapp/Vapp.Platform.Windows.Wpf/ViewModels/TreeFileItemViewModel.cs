@@ -23,6 +23,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             return this.Name == obj.Name && this.Path == obj.Path;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         #endregion
     }
 }

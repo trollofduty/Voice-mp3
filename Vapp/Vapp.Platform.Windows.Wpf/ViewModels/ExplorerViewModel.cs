@@ -40,6 +40,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         private string Path { get; set; } = "D:\\Users\\James\\Desktop";
 
+        public IFileContentProvider FileContentProvider { get; set; }
+
         #endregion
 
         #region Methods

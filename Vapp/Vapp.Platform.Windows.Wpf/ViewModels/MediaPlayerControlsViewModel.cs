@@ -11,12 +11,13 @@ using Vapp.Media;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels
 {
-    class MediaPlayerControlsViewModel : ViewModelBase, IMediaPlayer
+    class MediaPlayerControlsViewModel : ViewModelBase, IMediaPlayer, IFileContentProvider
     {
         #region Constructor
 
         public MediaPlayerControlsViewModel(MediaPlayerViewModel mediaPlayer)
         {
+            this.OnContentProvided = this.ContentProvided;
             this.mediaPlayer = mediaPlayer;
             this.PlayMediaCommand = new RelayCommand(this.Play);
             this.PauseMediaCommand = new RelayCommand(this.Pause);
@@ -118,7 +119,18 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         #endregion
 
+        #region Events
+
+        public EventHandler<ContentProvidedEventArgs> OnContentProvided { get; set; }
+
+        #endregion
+
         #region Methods
+
+        private void ContentProvided(object sender, ContentProvidedEventArgs args)
+        {
+            this.OpenSource(args.FilePath);
+        }
 
         private void UpdateTimeTextBlocks()
         {

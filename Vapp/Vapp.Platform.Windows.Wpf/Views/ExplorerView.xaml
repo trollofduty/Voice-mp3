@@ -28,11 +28,11 @@
         <TreeView Grid.Row="1" ItemsSource="{Binding TreeItems}">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:TreeDirectoryItemViewModel}" ItemsSource="{Binding Items}">
-                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Path}" />
+                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Path}"/>
                 </HierarchicalDataTemplate>
 
                 <DataTemplate DataType="{x:Type viewModels:TreeFileItemViewModel}">
-                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Path}" />
+                    <TextBlock Text="{Binding Name}" ToolTip="{Binding Path}"/>
                 </DataTemplate>
             </TreeView.Resources>
         </TreeView>
