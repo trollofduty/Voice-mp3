@@ -22,6 +22,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.ReadInputCommand = new RelayCommand(this.OnReadInputCommand);
 
             this.RegisterCommands();
+            this.WriteLine("Vapp beta console");
 
             if (SpecialCharacterList == null)
                 RegisterSpecialCharacters();
@@ -44,7 +45,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             set { this.Set(ref this.input, value); }
         }
 
-        public ObservableCollection<ConsoleBlockModel> Buffer { get; set; } = new ObservableCollection<ConsoleBlockModel>();
+        public string output;
+        public string Output
+        {
+            get { return this.output; }
+            set { this.Set(ref this.output, value); }
+        }
 
         private static IEnumerable<string> SpecialCharacterList { get; set; }
 
@@ -73,7 +79,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         private void Help()
         {
             foreach (KeyValuePair<string, VappCommand> keyPair in App.CommandRegisterService.AsEnumerable())
-                this.WriteLine(string.Format("Command: {0}, arguments: {1}", keyPair.Key, keyPair.Value.Parameters), Brushes.Black);
+                this.WriteLine(string.Format("Command: {0}, arguments: {1}", keyPair.Key, keyPair.Value.Parameters));
         }
 
         private static void RegisterSpecialCharacters()
@@ -130,6 +136,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
                 if (index == input.Length - 1 && reading && input.Length != 1)
                     args.Add(input.Substring(block ? start + 1 : start, block ? index - start - 1 : index - start + 1));
+                else if (input.Length == 1)
+                    args.Add(input);
 
                 p = c;
             }
@@ -137,22 +145,16 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             return args;
         }
 
-        private void WriteLine(string line, Brush colour)
+        private void WriteLine(string line)
         {
-            this.Buffer.Add(new ConsoleBlockModel() { Text = line, Colour = colour });
-            this.ScrollIntoBottom.Execute(null);
-        }
-
-        private void ErrorWriteLine(string line)
-        {
-            this.Buffer.Add(new ConsoleBlockModel() { Text = line, Colour = Brushes.Red });
-            this.ScrollIntoBottom.Execute(null);
+            this.Output += string.Format("{0}\n", line);
         }
 
         public void OnReadInputCommand()
         {
             string input = this.Input;
             this.Input = "";
+            this.WriteLine(string.Format(">{0}", input));
             if (input != null && input.Length > 0)
             {
                 IEnumerable<string> args = GetArguments(input);
@@ -162,13 +164,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 if (!string.IsNullOrEmpty(key) && App.CommandRegisterService.Contains(key))
                 {
                     App.CommandRegisterService[key].Invoke(args);
-                    this.WriteLine("Command Executed", Brushes.Black);
+                    this.WriteLine("Command Executed");
                 }
                 else
-                    this.ErrorWriteLine("Command does not exist");
+                    this.WriteLine(string.Format("'{0}' is not recognized as a command\n", key));
             }
-            else
-                this.ErrorWriteLine("No input provided");
         }
 
         #endregion

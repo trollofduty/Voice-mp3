@@ -6,38 +6,56 @@
         xmlns:local="clr-namespace:Vapp.Platform.Windows.Wpf.Views"
         xmlns:converters="clr-namespace:Vapp.Platform.Windows.Wpf.Converters"
         mc:Ignorable="d"
-        Title="CommandConsoleWindow" Height="600" Width="800"
+        Title="CommandConsoleWindow" Height="339" Width="513"
         FocusManager.FocusedElement="{Binding ElementName=ConsoleInput}">
     <Window.Resources>
         <converters:CommandValidationColorConverter x:Key="CommandValidationColorConverter"/>
+
+        <Style x:Key="ConsoleTextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="Foreground" Value="#C0C0C0"/>
+            <Setter Property="Background" Value="Black"/>
+        </Style>
+        
+        <Style x:Key="ConsoleTextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="Foreground" Value="#C0C0C0"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="18"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <ScrollViewer x:Name="Scroller" Margin="0" Background="Black">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="18"/>
+                </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text=">" Foreground="{Binding Input, Converter={StaticResource CommandValidationColorConverter}}"/>
+                    <TextBlock Grid.Column="0" Text=">" Style="{StaticResource ConsoleTextBlockStyle}"
+                               Foreground="{Binding Input, Converter={StaticResource CommandValidationColorConverter}}"/>
 
-            <TextBox x:Name="ConsoleInput" Grid.Column="1" Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0">
-                <TextBox.InputBindings>
-                    <KeyBinding Command="{Binding ReadInputCommand}" Key="Enter"/>
-                </TextBox.InputBindings>
-            </TextBox>
-        </Grid>
+                    <TextBox x:Name="InputTextBox" Grid.Column="1" Style="{StaticResource ConsoleTextBoxStyle}"
+                             Foreground="{Binding Input, Converter={StaticResource CommandValidationColorConverter}}"
+                             Text="{Binding Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
-        <ListBox x:Name="BufferListBox"  Grid.Row="1" ItemsSource="{Binding Buffer}" BorderThickness="0">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Text}" Foreground="{Binding Colour}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding ReadInputCommand}" Key="Enter"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                </Grid>
+
+                <TextBlock Grid.Row="0" Text="{Binding Output, Mode=TwoWay}"
+                           Style="{StaticResource ConsoleTextBlockStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>

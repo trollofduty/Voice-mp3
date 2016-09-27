@@ -16,7 +16,7 @@ namespace Vapp.Platform.Windows.Wpf.Converters
         {
             IEnumerable<string> input = CommandConsoleViewModel.GetArguments(((string) value == null ? "" : (string) value).ToLower().Trim());
             string key = input.Count() > 0 ? input.ElementAt(0) : "";
-            return key.Length > 0 && App.CommandRegisterService.Contains(key) ? Brushes.Green : Brushes.Red;
+            return key.Length == 0 ? new SolidColorBrush(new Color() { R = 192, G = 192, B = 192, A = 255 }) : App.CommandRegisterService.Contains(key) ? Brushes.Green : Brushes.Red;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

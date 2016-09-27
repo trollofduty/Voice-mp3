@@ -28,17 +28,11 @@ namespace Vapp.Platform.Windows.Wpf.Views
             CommandConsoleViewModel vm = new CommandConsoleViewModel();
             this.DataContext = vm;
             vm.CloseWindow = new RelayCommand(this.Close);
-            vm.ScrollIntoBottom = new RelayCommand(() =>
-            {
-                if (VisualTreeHelper.GetChildrenCount(this.BufferListBox) > 0)
-                {
-                    Border border = (Border) VisualTreeHelper.GetChild(this.BufferListBox, 0);
-                    ScrollViewer scrollViewer = (ScrollViewer) VisualTreeHelper.GetChild(border, 0);
-                    scrollViewer.ScrollToBottom();
-                }
-            });
-
+            vm.ScrollIntoBottom = new RelayCommand(() => this.Scroller.ScrollToBottom());
             this.Closing += (sender, e) => vm.UnregisterCommands();
+
+            this.MouseLeftButtonDown += (sender, e) => this.InputTextBox.Focus();
+            this.MouseLeftButtonUp += (sender, e) => this.InputTextBox.Focus();
         }
     }
 }
