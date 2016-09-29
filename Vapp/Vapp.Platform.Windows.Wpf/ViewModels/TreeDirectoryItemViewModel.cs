@@ -33,34 +33,19 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             set { this.Set(ref this.items, value); }
         }
 
+        public override bool Exists
+        {
+            get { return new DirectoryInfo(this.Name).Exists; }
+        }
+
         #endregion
 
         #region Method
 
         public void Validate(ObservableCollection<TreeItemViewModel> nItems)
         {
-            List<TreeItemViewModel> toAdd = new List<TreeItemViewModel>();
-            List<TreeItemViewModel> toRemove = new List<TreeItemViewModel>();
+            IEnumerable<TreeItemViewModel> dExist = items.Where(i => !i.Exists);
 
-            foreach (TreeItemViewModel iItem in this.Items)
-            {
-                if (nItems.Where(i => i.Equals(iItem)).FirstOrDefault() == null)
-                    toRemove.Add(iItem);
-            }
-
-            this.Items.RemoveRange(toRemove);
-
-            IEnumerable<TreeDirectoryItemViewModel> dirs = this.Items.Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(i => (TreeDirectoryItemViewModel) i);
-            foreach (TreeDirectoryItemViewModel dir in dirs)
-                dir.Validate(nItems.Where(d => d.Equals(dir)).Select(d => (TreeDirectoryItemViewModel) d).First().Items);
-            
-            foreach (TreeItemViewModel iItem in nItems)
-            {
-                if (this.Items.Where(i => i.Equals(iItem)).FirstOrDefault() == null)
-                    toAdd.Add(iItem);
-            }
-
-            this.Items.AddRange(nItems);
         }
 
         public override bool Equals(object obj)

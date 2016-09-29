@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,15 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 {
     class TreeFileItemViewModel : TreeItemViewModel
     {
+        #region Properties
+
+        public override bool Exists
+        {
+            get { return new FileInfo(this.Name).Exists; }
+        }
+
+        #endregion
+
         #region Method
 
         public override bool Equals(object obj)

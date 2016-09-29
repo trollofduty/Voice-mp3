@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels
 {
-    class TreeItemViewModel : ViewModelBase
+    abstract class TreeItemViewModel : ViewModelBase
     {
         #region Properties
 
@@ -24,6 +24,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             get { return this.path; }
             set { this.Set(ref this.path, value); }
         }
+
+        public abstract bool Exists { get; }
 
         #endregion
 
