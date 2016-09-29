@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Vapp.Platform.Windows.Wpf.Views.Media;
 
-namespace Vapp.Platform.Windows.Wpf.ViewModels
+namespace Vapp.Platform.Windows.Wpf.ViewModels.Media
 {
     class MediaPlayerGroupViewModel : ViewModelBase
     {

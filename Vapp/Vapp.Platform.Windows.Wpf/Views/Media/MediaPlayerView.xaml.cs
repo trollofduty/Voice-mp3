@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Vapp.Platform.Windows.Wpf.ViewModels;
+using Vapp.Platform.Windows.Wpf.ViewModels.Media;
 
 namespace Vapp.Platform.Windows.Wpf.Views.Media
 {

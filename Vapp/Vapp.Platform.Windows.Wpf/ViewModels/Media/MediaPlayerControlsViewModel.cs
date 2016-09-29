@@ -10,7 +10,7 @@ using System.Windows.Threading;
 using Vapp.Core;
 using Vapp.Media;
 
-namespace Vapp.Platform.Windows.Wpf.ViewModels
+namespace Vapp.Platform.Windows.Wpf.ViewModels.Media
 {
     class MediaPlayerControlsViewModel : ViewModelBase, IMediaPlayer, IFileContentProvider
     {

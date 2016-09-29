@@ -84,9 +84,9 @@
     <Compile Include="ViewModels\CommandConsoleViewModel.cs" />
     <Compile Include="ViewModels\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\MediaPlayerControlsViewModel.cs" />
-    <Compile Include="ViewModels\MediaPlayerGroupViewModel.cs" />
-    <Compile Include="ViewModels\MediaPlayerViewModel.cs" />
+    <Compile Include="ViewModels\Media\MediaPlayerControlsViewModel.cs" />
+    <Compile Include="ViewModels\Media\MediaPlayerGroupViewModel.cs" />
+    <Compile Include="ViewModels\Media\MediaPlayerViewModel.cs" />
     <Compile Include="ViewModels\TreeDirectoryItemViewModel.cs" />
     <Compile Include="ViewModels\TreeFileItemViewModel.cs" />
     <Compile Include="ViewModels\TreeItemViewModel.cs" />

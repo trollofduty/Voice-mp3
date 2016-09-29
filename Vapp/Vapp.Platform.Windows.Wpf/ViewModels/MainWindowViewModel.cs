@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Vapp.Core;
 using Vapp.Media;
+using Vapp.Platform.Windows.Wpf.ViewModels.Media;
 using Vapp.Platform.Windows.Wpf.Views;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels
