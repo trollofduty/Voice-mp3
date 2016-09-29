@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Vapp.Platform.Windows.Wpf.ViewModels;
 
-namespace Vapp.Platform.Windows.Wpf.Views
+namespace Vapp.Platform.Windows.Wpf.Views.Media
 {
     /// <summary>
     /// Interaction logic for MediaPlayerView.xaml

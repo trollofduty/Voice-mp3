@@ -96,14 +96,17 @@
     <Compile Include="Views\ExplorerView.xaml.cs">
       <DependentUpon>ExplorerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MediaPlayerControlsView.xaml.cs">
+    <Compile Include="Views\Media\MediaPlayerControlsView.xaml.cs">
       <DependentUpon>MediaPlayerControlsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MediaPlayerGroupView.xaml.cs">
+    <Compile Include="Views\Media\MediaPlayerGroupView.xaml.cs">
       <DependentUpon>MediaPlayerGroupView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MediaPlayerView.xaml.cs">
+    <Compile Include="Views\Media\MediaPlayerView.xaml.cs">
       <DependentUpon>MediaPlayerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Wizard\ImportWizardView.xaml.cs">
+      <DependentUpon>ImportWizardView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -125,15 +128,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MediaPlayerControlsView.xaml">
+    <Page Include="Views\Media\MediaPlayerControlsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MediaPlayerGroupView.xaml">
+    <Page Include="Views\Media\MediaPlayerGroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MediaPlayerView.xaml">
+    <Page Include="Views\Media\MediaPlayerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Wizard\ImportWizardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

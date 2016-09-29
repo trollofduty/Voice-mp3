@@ -6,6 +6,7 @@
         xmlns:converters="clr-namespace:Vapp.Platform.Windows.Wpf.Converters"
         xmlns:local="clr-namespace:Vapp.Platform.Windows.Wpf"
         xmlns:views="clr-namespace:Vapp.Platform.Windows.Wpf.Views"
+        xmlns:media="clr-namespace:Vapp.Platform.Windows.Wpf.Views.Media"
         mc:Ignorable="d"
         WindowStyle="{Binding WindowStyle}" ResizeMode="{Binding WindowResizeMode}"
         WindowState="{Binding WindowState}" Title="MainWindow" Height="600" Width="800">
@@ -45,7 +46,7 @@
             <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Left" />
 
             <Grid Grid.Column="{Binding MediaPlayerColumn}" Grid.ColumnSpan="{Binding MediaPlayerColumnSpan}">
-                <views:MediaPlayerGroupView x:Name="MediaPlayerGroupView"/>
+                <media:MediaPlayerGroupView x:Name="MediaPlayerGroupView"/>
             </Grid>
         </Grid>
         

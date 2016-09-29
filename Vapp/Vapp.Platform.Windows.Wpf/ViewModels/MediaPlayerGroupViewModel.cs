@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Vapp.Platform.Windows.Wpf.Views;
+using Vapp.Platform.Windows.Wpf.Views.Media;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels
 {
