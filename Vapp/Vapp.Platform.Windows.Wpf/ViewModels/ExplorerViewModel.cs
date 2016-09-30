@@ -22,7 +22,6 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         public ExplorerViewModel()
         {
             this.RefreshCommand = new RelayCommand(() => Task.Run(() => this.Validate()));
-            //this.RefreshCommand = new RelayCommand(() => this.TreeItems = this.GetAllItems(this.Path));
             this.TreeItems = this.GetAllItems(this.Path);
         }
 
