@@ -158,7 +158,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             if (input != null && input.Length > 0)
             {
                 IEnumerable<string> args = GetArguments(input);
-                string key = input.Split(' ').FirstOrDefault().Replace("_", " ");
+                string key = input.ToLower().Trim().Split(' ').FirstOrDefault().Replace("_", " ");
                 args = args.Where(arg => args.ElementAt(0) != arg);
 
                 if (!string.IsNullOrEmpty(key) && App.CommandRegisterService.Contains(key))
