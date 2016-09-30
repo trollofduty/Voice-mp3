@@ -21,8 +21,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public ExplorerViewModel()
         {
-            this.RefreshCommand = new RelayCommand(() => this.TreeItems = this.GetItems(this.Path));
-            this.RefreshCommand.Execute(null);
+            this.RefreshCommand = new RelayCommand(() => this.Validate());
+            this.TreeItems = this.GetItems(this.Path);
         }
 
         #endregion
@@ -38,13 +38,27 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             set { this.Set(ref this.treeItems, value); }
         }
 
-        private string Path { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Vapp";
+        private string Path { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
         public IFileContentProvider FileContentProvider { get; set; }
 
         #endregion
 
         #region Methods
+        
+        public void Validate()
+        {
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                IEnumerable<TreeItemViewModel> dExist = this.TreeItems.ToList().Where(i => !i.Exists);
+                this.TreeItems.RemoveRange(dExist);
+
+                IEnumerable<TreeDirectoryItemViewModel> dirs = dExist.Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
+
+                foreach (TreeDirectoryItemViewModel dir in dirs)
+                    dir.Validate();
+            });
+        }
 
         private ObservableCollection<TreeItemViewModel> GetItems(string path)
         {

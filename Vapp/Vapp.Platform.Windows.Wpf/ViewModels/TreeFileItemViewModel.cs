@@ -13,7 +13,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public override bool Exists
         {
-            get { return new FileInfo(this.Name).Exists; }
+            get { return new FileInfo(this.Path).Exists; }
         }
 
         #endregion

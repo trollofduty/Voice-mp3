@@ -35,17 +35,22 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public override bool Exists
         {
-            get { return new DirectoryInfo(this.Name).Exists; }
+            get { return new DirectoryInfo(this.Path).Exists; }
         }
 
         #endregion
 
         #region Method
 
-        public void Validate(ObservableCollection<TreeItemViewModel> nItems)
+        public void Validate()
         {
-            IEnumerable<TreeItemViewModel> dExist = items.Where(i => !i.Exists);
+            IEnumerable<TreeItemViewModel> dExist = this.Items.ToList().Where(i => !i.Exists);
+            this.Items.RemoveRange(dExist);
 
+            IEnumerable<TreeDirectoryItemViewModel> dirs = dExist.Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
+
+            foreach (TreeDirectoryItemViewModel dir in dirs)
+                dir.Validate();
         }
 
         public override bool Equals(object obj)
