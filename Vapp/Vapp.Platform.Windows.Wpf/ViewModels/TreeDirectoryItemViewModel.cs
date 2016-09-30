@@ -25,6 +25,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         #region Properties
         
+        private object lObject = new object();
+        private object iObject = new object();
 
         private ObservableCollection<TreeItemViewModel> items;
         public ObservableCollection<TreeItemViewModel> Items
@@ -44,19 +46,21 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public void Validate()
         {
-            IEnumerable<TreeItemViewModel> aItems = this.GetItems(this.Path);
-            IEnumerable<TreeItemViewModel> dExist = this.Items.ToList().Where(i => !i.Exists);
-            IEnumerable<TreeItemViewModel> nItems = aItems.Where(i => !this.Items.ToList().Select(o => o.Path).Contains(i.Path));
-            IEnumerable<TreeDirectoryItemViewModel> dirs = this.Items.ToList().Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
-
-            App.Current.Dispatcher.Invoke(() =>
+            lock (lObject)
             {
-                this.Items.RemoveRange(dExist);
-                this.Items.AddRange(nItems);
-            });
+                lock (iObject)
+                {
+                    IEnumerable<TreeItemViewModel> dExist = this.Items.ToList().Where(i => !i.Exists);
+                    App.Current.Dispatcher.Invoke(() => this.Items.RemoveRange(dExist));
 
-            foreach (TreeDirectoryItemViewModel dir in dirs)
-                dir.Validate();
+                    IEnumerable<TreeItemViewModel> nItems = this.GetItems(this.Path).Where(i => !this.Items.ToList().Select(o => o.Path).Contains(i.Path));
+                    App.Current.Dispatcher.Invoke(() => this.Items.AddRange(nItems));
+                }
+
+                IEnumerable<TreeDirectoryItemViewModel> dirs = this.Items.ToList().Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
+                foreach (TreeDirectoryItemViewModel dir in dirs)
+                    dir.Validate();
+            }
         }
 
         private ObservableCollection<TreeItemViewModel> GetItems(string path)

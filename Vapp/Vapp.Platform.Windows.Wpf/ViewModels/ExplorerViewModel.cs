@@ -23,11 +23,31 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             this.RefreshCommand = new RelayCommand(() => Task.Run(() => this.Validate()));
             this.TreeItems = this.GetAllItems(this.Path);
+            //this.watcher = new FileSystemWatcher(this.Path);
+            //this.watcher.Changed += this.OnValidate;
+            //this.watcher.Created += this.OnValidate;
+            //this.watcher.Deleted += this.OnValidate;
+            //this.watcher.Renamed += this.OnValidate;
+            //this.watcher.EnableRaisingEvents = true;
+        }
+
+        ~ExplorerViewModel()
+        {
+            //this.watcher.Changed -= this.OnValidate;
+            //this.watcher.Created -= this.OnValidate;
+            //this.watcher.Deleted -= this.OnValidate;
+            //this.watcher.Renamed -= this.OnValidate;
+            //this.watcher.Dispose();
         }
 
         #endregion
 
         #region Properties
+
+        private object lObject = new object();
+        private object iObject = new object();
+
+        private FileSystemWatcher watcher { get; set; }
 
         public ICommand RefreshCommand { get; set; }
 
@@ -46,21 +66,28 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         #region Methods
         
+        private void OnValidate(object sender, EventArgs e)
+        {
+            this.Validate();
+        }
+
         public void Validate()
         {
-            IEnumerable<TreeItemViewModel> aItems = this.GetItems(this.Path);
-            IEnumerable<TreeItemViewModel> dExist = this.TreeItems.ToList().Where(i => !i.Exists);
-            IEnumerable<TreeItemViewModel> nItems = aItems.Where(i => !this.TreeItems.ToList().Select(o => o.Path).Contains(i.Path));
-            IEnumerable<TreeDirectoryItemViewModel> dirs = this.TreeItems.ToList().Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
-
-            App.Current.Dispatcher.Invoke(() =>
+            lock (lObject)
             {
-                this.TreeItems.RemoveRange(dExist);
-                this.TreeItems.AddRange(nItems);
-            });
+                lock (iObject)
+                {
+                    IEnumerable<TreeItemViewModel> dExist = this.TreeItems.ToList().Where(i => !i.Exists);
+                    App.Current.Dispatcher.Invoke(() => this.TreeItems.RemoveRange(dExist));
 
-            foreach (TreeDirectoryItemViewModel dir in dirs)
-                dir.Validate();
+                    IEnumerable<TreeItemViewModel> nItems = this.GetItems(this.Path).Where(i => !this.TreeItems.ToList().Select(o => o.Path).Contains(i.Path));
+                    App.Current.Dispatcher.Invoke(() => this.TreeItems.AddRange(nItems));
+                }
+
+                IEnumerable<TreeDirectoryItemViewModel> dirs = this.TreeItems.ToList().Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
+                foreach (TreeDirectoryItemViewModel dir in dirs)
+                    dir.Validate();
+            }
         }
 
         private ObservableCollection<TreeItemViewModel> GetItems(string path)
