@@ -21,8 +21,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public ExplorerViewModel()
         {
-            this.RefreshCommand = new RelayCommand(() => this.Validate());
-            this.TreeItems = this.GetItems(this.Path);
+            this.RefreshCommand = new RelayCommand(() => this.TreeItems = this.GetAllItems(this.Path));
+            this.TreeItems = this.GetAllItems(this.Path);
         }
 
         #endregion
@@ -50,17 +50,25 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             App.Current.Dispatcher.Invoke(() =>
             {
+                // Remove items that don't exist
                 IEnumerable<TreeItemViewModel> dExist = this.TreeItems.ToList().Where(i => !i.Exists);
                 this.TreeItems.RemoveRange(dExist);
 
-                IEnumerable<TreeDirectoryItemViewModel> dirs = dExist.Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
+                // Get all items
+                IEnumerable<TreeItemViewModel> aItems = this.GetAllItems(this.Path);
 
+                // Add items that do exist, but are however not in the collection
+                IEnumerable<TreeItemViewModel> nItems = aItems.Where(i => !this.TreeItems.ToList().Select(o => o.Path).Contains(i.Path));
+                this.TreeItems.AddRange(nItems);
+
+                // Check, fill and validate directories
+                IEnumerable<TreeDirectoryItemViewModel> dirs = this.TreeItems.ToList().Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
                 foreach (TreeDirectoryItemViewModel dir in dirs)
                     dir.Validate();
             });
         }
 
-        private ObservableCollection<TreeItemViewModel> GetItems(string path)
+        private ObservableCollection<TreeItemViewModel> GetAllItems(string path)
         {
             ObservableCollection<TreeItemViewModel> items = new ObservableCollection<TreeItemViewModel>();
             DirectoryInfo dInfo = new DirectoryInfo(path);
@@ -69,16 +77,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 dInfo.Create();
 
             foreach (DirectoryInfo directory in dInfo.GetDirectories())
-                items.Add(new TreeDirectoryItemViewModel(directory.Name, directory.FullName) { Items = GetItems(directory.FullName) });
+                items.Add(new TreeDirectoryItemViewModel(directory.Name, directory.FullName, GetAllItems(directory.FullName)));
 
             foreach (FileInfo file in dInfo.GetFiles())
-            {
-                items.Add(new TreeFileItemViewModel()
-                {
-                    Name = file.Name,
-                    Path = file.FullName,
-                });
-            }
+                items.Add(new TreeFileItemViewModel(file.Name, file.FullName));
 
             return items;
         }

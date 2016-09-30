@@ -9,6 +9,16 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 {
     class TreeFileItemViewModel : TreeItemViewModel
     {
+        #region Constructor
+
+        public TreeFileItemViewModel(string name, string path)
+            : base(name, path)
+        {
+            // Skip
+        }
+
+        #endregion
+
         #region Properties
 
         public override bool Exists

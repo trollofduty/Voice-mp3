@@ -15,10 +15,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
     {
         #region Constructor
 
-        public TreeDirectoryItemViewModel(string name, string path)
+        public TreeDirectoryItemViewModel(string name, string path, ObservableCollection<TreeItemViewModel> items = null)
+            : base(name, path)
         {
-            this.Name = name;
-            this.Path = path;
+            this.Items = items == this.GetItems(this.Path) ? new ObservableCollection<TreeItemViewModel>() : items;
         }
 
         #endregion
@@ -44,13 +44,38 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public void Validate()
         {
+            // Remove items that don't exist
             IEnumerable<TreeItemViewModel> dExist = this.Items.ToList().Where(i => !i.Exists);
             this.Items.RemoveRange(dExist);
 
-            IEnumerable<TreeDirectoryItemViewModel> dirs = dExist.Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
+            // Get all items
+            IEnumerable<TreeItemViewModel> aItems = this.GetItems(this.Path);
 
+            // Add items that do exist, but are however not in the collection
+            IEnumerable<TreeItemViewModel> nItems = aItems.Where(i => !this.Items.ToList().Select(o => o.Path).Contains(i.Path));
+            this.Items.AddRange(nItems);
+            
+            // Check, fill and validate directories
+            IEnumerable<TreeDirectoryItemViewModel> dirs = this.Items.ToList().Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
             foreach (TreeDirectoryItemViewModel dir in dirs)
                 dir.Validate();
+        }
+
+        private ObservableCollection<TreeItemViewModel> GetItems(string path)
+        {
+            ObservableCollection<TreeItemViewModel> items = new ObservableCollection<TreeItemViewModel>();
+            DirectoryInfo dInfo = new DirectoryInfo(path);
+
+            if (!dInfo.Exists)
+                dInfo.Create();
+
+            foreach (DirectoryInfo directory in dInfo.GetDirectories())
+                items.Add(new TreeDirectoryItemViewModel(directory.Name, directory.FullName));
+
+            foreach (FileInfo file in dInfo.GetFiles())
+                items.Add(new TreeFileItemViewModel(file.Name, file.FullName));
+
+            return items;
         }
 
         public override bool Equals(object obj)

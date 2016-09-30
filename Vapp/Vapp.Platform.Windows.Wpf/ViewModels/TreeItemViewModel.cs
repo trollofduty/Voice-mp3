@@ -9,6 +9,16 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 {
     abstract class TreeItemViewModel : ViewModelBase
     {
+        #region Constructor
+
+        public TreeItemViewModel(string name, string path)
+        {
+            this.Name = name;
+            this.Path = path;
+        }
+
+        #endregion
+
         #region Properties
 
         private string name;
