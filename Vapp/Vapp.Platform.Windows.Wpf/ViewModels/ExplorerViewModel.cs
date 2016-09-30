@@ -49,7 +49,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             set { this.Set(ref this.treeItems, value); }
         }
 
-        private string Path { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        private string Path { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Vapp";
 
         public IFileContentProvider FileContentProvider { get; set; }
 
