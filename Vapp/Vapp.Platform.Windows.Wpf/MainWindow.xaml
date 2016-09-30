@@ -9,7 +9,7 @@
         xmlns:media="clr-namespace:Vapp.Platform.Windows.Wpf.Views.Media"
         mc:Ignorable="d"
         WindowStyle="{Binding WindowStyle}" ResizeMode="{Binding WindowResizeMode}"
-        WindowState="{Binding WindowState}" Title="MainWindow" Height="600" Width="800">
+        WindowState="{Binding WindowState}" Title="Vapp" Height="600" Width="800">
     <Window.Resources>
         <converters:MediaGroupFullscreenOpacityConverter x:Key="MediaGroupFullscreenOpacityConverter"/>
 

@@ -14,8 +14,9 @@ namespace Vapp.Platform.Windows.Wpf.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            IEnumerable<string> input = CommandConsoleViewModel.GetArguments(((string) value == null ? "" : (string) value).ToLower().Trim());
-            string key = input.Count() > 0 ? input.ElementAt(0) : "";
+            string input = ((string) value == null ? "" : (string) value).ToLower().Trim();
+            IEnumerable<string> args = CommandConsoleViewModel.GetArguments(input);
+            string key = input.Split(' ').FirstOrDefault().Replace("_", " ");
             return key.Length == 0 ? new SolidColorBrush(new Color() { R = 192, G = 192, B = 192, A = 255 }) : App.CommandRegisterService.Contains(key) ? Brushes.Green : Brushes.Red;
         }
 
