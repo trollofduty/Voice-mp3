@@ -153,13 +153,13 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.SetFullscreenCommand = new RelayCommand(this.ToggleFullscreen);
             this.OpenConsoleCommand = new RelayCommand(this.OpenConsole);
 
-            App.CommandRegisterService.Hook(new VappCommand(o => this.ToggleFullscreen()), "toggle fullscreen");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.ToggleFullscreen()), "toggle fullscreen", "t fullscreen", "t full");
             App.CommandRegisterService.Hook(new VappCommand(o => this.OpenConsole()), "open console", "open cmd");
         }
 
         private void UnregisterCommands()
         {
-            App.CommandRegisterService.Unhook("toggle fullscreen");
+            App.CommandRegisterService.Unhook("toggle fullscreen", "t fullscreen", "t full");
             App.CommandRegisterService.Unhook("open console", "open cmd");
         }
 
