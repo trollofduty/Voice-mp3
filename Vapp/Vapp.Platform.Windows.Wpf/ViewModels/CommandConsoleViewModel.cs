@@ -171,6 +171,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             }
         }
 
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            this.UnregisterCommands();
+        }
+
         #endregion
     }
 }

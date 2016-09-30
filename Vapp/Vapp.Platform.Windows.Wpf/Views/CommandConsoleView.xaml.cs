@@ -29,7 +29,7 @@ namespace Vapp.Platform.Windows.Wpf.Views
             this.DataContext = vm;
             vm.CloseWindow = new RelayCommand(this.Close);
             vm.ScrollIntoBottom = new RelayCommand(() => this.Scroller.ScrollToBottom());
-            this.Closing += (sender, e) => vm.UnregisterCommands();
+            this.Closing += (sender, e) => vm.Cleanup();
 
             this.MouseLeftButtonDown += (sender, e) => this.InputTextBox.Focus();
             this.MouseLeftButtonUp += (sender, e) => this.InputTextBox.Focus();

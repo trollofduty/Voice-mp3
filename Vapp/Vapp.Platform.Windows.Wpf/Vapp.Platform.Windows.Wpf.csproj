@@ -77,6 +77,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\CommandValidationColorConverter.cs" />
+    <Compile Include="Converters\NullBoolToBoolConverter.cs" />
     <Compile Include="Models\ConsoleBlockModel.cs" />
     <Compile Include="Converters\MediaGroupFullscreenOpacityConverter.cs" />
     <Compile Include="ContentProvidedEventArgs.cs" />
@@ -106,8 +107,8 @@
     <Compile Include="Views\Media\MediaPlayerView.xaml.cs">
       <DependentUpon>MediaPlayerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Wizard\ImportWizardView.xaml.cs">
-      <DependentUpon>ImportWizardView.xaml</DependentUpon>
+    <Compile Include="Views\Wizard\ImportBibleWizard.xaml.cs">
+      <DependentUpon>ImportBibleWizard.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -141,7 +142,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Wizard\ImportWizardView.xaml">
+    <Page Include="Views\Wizard\ImportBibleWizard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
