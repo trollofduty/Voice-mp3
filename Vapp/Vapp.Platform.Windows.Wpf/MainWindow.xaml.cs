@@ -29,19 +29,31 @@ namespace Vapp.Platform.Windows.Wpf
         {
             InitializeComponent();
             MainWindowViewModel viewModel = new MainWindowViewModel();
-            viewModel.RequestMediaPlayer = this.GetMediaPlayer;
+            viewModel.RequestMediaPlayer = this.GetMediaPlayerControlsViewModel;
             viewModel.RequestMediaPlayerGroupViewModel = this.GetMediaPlayerGroupViewModel;
             viewModel.IsFullscreen = false;
             this.DataContext = viewModel;
 
-            this.Closing += (sender, e) => App.Current.Shutdown();
+            this.Closing += (sender, e) =>
+            {
+                viewModel.Cleanup();
+                this.GetExplorerViewModel().Cleanup();
+                this.GetMediaPlayerControlsViewModel().Cleanup();
+                this.GetMediaPlayerGroupViewModel().Cleanup();
+                App.Current.Shutdown();
+            };
         }
 
         #endregion
 
         #region Methods
 
-        private IMediaPlayer GetMediaPlayer()
+        private ExplorerViewModel GetExplorerViewModel()
+        {
+            return (ExplorerViewModel) this.ExplorerView.DataContext;
+        }
+
+        private MediaPlayerControlsViewModel GetMediaPlayerControlsViewModel()
         {
             return (MediaPlayerControlsViewModel) this.GetMediaPlayerGroupViewModel().MediaControls.DataContext;
         }

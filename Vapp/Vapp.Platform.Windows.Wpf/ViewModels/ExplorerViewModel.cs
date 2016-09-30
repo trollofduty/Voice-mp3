@@ -31,15 +31,6 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.watcher.EnableRaisingEvents = true;
         }
 
-        ~ExplorerViewModel()
-        {
-            this.watcher.Changed -= this.OnValidate;
-            this.watcher.Created -= this.OnValidate;
-            this.watcher.Deleted -= this.OnValidate;
-            this.watcher.Renamed -= this.OnValidate;
-            this.watcher.Dispose();
-        }
-
         #endregion
 
         #region Properties
@@ -71,6 +62,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.Validate();
         }
 
+        // Still slow, lots of directories and files = slow response time.
         public void Validate()
         {
             lock (lObject)
@@ -122,6 +114,17 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 items.Add(new TreeFileItemViewModel(file.Name, file.FullName));
 
             return items;
+        }
+
+        public override void Cleanup()
+        {
+            base.Cleanup();
+
+            this.watcher.Changed -= this.OnValidate;
+            this.watcher.Created -= this.OnValidate;
+            this.watcher.Deleted -= this.OnValidate;
+            this.watcher.Renamed -= this.OnValidate;
+            this.watcher.Dispose();
         }
 
         #endregion
