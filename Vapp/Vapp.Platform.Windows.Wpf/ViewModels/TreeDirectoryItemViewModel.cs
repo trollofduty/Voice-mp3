@@ -18,7 +18,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         public TreeDirectoryItemViewModel(string name, string path, ObservableCollection<TreeItemViewModel> items = null)
             : base(name, path)
         {
-            this.Items = items == this.GetItems(this.Path) ? new ObservableCollection<TreeItemViewModel>() : items;
+            this.Items = items == null ? new ObservableCollection<TreeItemViewModel>() : items;
         }
 
         #endregion
