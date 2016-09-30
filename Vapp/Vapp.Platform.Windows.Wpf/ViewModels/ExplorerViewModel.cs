@@ -21,7 +21,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public ExplorerViewModel()
         {
-            this.RefreshCommand = new RelayCommand(() => this.Validate());
+            this.RefreshCommand = new RelayCommand(() => Task.Run(() => this.Validate()));
             //this.RefreshCommand = new RelayCommand(() => this.TreeItems = this.GetAllItems(this.Path));
             this.TreeItems = this.GetAllItems(this.Path);
         }
@@ -49,24 +49,19 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         
         public void Validate()
         {
+            IEnumerable<TreeItemViewModel> aItems = this.GetItems(this.Path);
+            IEnumerable<TreeItemViewModel> dExist = this.TreeItems.ToList().Where(i => !i.Exists);
+            IEnumerable<TreeItemViewModel> nItems = aItems.Where(i => !this.TreeItems.ToList().Select(o => o.Path).Contains(i.Path));
+            IEnumerable<TreeDirectoryItemViewModel> dirs = this.TreeItems.ToList().Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
+
             App.Current.Dispatcher.Invoke(() =>
             {
-                // Remove items that don't exist
-                IEnumerable<TreeItemViewModel> dExist = this.TreeItems.ToList().Where(i => !i.Exists);
                 this.TreeItems.RemoveRange(dExist);
-
-                // Get all items
-                IEnumerable<TreeItemViewModel> aItems = this.GetItems(this.Path);
-
-                // Add items that do exist, but are however not in the collection
-                IEnumerable<TreeItemViewModel> nItems = aItems.Where(i => !this.TreeItems.ToList().Select(o => o.Path).Contains(i.Path));
                 this.TreeItems.AddRange(nItems);
-
-                // Check, fill and validate directories
-                IEnumerable<TreeDirectoryItemViewModel> dirs = this.TreeItems.ToList().Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
-                foreach (TreeDirectoryItemViewModel dir in dirs)
-                    dir.Validate();
             });
+
+            foreach (TreeDirectoryItemViewModel dir in dirs)
+                dir.Validate();
         }
 
         private ObservableCollection<TreeItemViewModel> GetItems(string path)

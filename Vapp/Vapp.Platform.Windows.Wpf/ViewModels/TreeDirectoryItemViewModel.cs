@@ -44,19 +44,17 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         public void Validate()
         {
-            // Remove items that don't exist
-            IEnumerable<TreeItemViewModel> dExist = this.Items.ToList().Where(i => !i.Exists);
-            this.Items.RemoveRange(dExist);
-
-            // Get all items
             IEnumerable<TreeItemViewModel> aItems = this.GetItems(this.Path);
-
-            // Add items that do exist, but are however not in the collection
+            IEnumerable<TreeItemViewModel> dExist = this.Items.ToList().Where(i => !i.Exists);
             IEnumerable<TreeItemViewModel> nItems = aItems.Where(i => !this.Items.ToList().Select(o => o.Path).Contains(i.Path));
-            this.Items.AddRange(nItems);
-            
-            // Check, fill and validate directories
             IEnumerable<TreeDirectoryItemViewModel> dirs = this.Items.ToList().Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
+
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                this.Items.RemoveRange(dExist);
+                this.Items.AddRange(nItems);
+            });
+
             foreach (TreeDirectoryItemViewModel dir in dirs)
                 dir.Validate();
         }
