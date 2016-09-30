@@ -23,21 +23,21 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             this.RefreshCommand = new RelayCommand(() => Task.Run(() => this.Validate()));
             this.TreeItems = this.GetAllItems(this.Path);
-            //this.watcher = new FileSystemWatcher(this.Path);
-            //this.watcher.Changed += this.OnValidate;
-            //this.watcher.Created += this.OnValidate;
-            //this.watcher.Deleted += this.OnValidate;
-            //this.watcher.Renamed += this.OnValidate;
-            //this.watcher.EnableRaisingEvents = true;
+            this.watcher = new FileSystemWatcher(this.Path);
+            this.watcher.Changed += this.OnValidate;
+            this.watcher.Created += this.OnValidate;
+            this.watcher.Deleted += this.OnValidate;
+            this.watcher.Renamed += this.OnValidate;
+            this.watcher.EnableRaisingEvents = true;
         }
 
         ~ExplorerViewModel()
         {
-            //this.watcher.Changed -= this.OnValidate;
-            //this.watcher.Created -= this.OnValidate;
-            //this.watcher.Deleted -= this.OnValidate;
-            //this.watcher.Renamed -= this.OnValidate;
-            //this.watcher.Dispose();
+            this.watcher.Changed -= this.OnValidate;
+            this.watcher.Created -= this.OnValidate;
+            this.watcher.Deleted -= this.OnValidate;
+            this.watcher.Renamed -= this.OnValidate;
+            this.watcher.Dispose();
         }
 
         #endregion
