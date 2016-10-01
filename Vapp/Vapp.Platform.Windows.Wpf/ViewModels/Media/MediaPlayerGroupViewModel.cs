@@ -46,7 +46,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Media
 
                 if (this.isFullscreen)
                 {
-                    Mouse.OverrideCursor = Cursors.Arrow;
+                    Mouse.OverrideCursor = null;
                     Timer.Start();
                     this.RowSpan = 2;
                 }
@@ -92,7 +92,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Media
                 if (GetLastInputTime() > WaitTime)
                     Mouse.OverrideCursor = Cursors.None;
                 else
-                    Mouse.OverrideCursor = Cursors.Arrow;
+                    Mouse.OverrideCursor = null;
             }
         }
 
