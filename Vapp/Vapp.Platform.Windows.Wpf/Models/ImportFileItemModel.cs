@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Vapp.Platform.Windows.Wpf.Models
 {
-    abstract class ImportFileItemModel : ObservableObject
+    class ImportFileItemModel : ObservableObject
     {
         #region Constructor
 

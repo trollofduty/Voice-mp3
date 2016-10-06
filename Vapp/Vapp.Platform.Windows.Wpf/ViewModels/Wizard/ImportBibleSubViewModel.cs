@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Vapp.Platform.Windows.Wpf.Models;
 using Vapp.Platform.Windows.Wpf.Views.Wizard;
+using Vapp.Extensions;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 {
@@ -20,13 +22,15 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
         public ImportBibleSubViewModel()
         {
             this.SelectFolderCommand = new RelayCommand(this.SelectFolder);
+            ((ImportBibleVersesSubViewModel) this.versesView.DataContext).SelectedFiles = this.SelectedFiles;
+            ((ImportBibleChaptersSubViewModel) this.chaptersView.DataContext).SelectedFiles = this.SelectedFiles;
         }
 
         #endregion
 
         #region Properties
 
-        private UserControl verseView = new ImportBibleVersesSubView();
+        private UserControl versesView = new ImportBibleVersesSubView();
         private UserControl chaptersView = new ImportBibleChaptersSubView();
 
         private UserControl subView;
@@ -37,6 +41,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
         }
 
         public ObservableCollection<ImportFileItemModel> SelectedFiles { get; set; } = new ObservableCollection<ImportFileItemModel>();
+
+        public string RootDirectory { get; set; }
 
         public ICommand SelectFolderCommand { get; private set; }
 
@@ -58,7 +64,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
                 if (this.selectedItem == "System.Windows.Controls.ComboBoxItem: Chapters")
                     this.SubView = chaptersView;
                 else if (this.selectedItem == "System.Windows.Controls.ComboBoxItem: Verses")
-                    this.SubView = verseView;
+                    this.SubView = versesView;
                 else
                     this.SubView = null;
             }
@@ -70,7 +76,35 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 
         public void SelectFolder()
         {
+            using (System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                System.Windows.Forms.DialogResult result = dlg.ShowDialog();
 
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    this.RootDirectory = dlg.SelectedPath;
+                    IEnumerable<ImportFileItemModel> files = this.EnumerateSubDirectories(new DirectoryInfo(dlg.SelectedPath)).Select(f => new ImportFileItemModel(f));
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        this.SelectedFiles.Clear();
+                        this.SelectedFiles.AddRange(files);
+                    });
+                }
+            }
+        }
+
+        public List<FileInfo> EnumerateSubDirectories (DirectoryInfo dInfo, List<FileInfo> result = null)
+        {
+            if (result == null)
+                result = new List<FileInfo>();
+
+            result.AddRange(dInfo.EnumerateFiles());
+            IEnumerable<DirectoryInfo> dirs = dInfo.EnumerateDirectories();
+
+            foreach (DirectoryInfo dir in dirs)
+                this.EnumerateSubDirectories(dir, result);
+
+            return result;
         }
 
         public bool Execute()
