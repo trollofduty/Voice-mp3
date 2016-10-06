@@ -10,18 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Vapp.Platform.Windows.Wpf.ViewModels.Wizard;
 
 namespace Vapp.Platform.Windows.Wpf.Views.Wizard
 {
     /// <summary>
-    /// Interaction logic for ImportBibleWizard.xaml
+    /// Interaction logic for ImportBibleVersesSubView.xaml
     /// </summary>
-    public partial class ImportBibleWizard : Window
+    public partial class ImportBibleVersesSubView : UserControl
     {
-        public ImportBibleWizard()
+        public ImportBibleVersesSubView()
         {
             InitializeComponent();
+            this.DataContext = new ImportBibleVersesSubViewModel();
         }
     }
 }

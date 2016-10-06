@@ -56,12 +56,7 @@
 
                 <Separator/>
 
-                <MenuItem Header="Import Wizard">
-                    <MenuItem Header="Bible"/>
-                    <MenuItem Header="Readings"/>
-                    <MenuItem Header="Variant Readings"/>
-                    <MenuItem Header="Script File"/>
-                </MenuItem>
+                <MenuItem Header="Import Wizard" Command="{Binding ImportWizardCommand}"/>
 
                 <MenuItem Header="Export Wizard">
                     <MenuItem Header="Bible"/>

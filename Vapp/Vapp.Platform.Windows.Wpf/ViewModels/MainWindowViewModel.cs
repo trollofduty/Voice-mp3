@@ -13,7 +13,9 @@ using System.Windows.Input;
 using Vapp.Core;
 using Vapp.Media;
 using Vapp.Platform.Windows.Wpf.ViewModels.Media;
+using Vapp.Platform.Windows.Wpf.ViewModels.Wizard;
 using Vapp.Platform.Windows.Wpf.Views;
+using Vapp.Platform.Windows.Wpf.Views.Wizard;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels
 {
@@ -37,6 +39,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         #region Properties
         
+        public ICommand ImportWizardCommand { get; set; }
+
         public ICommand SetFullscreenCommand { get; set; }
 
         public ICommand OpenConsoleCommand { get; set; }
@@ -152,15 +156,18 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             this.OpenCommand = new RelayCommand(this.Open);
             this.SetFullscreenCommand = new RelayCommand(this.ToggleFullscreen);
             this.OpenConsoleCommand = new RelayCommand(this.OpenConsole);
+            this.ImportWizardCommand = new RelayCommand(this.OpenImportWizard);
 
             App.CommandRegisterService.Hook(new VappCommand(o => this.ToggleFullscreen()), "toggle fullscreen", "t fullscreen", "t full");
             App.CommandRegisterService.Hook(new VappCommand(o => this.OpenConsole()), "open console", "open cmd");
+            App.CommandRegisterService.Hook(new VappCommand(o => this.OpenConsole()), "import", "import wizard", "open import wizard");
         }
 
         private void UnregisterCommands()
         {
             App.CommandRegisterService.Unhook("toggle fullscreen", "t fullscreen", "t full");
             App.CommandRegisterService.Unhook("open console", "open cmd");
+            App.CommandRegisterService.Unhook("import", "import wizard", "open import wizard");
         }
 
         private void ToggleFullscreen()
@@ -172,6 +179,19 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         {
             if (!App.IsWindowOpen<CommandConsoleView>())
                 new CommandConsoleView().Show();
+        }
+
+        private void OpenImportWizard()
+        {
+            WizardView view = this.CreateImportWizard();
+            view.Show();
+        }
+
+        private WizardView CreateImportWizard()
+        {
+            WizardView view = new WizardView();
+            view.DataContext = new ImportWizardViewModel();
+            return view;
         }
 
         private void Open()

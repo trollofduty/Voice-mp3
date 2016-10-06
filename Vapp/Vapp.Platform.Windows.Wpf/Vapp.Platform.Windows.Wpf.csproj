@@ -78,10 +78,13 @@
     </ApplicationDefinition>
     <Compile Include="Converters\CommandValidationColorConverter.cs" />
     <Compile Include="Converters\NullBoolToBoolConverter.cs" />
+    <Compile Include="IWizardResult.cs" />
     <Compile Include="Models\ConsoleBlockModel.cs" />
     <Compile Include="Converters\MediaGroupFullscreenOpacityConverter.cs" />
     <Compile Include="ContentProvidedEventArgs.cs" />
     <Compile Include="IFileContentProvider.cs" />
+    <Compile Include="Models\ImportChapterItemModel.cs" />
+    <Compile Include="Models\ImportFileItemModel.cs" />
     <Compile Include="ViewModels\CommandConsoleViewModel.cs" />
     <Compile Include="ViewModels\ExplorerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -91,7 +94,11 @@
     <Compile Include="ViewModels\TreeDirectoryItemViewModel.cs" />
     <Compile Include="ViewModels\TreeFileItemViewModel.cs" />
     <Compile Include="ViewModels\TreeItemViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\ImportBibleChaptersSubViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\ImportBibleVersesSubViewModel.cs" />
     <Compile Include="ViewModels\Wizard\ImportWizardViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\ImportBibleSubViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\WizardViewModelBase.cs" />
     <Compile Include="Views\CommandConsoleView.xaml.cs">
       <DependentUpon>CommandConsoleView.xaml</DependentUpon>
     </Compile>
@@ -107,8 +114,17 @@
     <Compile Include="Views\Media\MediaPlayerView.xaml.cs">
       <DependentUpon>MediaPlayerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Wizard\ImportBibleWizard.xaml.cs">
-      <DependentUpon>ImportBibleWizard.xaml</DependentUpon>
+    <Compile Include="Views\Wizard\ImportBibleChaptersSubView.xaml.cs">
+      <DependentUpon>ImportBibleChaptersSubView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Wizard\ImportBibleSubView.xaml.cs">
+      <DependentUpon>ImportBibleSubView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Wizard\ImportBibleVersesSubView.xaml.cs">
+      <DependentUpon>ImportBibleVersesSubView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Wizard\WizardView.xaml.cs">
+      <DependentUpon>WizardView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -142,7 +158,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Wizard\ImportBibleWizard.xaml">
+    <Page Include="Views\Wizard\ImportBibleChaptersSubView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Wizard\ImportBibleSubView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Wizard\ImportBibleVersesSubView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Wizard\WizardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
