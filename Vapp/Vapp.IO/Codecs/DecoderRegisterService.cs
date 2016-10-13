@@ -33,6 +33,32 @@ namespace Vapp.IO.Codecs
             return false;
         }
 
+        public T Decode(Stream stream, string format = "")
+        {
+            if (format != null && format.Length > 0)
+            {
+                if (!this.Cache.ContainsKey(format))
+                    return default(T);
+                else
+                    return this.Cache[format].Decode(stream);
+            }
+            else
+            {
+                foreach (DecoderBase<T> decoder in this.Cache.Select(t => t.Value))
+                {
+                    try
+                    {
+                        return decoder.Decode(stream);
+                    }
+                    catch
+                    {
+                        // Skip
+                    }
+                }
+            }
+            return default(T);
+        }
+
         #endregion
     }
 }

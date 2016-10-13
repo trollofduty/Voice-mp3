@@ -49,7 +49,7 @@ namespace Vapp.Media.Audio
         public byte[] Data { get; private set; }
         
         /// <summary>
-        /// Value of sample ranging from +1.0 to 0.0
+        /// Value of sample ranging from +1.0 to -1.0
         /// </summary>
         public decimal Value
         {
@@ -64,7 +64,7 @@ namespace Vapp.Media.Audio
         /// <summary>
         /// Stores value in the form of the Data array
         /// </summary>
-        /// <param name="value">Value of sample ranging from +1.0 to 0.0</param>
+        /// <param name="value">Value of sample ranging from +1.0 to -1.0</param>
         protected void SetValue(decimal value)
         {
             switch (this.Data.Length)
@@ -72,16 +72,16 @@ namespace Vapp.Media.Audio
                 default:
                     throw new FormatException();
                 case Format8:
-                    this.Data[0] = (byte) (value * 0xF);
+                    this.Data[0] = (byte) (((value + 1.0m) / 2.0m) * 0xF);
                     break;
                 case Format16:
-                    this.Data = BitConverter.GetBytes((ushort) (value * ushort.MaxValue));
+                    this.Data = BitConverter.GetBytes((short) (value * short.MaxValue));
                     break;
                 case Format32:
-                    this.Data = BitConverter.GetBytes((uint) (value * uint.MaxValue));
+                    this.Data = BitConverter.GetBytes((int) (value * int.MaxValue));
                     break;
                 case Format64:
-                    this.Data = BitConverter.GetBytes((ulong) (value * ulong.MaxValue));
+                    this.Data = BitConverter.GetBytes((long) (value * long.MaxValue));
                     break;
             }
         }
@@ -89,7 +89,7 @@ namespace Vapp.Media.Audio
         /// <summary>
         /// Gets stored value in the data array in the form of a decimal
         /// </summary>
-        /// <returns>Value of sample ranging from 1.0 to 0.0</returns>
+        /// <returns>Value of sample ranging from +1.0 to -1.0</returns>
         protected decimal GetValue()
         {
             switch (this.Data.Length)
@@ -97,13 +97,13 @@ namespace Vapp.Media.Audio
                 default:
                     throw new FormatException();
                 case Format8:
-                    return (this.Data[0] / (decimal) 0xF);
+                    return ((this.Data[0] / (decimal) 0xF) * 2.0m) - 1.0m;
                 case Format16:
-                    return BitConverter.ToUInt16(this.Data, 0) / (decimal) ushort.MaxValue;
+                    return BitConverter.ToInt16(this.Data, 0) / (decimal) short.MaxValue;
                 case Format32:
-                    return BitConverter.ToUInt32(this.Data, 0) / (decimal) uint.MaxValue;
+                    return BitConverter.ToInt32(this.Data, 0) / (decimal) int.MaxValue;
                 case Format64:
-                    return BitConverter.ToUInt64(this.Data, 0) / (decimal) ulong.MaxValue;
+                    return BitConverter.ToInt64(this.Data, 0) / (decimal) long.MaxValue;
             }
         }
 

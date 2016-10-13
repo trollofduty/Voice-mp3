@@ -23,6 +23,14 @@ namespace Vapp.Platform.Windows.Wpf.Views.Wizard
         public WizardView()
         {
             InitializeComponent();
+            this.Focus();
+            this.Topmost = true;
+        }
+
+        private void OnWindowDeactivated(object sender, EventArgs e)
+        {
+            this.Topmost = true;
+            this.Focus();
         }
     }
 }

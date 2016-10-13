@@ -31,9 +31,6 @@ namespace Vapp.IO.Codecs.Audio
             sound.SampleRate = wav.FmtHeader.SampleRate;
             sound.BitsPerSample = wav.FmtHeader.BitsPerSample;
 
-            if (sound.ByteRate != wav.FmtHeader.ByteRate || sound.BlockAlign != wav.FmtHeader.BlockAlign)
-                throw new FormatException();
-
             int bytesPerSample = wav.FmtHeader.BitsPerSample / 8;
 
             Channel[] channels = new Channel[wav.FmtHeader.NumChannels];

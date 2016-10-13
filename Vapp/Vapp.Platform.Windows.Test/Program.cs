@@ -263,6 +263,17 @@ namespace Vapp.Platform.Windows.Test
                     foreach (Pause pause in gap.Pauses)
                         Console.WriteLine("Start: {0}, End: {1}", pause.Start.ToString(@"hh\:mm\:ss\:fff"), pause.End.ToString(@"hh\:mm\:ss\:fff"));
 
+                    decimal highest = waveformat.Channels[0].Samples[0].Value;
+                    decimal lowest = waveformat.Channels[0].Samples[0].Value;
+                    foreach (Sample sample in waveformat.Channels[0].Samples)
+                    {
+                        highest = sample.Value > highest ? sample.Value : highest;
+                        lowest = sample.Value < lowest ? sample.Value : lowest;
+                    }
+
+                    Console.WriteLine("Lowest Value: {0}", lowest);
+                    Console.WriteLine("Highest Value: {0}", highest);
+
                     Console.WriteLine("Gap Count: {0}", gap.Pauses.Count());
                 }
             }
