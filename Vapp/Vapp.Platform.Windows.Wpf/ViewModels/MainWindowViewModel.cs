@@ -13,7 +13,7 @@ using System.Windows.Input;
 using Vapp.Core;
 using Vapp.Media;
 using Vapp.Platform.Windows.Wpf.ViewModels.Media;
-using Vapp.Platform.Windows.Wpf.ViewModels.Wizard;
+using Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import;
 using Vapp.Platform.Windows.Wpf.Views;
 using Vapp.Platform.Windows.Wpf.Views.Wizard;
 

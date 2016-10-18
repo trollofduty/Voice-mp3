@@ -13,7 +13,7 @@ using Vapp.IO.Codecs.Text;
 using Vapp.Platform.Windows.Wpf.Models;
 using Vapp.Extensions;
 
-namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
+namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 {
     class ImportBibleTextSubViewModel : WizardSubViewModelBase
     {

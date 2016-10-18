@@ -12,19 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Vapp.Platform.Windows.Wpf.ViewModels.Wizard;
+using Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import;
 
-namespace Vapp.Platform.Windows.Wpf.Views.Wizard
+namespace Vapp.Platform.Windows.Wpf.Views.Wizard.Import
 {
     /// <summary>
-    /// Interaction logic for ImportBibleChaptersSubView.xaml
+    /// Interaction logic for ImportBibleVersesSubView.xaml
     /// </summary>
-    public partial class ImportBibleChaptersSubView : UserControl
+    public partial class ImportBibleVersesSubView : UserControl
     {
-        public ImportBibleChaptersSubView()
+        public ImportBibleVersesSubView()
         {
             InitializeComponent();
-            this.DataContext = new ImportBibleChaptersSubViewModel();
+            this.DataContext = new ImportBibleVersesSubViewModel();
         }
     }
 }

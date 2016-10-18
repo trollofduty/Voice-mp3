@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Vapp.Platform.Windows.Wpf.Models;
-using Vapp.Platform.Windows.Wpf.Views.Wizard;
+using Vapp.Platform.Windows.Wpf.Views.Wizard.Import;
 using Vapp.Extensions;
 
-namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
+namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 {
     class ImportBibleSubViewModel : WizardSubViewModelBase
     {

@@ -95,11 +95,11 @@
     <Compile Include="ViewModels\TreeDirectoryItemViewModel.cs" />
     <Compile Include="ViewModels\TreeFileItemViewModel.cs" />
     <Compile Include="ViewModels\TreeItemViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\ImportBibleChaptersSubViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\ImportBibleTextSubViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\ImportBibleVersesSubViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\ImportWizardViewModel.cs" />
-    <Compile Include="ViewModels\Wizard\ImportBibleSubViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\Import\ImportBibleChaptersSubViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\Import\ImportBibleTextSubViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\Import\ImportBibleVersesSubViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\Import\ImportWizardViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\Import\ImportBibleSubViewModel.cs" />
     <Compile Include="ViewModels\Wizard\WizardViewModelBase.cs" />
     <Compile Include="Views\CommandConsoleView.xaml.cs">
       <DependentUpon>CommandConsoleView.xaml</DependentUpon>
@@ -116,16 +116,16 @@
     <Compile Include="Views\Media\MediaPlayerView.xaml.cs">
       <DependentUpon>MediaPlayerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Wizard\ImportBibleChaptersSubView.xaml.cs">
+    <Compile Include="Views\Wizard\Import\ImportBibleChaptersSubView.xaml.cs">
       <DependentUpon>ImportBibleChaptersSubView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Wizard\ImportBibleSubView.xaml.cs">
+    <Compile Include="Views\Wizard\Import\ImportBibleSubView.xaml.cs">
       <DependentUpon>ImportBibleSubView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Wizard\ImportBibleTextSubView.xaml.cs">
+    <Compile Include="Views\Wizard\Import\ImportBibleTextSubView.xaml.cs">
       <DependentUpon>ImportBibleTextSubView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Wizard\ImportBibleVersesSubView.xaml.cs">
+    <Compile Include="Views\Wizard\Import\ImportBibleVersesSubView.xaml.cs">
       <DependentUpon>ImportBibleVersesSubView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Wizard\WizardView.xaml.cs">
@@ -163,19 +163,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Wizard\ImportBibleChaptersSubView.xaml">
+    <Page Include="Views\Wizard\Import\ImportBibleChaptersSubView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Wizard\ImportBibleSubView.xaml">
+    <Page Include="Views\Wizard\Import\ImportBibleSubView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Wizard\ImportBibleTextSubView.xaml">
+    <Page Include="Views\Wizard\Import\ImportBibleTextSubView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Wizard\ImportBibleVersesSubView.xaml">
+    <Page Include="Views\Wizard\Import\ImportBibleVersesSubView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

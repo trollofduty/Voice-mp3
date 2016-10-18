@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Vapp.Platform.Windows.Wpf.Views.Wizard;
+using Vapp.Platform.Windows.Wpf.Views.Wizard.Import;
 
-namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
+namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 {
     class ImportWizardViewModel : WizardViewModelBase
     {

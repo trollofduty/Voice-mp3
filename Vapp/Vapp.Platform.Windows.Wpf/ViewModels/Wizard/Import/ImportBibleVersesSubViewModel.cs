@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vapp.Platform.Windows.Wpf.Models;
 
-namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
+namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 {
     class ImportBibleVersesSubViewModel : ViewModelBase
     {
