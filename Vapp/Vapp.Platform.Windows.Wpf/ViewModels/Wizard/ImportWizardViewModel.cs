@@ -23,5 +23,19 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
         }
 
         #endregion
+
+        #region Properties
+
+        public ImportBibleSubViewModel ImportBibleSubViewModel
+        {
+            get { return (ImportBibleSubViewModel) this.WizardControls[0].DataContext; }
+        }
+
+        public ImportBibleTextSubViewModel ImportBibleTextSubViewModel
+        {
+            get { return (ImportBibleTextSubViewModel) this.WizardControls[1].DataContext; }
+        }
+
+        #endregion
     }
 }
