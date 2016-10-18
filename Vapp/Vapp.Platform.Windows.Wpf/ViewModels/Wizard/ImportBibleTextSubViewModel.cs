@@ -60,13 +60,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 
                 if (result == DialogResult.OK)
                 {
-                    App.Current.Dispatcher.Invoke(this.BookList.Clear);
                     Stream stream = File.OpenRead(dlg.FileName);
 
-                    if (this.decoder.TryDecode(stream, out this.bible))
-                    {
+                    if (this.decoder.TryDecode(stream, out this.bible) && bible.BookList.Count > 0)
                         App.Current.Dispatcher.Invoke(() => this.BookList.AddRange(this.bible.BookList.Select(t => new BookModel(t.Value))));
-                    }
+                    else
+                        MessageBox.Show("File has invalid format");
                 }
             }
 

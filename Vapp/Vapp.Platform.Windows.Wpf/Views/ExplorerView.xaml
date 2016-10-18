@@ -9,23 +9,23 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="White">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="70"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="70"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Text="Explorer"/>
+            <TextBlock Grid.Column="0" Margin="5 5 5 5" Text="Explorer"/>
 
-            <Button Grid.Column="2" Content="Refresh" Command="{Binding RefreshCommand}"/>
+            <Button Grid.Column="2" Margin="5 5 5 5" Content="Refresh" Command="{Binding RefreshCommand}"/>
         </Grid>
         
-        <TreeView Grid.Row="1" ItemsSource="{Binding TreeItems}">
+        <TreeView Grid.Row="1" Margin="5 5 5 5" ItemsSource="{Binding TreeItems}">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:TreeDirectoryItemViewModel}" ItemsSource="{Binding Items}">
                     <TextBlock Text="{Binding Name}" ToolTip="{Binding Path}"/>
