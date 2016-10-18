@@ -48,10 +48,12 @@
                 <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="90"/>
             </Grid.ColumnDefinitions>
 
             <Button Content="Open File" Grid.Column="0" Margin="5 5 5 5" Command="{Binding OpenFileCommand}"/>
-            <Button Content="Remove Book" Grid.Column="2" Margin="5 5 5 5" Command="{Binding RemoveCommand}"/>
+            <Button Content="Clear Books" Grid.Column="2" Margin="5 5 5 5" Command="{Binding ClearCommand}"/>
+            <Button Content="Remove Book" Grid.Column="3" Margin="5 5 5 5" Command="{Binding RemoveCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

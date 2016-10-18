@@ -23,6 +23,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         {
             this.OpenFileCommand = new RelayCommand(this.OpenFile);
             this.RemoveCommand = new RelayCommand(this.RemoveBook);
+            this.ClearCommand = new RelayCommand(this.ClearList);
         }
         
         #endregion
@@ -36,6 +37,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         public ICommand OpenFileCommand { get; set; }
 
         public ICommand RemoveCommand { get; set; }
+
+        public ICommand ClearCommand { get; set; }
 
         public BookModel selectedBook;
         public BookModel SelectedBook
@@ -75,25 +78,25 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             GC.Collect();
         }
 
+        public void ClearList()
+        {
+            App.Current.Dispatcher.Invoke(this.BookList.Clear);
+        }
+
         public void RemoveBook()
         {
             if (this.BookList.Contains(this.SelectedBook))
-            {
-                App.Current.Dispatcher.Invoke(() =>
-                {
-                    this.BookList.Remove(this.SelectedBook);
-                });
-            }
+                App.Current.Dispatcher.Invoke(() => this.BookList.Remove(this.SelectedBook));
         }
 
         public override void Loaded()
         {
-            throw new NotImplementedException();
+            // Skip
         }
 
         public override void Closed()
         {
-            throw new NotImplementedException();
+            this.ClearList();
         }
 
         public override void Finish()

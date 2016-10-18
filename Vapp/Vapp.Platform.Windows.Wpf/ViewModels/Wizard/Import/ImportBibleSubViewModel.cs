@@ -109,7 +109,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public override void Loaded()
         {
-            throw new NotImplementedException();
+            // Skip
         }
 
         public override void Closed()
