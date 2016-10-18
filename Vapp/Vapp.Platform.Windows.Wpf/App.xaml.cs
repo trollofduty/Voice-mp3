@@ -20,5 +20,7 @@ namespace Vapp.Platform.Windows.Wpf
         {
             return string.IsNullOrEmpty(name) ? Current.Windows.OfType<T>().Any() : Current.Windows.OfType<T>().Any(w => w.Name.Equals(name));
         }
+
+        public static string RootPath { get; private set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Vapp";
     }
 }

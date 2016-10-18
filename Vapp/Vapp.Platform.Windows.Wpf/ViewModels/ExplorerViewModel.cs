@@ -22,8 +22,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         public ExplorerViewModel()
         {
             this.RefreshCommand = new RelayCommand(() => Task.Run(() => this.Validate()));
-            this.TreeItems = this.GetAllItems(this.Path);
-            this.watcher = new FileSystemWatcher(this.Path);
+            this.TreeItems = this.GetAllItems(App.RootPath);
+            this.watcher = new FileSystemWatcher(App.RootPath);
             this.watcher.Changed += this.OnValidate;
             this.watcher.Created += this.OnValidate;
             this.watcher.Deleted += this.OnValidate;
@@ -35,8 +35,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
 
         #region Properties
 
-        private object lObject = new object();
-        private object iObject = new object();
+        private object lockObject = new object();
 
         private FileSystemWatcher watcher { get; set; }
 
@@ -48,8 +47,6 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
             get { return this.treeItems; }
             set { this.Set(ref this.treeItems, value); }
         }
-
-        private string Path { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Vapp";
 
         public IFileContentProvider FileContentProvider { get; set; }
 
@@ -65,16 +62,13 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         // Still slow, lots of directories and files = slow response time.
         public void Validate()
         {
-            lock (lObject)
+            lock (lockObject)
             {
-                lock (iObject)
-                {
-                    IEnumerable<TreeItemViewModel> dExist = this.TreeItems.ToList().Where(i => !i.Exists);
-                    App.Current.Dispatcher.Invoke(() => this.TreeItems.RemoveRange(dExist));
+                IEnumerable<TreeItemViewModel> dExist = this.TreeItems.ToList().Where(i => !i.Exists);
+                App.Current.Dispatcher.Invoke(() => this.TreeItems.RemoveRange(dExist));
 
-                    IEnumerable<TreeItemViewModel> nItems = this.GetItems(this.Path).Where(i => !this.TreeItems.ToList().Select(o => o.Path).Contains(i.Path));
-                    App.Current.Dispatcher.Invoke(() => this.TreeItems.AddRange(nItems));
-                }
+                IEnumerable<TreeItemViewModel> nItems = this.GetItems(App.RootPath).Where(i => !this.TreeItems.ToList().Select(o => o.Path).Contains(i.Path));
+                App.Current.Dispatcher.Invoke(() => this.TreeItems.AddRange(nItems));
 
                 IEnumerable<TreeDirectoryItemViewModel> dirs = this.TreeItems.ToList().Where(i => i.GetType() == typeof(TreeDirectoryItemViewModel)).Select(d => (TreeDirectoryItemViewModel) d);
                 foreach (TreeDirectoryItemViewModel dir in dirs)

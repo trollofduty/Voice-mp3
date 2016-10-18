@@ -15,7 +15,7 @@ using Vapp.Extensions;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 {
-    class ImportBibleSubViewModel : ViewModelBase, IWizardResult
+    class ImportBibleSubViewModel : WizardSubViewModelBase
     {
         #region Constructor
 
@@ -107,7 +107,17 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
             return result;
         }
 
-        public bool Execute()
+        public override void Loaded()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Closed()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Finish()
         {
             throw new NotImplementedException();
         }

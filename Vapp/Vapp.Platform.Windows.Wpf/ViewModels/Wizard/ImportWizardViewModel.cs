@@ -19,7 +19,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
         {
             this.Add(new ImportBibleSubView());
             this.Add(new ImportBibleTextSubView());
-            this.CurrentSubView = this.WizardControls.FirstOrDefault();
+            this.ImportBibleTextSubViewModel.ImportBibleSubViewModel = this.ImportBibleSubViewModel;
+            this.Start();
         }
 
         #endregion

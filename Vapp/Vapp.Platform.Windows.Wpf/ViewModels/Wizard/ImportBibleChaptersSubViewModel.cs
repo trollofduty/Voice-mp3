@@ -9,7 +9,7 @@ using Vapp.Platform.Windows.Wpf.Models;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 {
-    class ImportBibleChaptersSubViewModel : ViewModelBase, IWizardResult
+    class ImportBibleChaptersSubViewModel : ViewModelBase
     {
         #region Properties
 
@@ -18,15 +18,6 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
         {
             get { return this.selectedFiles; }
             set { this.Set(ref this.selectedFiles, value); }
-        }
-
-        #endregion
-
-        #region Methods
-
-        public bool Execute()
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

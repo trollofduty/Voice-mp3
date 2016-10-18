@@ -15,7 +15,7 @@ using Vapp.Extensions;
 
 namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 {
-    class ImportBibleTextSubViewModel : ViewModelBase, IWizardResult
+    class ImportBibleTextSubViewModel : WizardSubViewModelBase
     {
         #region Constructor
 
@@ -28,6 +28,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
         #endregion
 
         #region Properties
+
+        public ImportBibleSubViewModel ImportBibleSubViewModel { get; set; }
 
         public ObservableCollection<BookModel> BookList { get; private set; } = new ObservableCollection<BookModel>();
 
@@ -84,7 +86,17 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
             }
         }
 
-        public bool Execute()
+        public override void Loaded()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Closed()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Finish()
         {
             throw new NotImplementedException();
         }

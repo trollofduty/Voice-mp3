@@ -27,9 +27,9 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 
         protected List<UserControl> WizardControls { get; set; } = new List<UserControl>();
 
-        protected IEnumerable<IWizardResult> Results
+        protected IEnumerable<WizardSubViewModelBase> Results
         {
-            get { return this.WizardControls.Where(c => c.GetType() == typeof(IWizardResult)).Select(c => (IWizardResult) c.DataContext); }
+            get { return this.WizardControls.Where(c => c.GetType() == typeof(WizardSubViewModelBase)).Select(c => (WizardSubViewModelBase) c.DataContext); }
         }
 
         protected int? ControlsIndex
@@ -82,6 +82,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 
         #region Methods
 
+        public void Start()
+        {
+            this.CurrentSubView = this.WizardControls.FirstOrDefault();
+            ((WizardSubViewModelBase) this.CurrentSubView.DataContext).Loaded();
+        }
+
         protected void Add(UserControl control)
         {
             this.WizardControls.Add(control);
@@ -92,6 +98,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 
         protected virtual void Back()
         {
+            ((WizardSubViewModelBase) this.CurrentSubView.DataContext).Closed();
+
             if (this.HasPrevious)
                 this.CurrentSubView = this.WizardControls[this.ControlsIndex.Value - 1];
 
@@ -103,7 +111,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
         protected virtual void Next()
         {
             if (this.HasNext)
+            {
                 this.CurrentSubView = this.WizardControls[this.ControlsIndex.Value + 1];
+                ((WizardSubViewModelBase) this.CurrentSubView.DataContext).Loaded();
+            }
 
             this.HasPrevious = this.ControlsIndex > 0;
             this.HasNext = this.ControlsIndex < this.WizardControls.Count - 1;
@@ -112,10 +123,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 
         protected virtual void Finish()
         {
-            IEnumerable<IWizardResult> results = this.Results;
+            IEnumerable<WizardSubViewModelBase> results = this.Results;
 
-            foreach (IWizardResult result in results)
-                result.Execute();
+            foreach (WizardSubViewModelBase result in results)
+                result.Finish();
         }
 
         #endregion
