@@ -95,6 +95,7 @@
     <Compile Include="ViewModels\TreeFileItemViewModel.cs" />
     <Compile Include="ViewModels\TreeItemViewModel.cs" />
     <Compile Include="ViewModels\Wizard\ImportBibleChaptersSubViewModel.cs" />
+    <Compile Include="ViewModels\Wizard\ImportBibleTextSubViewModel.cs" />
     <Compile Include="ViewModels\Wizard\ImportBibleVersesSubViewModel.cs" />
     <Compile Include="ViewModels\Wizard\ImportWizardViewModel.cs" />
     <Compile Include="ViewModels\Wizard\ImportBibleSubViewModel.cs" />
@@ -119,6 +120,9 @@
     </Compile>
     <Compile Include="Views\Wizard\ImportBibleSubView.xaml.cs">
       <DependentUpon>ImportBibleSubView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Wizard\ImportBibleTextSubView.xaml.cs">
+      <DependentUpon>ImportBibleTextSubView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Wizard\ImportBibleVersesSubView.xaml.cs">
       <DependentUpon>ImportBibleVersesSubView.xaml</DependentUpon>
@@ -165,6 +169,10 @@
     <Page Include="Views\Wizard\ImportBibleSubView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Wizard\ImportBibleTextSubView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Wizard\ImportBibleVersesSubView.xaml">
       <SubType>Designer</SubType>

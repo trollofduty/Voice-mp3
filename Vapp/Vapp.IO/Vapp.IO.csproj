@@ -64,6 +64,13 @@
     <Compile Include="Codecs\EncoderBase.cs" />
     <Compile Include="Codecs\Subtitles\SrtDecoder.cs" />
     <Compile Include="Codecs\Subtitles\SrtEncoder.cs" />
+    <Compile Include="Codecs\Text\Bible.cs" />
+    <Compile Include="Codecs\Text\BibleDecoder.cs" />
+    <Compile Include="Codecs\Text\Book.cs" />
+    <Compile Include="Codecs\Text\BookDecoder.cs" />
+    <Compile Include="Codecs\Text\BookEncoder.cs" />
+    <Compile Include="Codecs\Text\Verse.cs" />
+    <Compile Include="Codecs\Text\VerseToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
             : base()
         {
             this.Add(new ImportBibleSubView());
+            this.Add(new ImportBibleTextSubView());
             this.CurrentSubView = this.WizardControls.FirstOrDefault();
         }
 
