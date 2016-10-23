@@ -39,11 +39,11 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
+            <Grid Grid.Column="0" Margin="5 5 0 5">
                 <views:ExplorerView x:Name="ExplorerView"/>
             </Grid>
 
-            <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Left" />
+            <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="White"/>
 
             <Grid Grid.Column="{Binding MediaPlayerColumn}" Grid.ColumnSpan="{Binding MediaPlayerColumnSpan}">
                 <media:MediaPlayerGroupView x:Name="MediaPlayerGroupView"/>
