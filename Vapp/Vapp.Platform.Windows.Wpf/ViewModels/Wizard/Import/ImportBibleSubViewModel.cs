@@ -21,26 +21,20 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public ImportBibleSubViewModel()
         {
+            this.SelectedModels = new ObservableCollection<FileModel>();
             this.SelectFolderCommand = new RelayCommand(this.SelectFolder);
-            ((ImportBibleVersesSubViewModel) this.versesView.DataContext).SelectedFiles = this.SelectedFiles;
-            ((ImportBibleChaptersSubViewModel) this.chaptersView.DataContext).SelectedFiles = this.SelectedFiles;
         }
 
         #endregion
 
         #region Properties
 
-        private UserControl versesView = new ImportBibleVersesSubView();
-        private UserControl chaptersView = new ImportBibleChaptersSubView();
-
-        private UserControl subView;
-        public UserControl SubView
+        public ObservableCollection<FileModel> selectedModels;
+        public ObservableCollection<FileModel> SelectedModels
         {
-            get { return this.subView; }
-            set { this.Set(ref this.subView, value); }
+            get { return this.selectedModels; }
+            set { this.Set(ref this.selectedModels, value); }
         }
-
-        public ObservableCollection<ImportFileItemModel> SelectedFiles { get; set; } = new ObservableCollection<ImportFileItemModel>();
 
         public string RootDirectory { get; set; }
 
@@ -60,13 +54,6 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             set
             {
                 this.Set(ref this.selectedItem, value);
-
-                if (this.selectedItem == "System.Windows.Controls.ComboBoxItem: Chapters")
-                    this.SubView = chaptersView;
-                else if (this.selectedItem == "System.Windows.Controls.ComboBoxItem: Verses")
-                    this.SubView = versesView;
-                else
-                    this.SubView = null;
             }
         }
 
@@ -83,11 +70,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     this.RootDirectory = dlg.SelectedPath;
-                    IEnumerable<ImportFileItemModel> files = this.EnumerateSubDirectories(new DirectoryInfo(dlg.SelectedPath)).Select(f => new ImportFileItemModel(f));
+                    IEnumerable<FileModel> files = this.EnumerateSubDirectories(new DirectoryInfo(dlg.SelectedPath)).Select(f => new FileModel(f));
                     App.Current.Dispatcher.Invoke(() =>
                     {
-                        this.SelectedFiles.Clear();
-                        this.SelectedFiles.AddRange(files);
+                        this.SelectedModels.Clear();
+                        this.SelectedModels.AddRange(files);
                     });
                 }
             }

@@ -9,11 +9,18 @@ using System.Threading.Tasks;
 
 namespace Vapp.Platform.Windows.Wpf.Models
 {
-    class ImportFileItemModel : ObservableObject
+    class FileModel : ObservableObject
     {
         #region Constructor
 
-        public ImportFileItemModel(FileInfo fInfo)
+        internal FileModel(string fullPath, string expectedName, long fileSize)
+        {
+            this.FullPath = fullPath;
+            this.ExpectedName = expectedName;
+            this.FileSize = fileSize;
+        }
+
+        public FileModel(FileInfo fInfo)
         {
             this.FullPath = fInfo.FullName;
             this.ExpectedName = this.FileName;

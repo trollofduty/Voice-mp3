@@ -46,7 +46,7 @@
             <GridSplitter Grid.Column="1" Width="5" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="White"/>
 
             <Grid Grid.Column="{Binding MediaPlayerColumn}" Grid.ColumnSpan="{Binding MediaPlayerColumnSpan}">
-                <media:MediaPlayerGroupView x:Name="MediaPlayerGroupView"/>
+                <media:MediaPlayerGroupView x:Name="MainMediaPlayerGroupView"/>
             </Grid>
         </Grid>
         

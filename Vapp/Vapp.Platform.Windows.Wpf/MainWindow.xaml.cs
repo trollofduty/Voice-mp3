@@ -60,7 +60,7 @@ namespace Vapp.Platform.Windows.Wpf
 
         private MediaPlayerGroupViewModel GetMediaPlayerGroupViewModel()
         {
-            return (MediaPlayerGroupViewModel) this.MediaPlayerGroupView.DataContext;
+            return (MediaPlayerGroupViewModel) this.MainMediaPlayerGroupView.DataContext;
         }
 
         #endregion
