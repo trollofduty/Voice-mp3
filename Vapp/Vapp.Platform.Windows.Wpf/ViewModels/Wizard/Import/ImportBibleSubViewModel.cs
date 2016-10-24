@@ -23,6 +23,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         {
             this.SelectedModels = new ObservableCollection<FileModel>();
             this.SelectFolderCommand = new RelayCommand(this.SelectFolder);
+            this.ClearListCommand = new RelayCommand(this.ClearList);
+            this.RemoveItemCommand = new RelayCommand(this.RemoveItem);
         }
 
         #endregion
@@ -40,6 +42,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public ICommand SelectFolderCommand { get; private set; }
 
+        public ICommand ClearListCommand { get; private set; }
+
+        public ICommand RemoveItemCommand { get; private set; }
+
         private string bookName;
         public string BookName
         {
@@ -47,14 +53,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             set { this.Set(ref this.bookName, value); }
         }
 
-        private string selectedItem;
-        public string SelectedItem
+        private FileModel selectedItem;
+        public FileModel SelectedItem
         {
             get { return this.selectedItem; }
-            set
-            {
-                this.Set(ref this.selectedItem, value);
-            }
+            set { this.Set(ref this.selectedItem, value); }
         }
 
         #endregion
@@ -78,6 +81,17 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                     });
                 }
             }
+        }
+
+        public void ClearList()
+        {
+            App.Current.Dispatcher.Invoke(this.SelectedModels.Clear);
+        }
+
+        public void RemoveItem()
+        {
+            if (this.SelectedModels.Contains(this.SelectedItem))
+                App.Current.Dispatcher.Invoke(() => this.SelectedModels.Remove(this.SelectedItem));
         }
 
         public List<FileInfo> EnumerateSubDirectories (DirectoryInfo dInfo, List<FileInfo> result = null)

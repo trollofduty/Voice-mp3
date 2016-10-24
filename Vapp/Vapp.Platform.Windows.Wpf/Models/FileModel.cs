@@ -15,15 +15,25 @@ namespace Vapp.Platform.Windows.Wpf.Models
 
         internal FileModel(string fullPath, string expectedName, long fileSize)
         {
+            string[] split = expectedName.Split('.');
+            string name = "";
+            for (int index = 0; index < split.Length - 1; index++)
+                name += split[index];
+
             this.FullPath = fullPath;
-            this.ExpectedName = expectedName;
+            this.ExpectedName = name;
             this.FileSize = fileSize;
         }
 
         public FileModel(FileInfo fInfo)
         {
+            string[] split = fInfo.Name.Split('.');
+            string name = "";
+            for (int index = 0; index < split.Length - 1; index++)
+                name += split[index];
+
             this.FullPath = fInfo.FullName;
-            this.ExpectedName = this.FileName;
+            this.ExpectedName = name;
             this.FileSize = fInfo.Length;
         }
 
@@ -44,7 +54,7 @@ namespace Vapp.Platform.Windows.Wpf.Models
 
         public string FileName
         {
-            get { return this.FullPath.Split('\\', '/').FirstOrDefault(); }
+            get { return this.FullPath.Split('\\', '/').LastOrDefault(); }
         }
 
         private string expectedName;
