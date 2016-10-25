@@ -115,7 +115,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public override void Finish()
         {
-            throw new NotImplementedException();
+            // Skip
         }
 
         #endregion

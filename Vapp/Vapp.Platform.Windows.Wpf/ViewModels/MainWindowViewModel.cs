@@ -190,7 +190,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
         private WizardView CreateImportWizard()
         {
             WizardView view = new WizardView();
-            view.DataContext = new ImportWizardViewModel();
+            view.SetDataContext(new ImportWizardViewModel());
             return view;
         }
 

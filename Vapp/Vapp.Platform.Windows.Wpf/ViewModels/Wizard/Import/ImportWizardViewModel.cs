@@ -19,6 +19,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         {
             this.Add(new ImportBibleSubView());
             this.Add(new ImportBibleTextSubView());
+            this.Add(new ImportBibleGapSubView());
             this.ImportBibleTextSubViewModel.ImportBibleSubViewModel = this.ImportBibleSubViewModel;
             this.Start();
         }
@@ -35,6 +36,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         public ImportBibleTextSubViewModel ImportBibleTextSubViewModel
         {
             get { return (ImportBibleTextSubViewModel) this.WizardControls[1].DataContext; }
+        }
+
+        public ImportBibleGapSubViewModel ImportBibleGapSubViewModel
+        {
+            get { return (ImportBibleGapSubViewModel) this.WizardControls[2].DataContext; }
         }
 
         #endregion

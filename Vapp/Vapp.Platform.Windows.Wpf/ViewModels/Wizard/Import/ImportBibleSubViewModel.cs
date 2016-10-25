@@ -122,12 +122,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public override void Closed()
         {
-            throw new NotImplementedException();
+            // Skip
         }
 
         public override void Finish()
         {
-            throw new NotImplementedException();
+            // Skip
         }
 
         #endregion

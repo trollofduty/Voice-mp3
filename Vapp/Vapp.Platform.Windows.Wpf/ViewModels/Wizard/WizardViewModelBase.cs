@@ -57,6 +57,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 
         public ICommand FinishCommand { get; set; }
 
+        public ICommand CloseWindowCommand { get; set; }
+
         private bool hasPrevious;
         public virtual bool HasPrevious
         {
@@ -127,6 +129,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
 
             foreach (WizardSubViewModelBase result in results)
                 result.Finish();
+
+            this.CloseWindowCommand.Execute(null);
         }
 
         #endregion

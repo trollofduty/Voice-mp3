@@ -82,6 +82,7 @@
     <Compile Include="Models\FileHeaderModel.cs" />
     <Compile Include="Models\VerseFileModel.cs" />
     <Compile Include="Selectors\FileModelListDataTemplateSelector.cs" />
+    <Compile Include="ViewModels\Wizard\Import\ImportBibleGapSubViewModel.cs" />
     <Compile Include="ViewModels\Wizard\WizardSubViewModelBase.cs" />
     <Compile Include="Models\BookModel.cs" />
     <Compile Include="Models\ConsoleBlockModel.cs" />
@@ -116,6 +117,9 @@
     </Compile>
     <Compile Include="Views\Media\MediaPlayerView.xaml.cs">
       <DependentUpon>MediaPlayerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Wizard\Import\ImportBibleGapSubView.xaml.cs">
+      <DependentUpon>ImportBibleGapSubView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Wizard\Import\ImportBibleSubView.xaml.cs">
       <DependentUpon>ImportBibleSubView.xaml</DependentUpon>
@@ -155,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Media\MediaPlayerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Wizard\Import\ImportBibleGapSubView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

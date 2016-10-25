@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Vapp.Platform.Windows.Wpf.ViewModels.Wizard;
 
 namespace Vapp.Platform.Windows.Wpf.Views.Wizard
 {
@@ -25,12 +27,21 @@ namespace Vapp.Platform.Windows.Wpf.Views.Wizard
             InitializeComponent();
             this.Focus();
             this.Topmost = true;
+            this.CloseWindowCommand = new RelayCommand(this.Close);
         }
+
+        private ICommand CloseWindowCommand { get; set; }
 
         private void OnWindowDeactivated(object sender, EventArgs e)
         {
             this.Topmost = true;
             this.Focus();
+        }
+
+        internal void SetDataContext(WizardViewModelBase viewModel)
+        {
+            this.DataContext = viewModel;
+            viewModel.CloseWindowCommand = this.CloseWindowCommand;
         }
     }
 }
