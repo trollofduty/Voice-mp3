@@ -25,12 +25,26 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             this.RemoveCommand = new RelayCommand(this.RemoveBook);
             this.ClearCommand = new RelayCommand(this.ClearList);
         }
-        
+
         #endregion
 
         #region Properties
+        
+        public string BookName
+        {
+            get { return this.ImportBibleSubViewModel.BookName; }
+        }
 
-        public ImportBibleSubViewModel ImportBibleSubViewModel { get; set; }
+        private ImportBibleSubViewModel importBibleSubViewModel;
+        public ImportBibleSubViewModel ImportBibleSubViewModel
+        {
+            get { return this.importBibleSubViewModel; }
+            set
+            {
+                this.importBibleSubViewModel = value;
+                this.RaisePropertyChanged("BookName");
+            }
+        }
 
         public ObservableCollection<BookModel> BookList { get; private set; } = new ObservableCollection<BookModel>();
 
@@ -91,7 +105,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public override void Loaded()
         {
-            // Skip
+            this.RaisePropertyChanged("BookName");
         }
 
         public override void Closed()

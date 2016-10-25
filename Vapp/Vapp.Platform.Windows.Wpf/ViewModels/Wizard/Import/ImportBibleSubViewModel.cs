@@ -21,7 +21,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public ImportBibleSubViewModel()
         {
-            this.SelectedModels = new ObservableCollection<FileModel>();
+            this.SelectedModels = new ObservableCollection<object>();
             this.SelectFolderCommand = new RelayCommand(this.SelectFolder);
             this.ClearListCommand = new RelayCommand(this.ClearList);
             this.RemoveItemCommand = new RelayCommand(this.RemoveItem);
@@ -31,8 +31,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         #region Properties
 
-        public ObservableCollection<FileModel> selectedModels;
-        public ObservableCollection<FileModel> SelectedModels
+        public ObservableCollection<object> selectedModels;
+        public ObservableCollection<object> SelectedModels
         {
             get { return this.selectedModels; }
             set { this.Set(ref this.selectedModels, value); }
@@ -53,11 +53,18 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             set { this.Set(ref this.bookName, value); }
         }
 
-        private FileModel selectedItem;
-        public FileModel SelectedItem
+        private FileModel selectedItemList;
+        public FileModel SelectedItemList
         {
-            get { return this.selectedItem; }
-            set { this.Set(ref this.selectedItem, value); }
+            get { return this.selectedItemList; }
+            set { this.Set(ref this.selectedItemList, value); }
+        }
+
+        private string selectedItemCombo;
+        public string SelectedItemCombo
+        {
+            get { return this.selectedItemCombo; }
+            set { this.Set(ref this.selectedItemCombo, value); }
         }
 
         #endregion
@@ -90,8 +97,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public void RemoveItem()
         {
-            if (this.SelectedModels.Contains(this.SelectedItem))
-                App.Current.Dispatcher.Invoke(() => this.SelectedModels.Remove(this.SelectedItem));
+            if (this.SelectedModels.Contains(this.SelectedItemList))
+                App.Current.Dispatcher.Invoke(() => this.SelectedModels.Remove(this.SelectedItemList));
         }
 
         public List<FileInfo> EnumerateSubDirectories (DirectoryInfo dInfo, List<FileInfo> result = null)

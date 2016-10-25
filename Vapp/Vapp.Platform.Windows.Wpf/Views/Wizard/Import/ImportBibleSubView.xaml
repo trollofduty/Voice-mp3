@@ -7,6 +7,7 @@
              xmlns:models="clr-namespace:Vapp.Platform.Windows.Wpf.Models"
              xmlns:converters="clr-namespace:Vapp.Platform.Windows.Wpf.Converters"
              xmlns:selectors="clr-namespace:Vapp.Platform.Windows.Wpf.Selectors"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
@@ -18,7 +19,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="*"/>
@@ -29,31 +30,24 @@
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="File Name: "/>
                 <TextBlock Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileName}"/>
-                
+
                 <TextBlock Grid.Row="2" Grid.Column="0" Margin="5 5 0 5" Text="File Path: "/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
-                
+
                 <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
             </Grid>
         </DataTemplate>
-        
-        <DataTemplate x:Key="ChapterFileModelTemplate" DataType="{x:Type models:ChapterFileModel}">
-            <Grid>
 
-            </Grid>
-        </DataTemplate>
-        
-        <DataTemplate x:Key="VerseFileModelTemplate" DataType="{x:Type models:VerseFileModel}">
+        <DataTemplate x:Key="FileModelHeaderTemplate" DataType="{x:Type models:FileHeaderModel}">
             <Grid>
-
+                <TextBlock Margin="5 5 5 5" Text="{Binding }"/>
             </Grid>
         </DataTemplate>
         
         <selectors:FileModelListDataTemplateSelector x:Key="FileModelListDataTemplateSelector"
-                                                     ChapterFileModelTemplate="{StaticResource ChapterFileModelTemplate}"
-                                                     VerseFileModelTemplate="{StaticResource VerseFileModelTemplate}"
-                                                     FileModelTemplate="{StaticResource FileModelTemplate}"/>
+                                                     FileModelTemplate="{StaticResource FileModelTemplate}"
+                                                     FileModelHeaderTemplate="{StaticResource FileModelHeaderTemplate}"/>
     </UserControl.Resources>
     
     <Grid>
@@ -74,7 +68,7 @@
             <TextBox Text="{Binding BookName, Mode=TwoWay}" Grid.Column="1" Margin="5 5 5 5"/>
         </Grid>
 
-        <ListBox Grid.Row="1" Margin="5 5 5 5" HorizontalContentAlignment="Stretch" ItemsSource="{Binding SelectedModels}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+        <ListBox Grid.Row="1" Margin="5 5 5 5" HorizontalContentAlignment="Stretch" ItemsSource="{Binding SelectedModels}" SelectedItem="{Binding SelectedItemList, Mode=TwoWay}"
                  ItemTemplateSelector="{StaticResource FileModelListDataTemplateSelector}"/>
         
         <Grid Grid.Row="2">
@@ -91,7 +85,7 @@
 
             <TextBlock Text="Split By:" Grid.Column="2" Margin="5 5 5 5" TextAlignment="Center" VerticalAlignment="Center"/>
 
-            <ComboBox Grid.Column="3" Margin="5 5 5 5" SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}" SelectedIndex="0">
+            <ComboBox Grid.Column="3" Margin="5 5 5 5" SelectedItem="{Binding SelectedItemCombo, Mode=OneWayToSource}" SelectedIndex="0">
                 <ComboBoxItem>Chapters</ComboBoxItem>
                 <ComboBoxItem>Verses</ComboBoxItem>
             </ComboBox>

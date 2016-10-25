@@ -9,43 +9,58 @@
              d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
         <DataTemplate x:Key="BookListTemplate" DataType="{x:Type models:BookModel}">
-            <Grid VerticalAlignment="Stretch">
+            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="87"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="75"/>
                     <ColumnDefinition Width="90"/>
-                    <ColumnDefinition Width="59"/>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="45"/>
-                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Margin="5 5 5 0" Text="Book Number:"/>
-                <TextBox Grid.Column="1" Margin="0 5 5 5" Text="{Binding Order, Mode=TwoWay}"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="2" Margin="5 5 5 0" Text="Book Name:"/>
-                <TextBox Grid.Column="3" Margin="0 5 5 5" Text="{Binding Name, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5 5 5 0" Text="Book Number:"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5 5 5" HorizontalContentAlignment="Stretch"
+                         Text="{Binding Order, Mode=TwoWay}"/>
 
-                <TextBlock Grid.Column="4" Margin="5 5 5 0" Text="Chapters:"/>
-                <TextBlock Grid.Column="5" Margin="0 5 5 5" Text="{Binding ChaptersCount}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 5 0" Text="Book Name:"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" HorizontalContentAlignment="Stretch"
+                         Text="{Binding Name, Mode=TwoWay}"/>
 
-                <TextBlock Grid.Column="6" Margin="5 5 5 0" Text="Verses: "/>
-                <TextBlock Grid.Column="7" Margin="0 5 5 5" Text="{Binding VersesCount}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5 5 5 0" Text="Chapters:"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" Text="{Binding ChaptersCount}"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 5 0" Text="Verses: "/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding VersesCount}"/>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Row="0" Margin="5 5 5 5" ItemsSource="{Binding BookList}" HorizontalContentAlignment="Stretch"
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="69"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Book Name:" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5 5 0 5"/>
+            <TextBlock Grid.Column="1" Margin="5 5 5 5"  HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding BookName}"/>
+        </Grid>
+
+        <ListBox Grid.Row="1" Margin="5 5 5 5" ItemsSource="{Binding BookList}" HorizontalContentAlignment="Stretch"
                  SelectedValue="{Binding SelectedBook, Mode=OneWayToSource}" ItemTemplate="{StaticResource BookListTemplate}"/>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="*"/>
