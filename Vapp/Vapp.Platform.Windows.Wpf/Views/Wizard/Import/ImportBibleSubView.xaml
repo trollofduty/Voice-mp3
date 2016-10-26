@@ -37,7 +37,7 @@
                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
             </Grid>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="BookFileModelTemplate" DataType="{x:Type models:BookFileModel}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -55,7 +55,7 @@
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="5 5 0 5" Text="Book Name: "/>
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding ExpectedName, Mode=TwoWay}"/>
-                
+
                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="Book Number: "/>
                 <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding Book, Mode=TwoWay}"/>
 
@@ -69,7 +69,7 @@
                 <TextBlock Grid.Row="4" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
             </Grid>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="ChapterFileModelTemplate" DataType="{x:Type models:ChapterFileModel}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -103,14 +103,14 @@
                 <TextBlock Margin="5 5 5 5" Text="{Binding Text}" FontWeight="Bold" FontSize="20"/>
             </Grid>
         </DataTemplate>
-        
+
         <selectors:FileModelListDataTemplateSelector x:Key="FileModelListDataTemplateSelector"
                                                      FileModelTemplate="{StaticResource FileModelTemplate}"
                                                      ChapterFileModelTemplate="{StaticResource ChapterFileModelTemplate}"
                                                      BookFileModelTemplate="{StaticResource BookFileModelTemplate}"
                                                      FileHeaderModelTemplate="{StaticResource FileHeaderModelTemplate}"/>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -131,12 +131,13 @@
 
         <ListBox Grid.Row="1" Margin="5 5 5 5" HorizontalContentAlignment="Stretch" ItemsSource="{Binding SelectedModels}" SelectedItem="{Binding SelectedItemList, Mode=TwoWay}"
                  ItemTemplateSelector="{StaticResource FileModelListDataTemplateSelector}"/>
-        
+
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="51"/>
+                <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="90"/>
@@ -151,9 +152,9 @@
                 <ComboBoxItem>Chapters</ComboBoxItem>
             </ComboBox>
 
-            <Button Content="Remove Item" Grid.Column="4" Margin="5 5 5 5" Command="{Binding RemoveItemCommand}"/>
-
-            <Button Content="Clear List" Grid.Column="5" Margin="5 5 5 5" Command="{Binding ClearListCommand}"/>
+            <Button Content="Use Item" Grid.Column="4" Margin="5 5 5 5" Command="{Binding UseItemCommand}" IsEnabled="{Binding CanUse}"/>
+            <Button Content="Remove Item" Grid.Column="5" Margin="5 5 5 5" Command="{Binding RemoveItemCommand}"/>
+            <Button Content="Clear List" Grid.Column="6" Margin="5 5 5 5" Command="{Binding ClearListCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

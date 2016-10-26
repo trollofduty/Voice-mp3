@@ -19,13 +19,13 @@ namespace Vapp.Extensions
         /// <typeparam name="T">Collection type</typeparam>
         /// <param name="host">Collection object</param>
         /// <param name="items">List to add to the collection</param>
-        public static void AddRange<T>(this Collection<T> host, IEnumerable<T> items)
+        public static void AddRange<T>(this ICollection<T> host, IEnumerable<T> items)
         {
             foreach (T item in items)
                 host.Add(item);
         }
 
-        public static void RemoveRange<T>(this Collection<T> host, IEnumerable<T> items)
+        public static void RemoveRange<T>(this ICollection<T> host, IEnumerable<T> items)
         {
             foreach (T item in items)
                 host.Remove(item);
