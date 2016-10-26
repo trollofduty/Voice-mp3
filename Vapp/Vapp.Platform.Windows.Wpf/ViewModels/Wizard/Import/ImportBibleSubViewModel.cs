@@ -42,6 +42,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         #region Properties
 
+        public ImportWizardViewModel ImportWizardViewModel { get; set; }
+
         public List<FileModel> Files { get; set; }
 
         public List<FileModel> SelectedFiles { get; set; }
@@ -224,6 +226,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 this.SelectedModels.Clear();
                 this.SelectedModels.AddRange(list);
                 this.RaisePropertyChanged("HasValues");
+                this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
             });
         }
 
@@ -279,6 +282,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             {
                 this.SelectedModels.Clear();
                 this.RaisePropertyChanged("HasValues");
+                this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
             });
         }
 
@@ -328,6 +332,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 {
                     this.SelectedModels.Remove(this.SelectedItemList);
                     this.RaisePropertyChanged("HasValues");
+                    this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
                 });
             }
         }
@@ -348,7 +353,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public override void Loaded()
         {
-            // Skip
+            this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
         }
 
         public override void Closed()

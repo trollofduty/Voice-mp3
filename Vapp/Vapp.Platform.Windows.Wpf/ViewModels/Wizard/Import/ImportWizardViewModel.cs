@@ -20,6 +20,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             this.Add(new ImportBibleSubView());
             this.Add(new ImportBibleTextSubView());
             this.Add(new ImportBibleGapSubView());
+            this.ImportBibleSubViewModel.ImportWizardViewModel = this;
             this.ImportBibleTextSubViewModel.ImportBibleSubViewModel = this.ImportBibleSubViewModel;
             this.ImportBibleGapSubViewModel.ImportBibleSubViewModel = this.ImportBibleSubViewModel;
             this.ImportBibleGapSubViewModel.ImportBibleTextSubViewModel = this.ImportBibleTextSubViewModel;
@@ -29,6 +30,20 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         #endregion
 
         #region Properties
+
+        public override bool HasNext
+        {
+            get
+            {
+                if (this.CurrentSubView.DataContext == this.ImportBibleSubViewModel)
+                {
+                    return this.ImportBibleSubViewModel.SelectedModels != null && this.ImportBibleSubViewModel.SelectedModels.Count > 0
+                        && this.ImportBibleSubViewModel.SelectedFiles != null && this.ImportBibleSubViewModel.SelectedFiles.Count > 0;
+                }
+                return base.HasNext;
+            }
+            set { base.HasNext = value; }
+        }
 
         public ImportBibleSubViewModel ImportBibleSubViewModel
         {
