@@ -31,6 +31,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         #region Properties
 
+        public IEnumerable<FileModel> Files { get; set; }
+
         public ObservableCollection<object> selectedModels;
         public ObservableCollection<object> SelectedModels
         {
@@ -71,6 +73,25 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         #region Methods
 
+        private bool WhereRootFiles(FileModel file)
+        {
+            string[] split = file.FullPath.Split('\\', '/');
+            string output = split[0];
+            for (int index = 1; index < split.Length - 1; index++)
+                output += string.Format("\\{0}", split[index]);
+
+            if (output == this.RootDirectory)
+                return true;
+            else
+                return false;
+        }
+
+        private FileModel SelectWithOrder(FileModel file, int order = 0)
+        {
+            file.Order = order;
+            return file;
+        }
+
         public void SelectFolder()
         {
             using (System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog())
@@ -80,11 +101,20 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     this.RootDirectory = dlg.SelectedPath;
-                    IEnumerable<FileModel> files = this.EnumerateSubDirectories(new DirectoryInfo(dlg.SelectedPath)).Select(f => new FileModel(f));
+                    this.Files = this.EnumerateSubDirectories(new DirectoryInfo(dlg.SelectedPath)).Where(f => DecoderServices.AudioDecoderRegisterService.Contains(f.Extension.Replace(".", ""))).Select(f => new FileModel(f));
+                    IEnumerable<FileModel> sFiles = this.Files.Where(f => this.WhereRootFiles(f)).Select(f => SelectWithOrder(f, 1));
+                    IEnumerable<FileModel> uFiles = this.Files.Where(f => !this.WhereRootFiles(f)).Select(f => SelectWithOrder(f, 0));
+
+                    List<object> list = new List<object>();
+                    list.Add(new FileHeaderModel("Selected Files", 1));
+                    list.AddRange(sFiles);
+                    list.Add(new FileHeaderModel("Unused Files", 0));
+                    list.AddRange(uFiles);
+
                     App.Current.Dispatcher.Invoke(() =>
                     {
                         this.SelectedModels.Clear();
-                        this.SelectedModels.AddRange(files);
+                        this.SelectedModels.AddRange(list);
                     });
                 }
             }

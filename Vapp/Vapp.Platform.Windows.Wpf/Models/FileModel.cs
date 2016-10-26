@@ -28,9 +28,9 @@ namespace Vapp.Platform.Windows.Wpf.Models
         public FileModel(FileInfo fInfo)
         {
             string[] split = fInfo.Name.Split('.');
-            string name = "";
-            for (int index = 0; index < split.Length - 1; index++)
-                name += split[index];
+            string name = split[0];
+            for (int index = 1; index < split.Length - 1; index++)
+                name += string.Format(".{0}", split[index]);
 
             this.FullPath = fInfo.FullName;
             this.ExpectedName = name;

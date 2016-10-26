@@ -41,7 +41,7 @@
 
         <DataTemplate x:Key="FileModelHeaderTemplate" DataType="{x:Type models:FileHeaderModel}">
             <Grid>
-                <TextBlock Margin="5 5 5 5" Text="{Binding }"/>
+                <TextBlock Margin="5 5 5 5" Text="{Binding Text}" FontWeight="Bold" FontSize="20"/>
             </Grid>
         </DataTemplate>
         

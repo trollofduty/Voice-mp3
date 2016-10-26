@@ -25,18 +25,10 @@ namespace Vapp.Platform.Windows.Wpf.Views.Wizard
         public WizardView()
         {
             InitializeComponent();
-            this.Focus();
-            this.Topmost = true;
             this.CloseWindowCommand = new RelayCommand(this.Close);
         }
 
         private ICommand CloseWindowCommand { get; set; }
-
-        private void OnWindowDeactivated(object sender, EventArgs e)
-        {
-            this.Topmost = true;
-            this.Focus();
-        }
 
         internal void SetDataContext(WizardViewModelBase viewModel)
         {

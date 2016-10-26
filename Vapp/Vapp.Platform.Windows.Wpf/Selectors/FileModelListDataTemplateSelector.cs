@@ -19,7 +19,7 @@ namespace Vapp.Platform.Windows.Wpf.Selectors
         {
             if (item is FileModel)
                 return this.FileModelTemplate;
-            else if (item is string)
+            else if (item is FileHeaderModel)
                 return this.FileModelHeaderTemplate;
 
             return null;
