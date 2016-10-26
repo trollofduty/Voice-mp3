@@ -136,11 +136,11 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Book Name:" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5 5 0 5" Foreground="{Binding BookName, Converter={StaticResource StringToColorValidationConverter}}"/>
+            
             <TextBox Text="{Binding BookName, Mode=TwoWay}" Grid.Column="1" Margin="5 5 5 5"/>
         </Grid>
 
-        <ListBox Grid.Row="1" Margin="5 5 5 5" HorizontalContentAlignment="Stretch" ItemsSource="{Binding SelectedModels}" SelectedItem="{Binding SelectedItemList, Mode=TwoWay}"
-                 ItemTemplateSelector="{StaticResource FileModelListDataTemplateSelector}"/>
+        <ListBox Grid.Row="1" Margin="5 5 5 5" HorizontalContentAlignment="Stretch" ItemsSource="{Binding SelectedModels}" SelectedItem="{Binding SelectedItemList, Mode=TwoWay}" ItemTemplateSelector="{StaticResource FileModelListDataTemplateSelector}"/>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
