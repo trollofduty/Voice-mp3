@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace Vapp.Platform.Windows.Wpf.Models
 {
-    class ChapterFileModel : FileModel
+    class BookFileModel : FileModel
     {
         #region Constructor
 
-        internal ChapterFileModel(FileModel model)
+        internal BookFileModel(FileModel model)
             : base(model.FullPath, model.ExpectedName, model.FileSize)
         {
             // Skip
         }
 
-        internal ChapterFileModel(string fullPath, string expectedName, long fileSize)
-            : base(fullPath, expectedName, fileSize)
+        internal BookFileModel(string fullPath, string expectedName, long fileSize)
+            :   base(fullPath, expectedName, fileSize)
         {
             // Skip
         }
 
-        public ChapterFileModel(FileInfo fInfo)
+        public BookFileModel(FileInfo fInfo)
             : base(fInfo)
         {
             // Skip
@@ -40,18 +40,7 @@ namespace Vapp.Platform.Windows.Wpf.Models
             set
             {
                 this.Set(ref this.book, value);
-                this.ChapterChanged?.Invoke(this, null);
-            }
-        }
-
-        private int chapter;
-        public int Chapter
-        {
-            get { return this.chapter; }
-            set
-            {
-                this.Set(ref this.book, value);
-                this.VerseChanged?.Invoke(this, null);
+                this.ChapterChanged?.Invoke(this.book, null);
             }
         }
 
@@ -60,8 +49,6 @@ namespace Vapp.Platform.Windows.Wpf.Models
         #region Events
 
         public EventHandler<EventArgs> ChapterChanged { get; set; }
-
-        public EventHandler<EventArgs> VerseChanged { get; set; }
 
         #endregion
     }

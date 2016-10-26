@@ -40,7 +40,7 @@
             </Grid>
         </DataTemplate>
         
-        <DataTemplate x:Key="ChapterFileModelTemplate" DataType="{x:Type models:ChapterFileModel}">
+        <DataTemplate x:Key="BookFileModelTemplate" DataType="{x:Type models:BookFileModel}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -55,11 +55,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5 5 0 5" Text="Chapter Name: "/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5 5 0 5" Text="Book Name: "/>
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding ExpectedName, Mode=TwoWay}"/>
                 
-                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="Chapter Number: "/>
-                <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding Chapter, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="Book Number: "/>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding Book, Mode=TwoWay}"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Margin="5 5 0 5" Text="File Name: "/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileName}"/>
@@ -72,7 +72,7 @@
             </Grid>
         </DataTemplate>
         
-        <DataTemplate x:Key="VerseFileModelTemplate" DataType="{x:Type models:VerseFileModel}">
+        <DataTemplate x:Key="ChapterFileModelTemplate" DataType="{x:Type models:ChapterFileModel}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -109,7 +109,7 @@
         <selectors:FileModelListDataTemplateSelector x:Key="FileModelListDataTemplateSelector"
                                                      FileModelTemplate="{StaticResource FileModelTemplate}"
                                                      ChapterFileModelTemplate="{StaticResource ChapterFileModelTemplate}"
-                                                     VerseFileModelTemplate="{StaticResource VerseFileModelTemplate}"
+                                                     BookFileModelTemplate="{StaticResource BookFileModelTemplate}"
                                                      FileHeaderModelTemplate="{StaticResource FileHeaderModelTemplate}"/>
     </UserControl.Resources>
     
@@ -149,8 +149,8 @@
             <TextBlock Text="Split By:" Grid.Column="2" Margin="5 5 5 5" TextAlignment="Center" VerticalAlignment="Center"/>
 
             <ComboBox Grid.Column="3" Margin="5 5 5 5" SelectedItem="{Binding SelectedItemCombo, Mode=OneWayToSource}" SelectedIndex="0">
+                <ComboBoxItem>Books</ComboBoxItem>
                 <ComboBoxItem>Chapters</ComboBoxItem>
-                <ComboBoxItem>Verses</ComboBoxItem>
             </ComboBox>
 
             <Button Content="Remove Item" Grid.Column="4" Margin="5 5 5 5" Command="{Binding RemoveItemCommand}"/>

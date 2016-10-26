@@ -18,10 +18,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
     class ImportBibleSubViewModel : WizardSubViewModelBase
     {
         #region Enum
+
         private enum ComboBoxType
         {
-            Chapters,
-            Verses
+            Books,
+            Chapters
         }
 
         #endregion
@@ -90,10 +91,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         {
             get
             {
-                if (this.SelectedItemCombo == "System.Windows.Controls.ComboBoxItem: Chapters")
-                    return ComboBoxType.Chapters;
+                if (this.SelectedItemCombo == "System.Windows.Controls.ComboBoxItem: Books")
+                    return ComboBoxType.Books;
                 else
-                    return ComboBoxType.Verses;
+                    return ComboBoxType.Chapters;
             }
         }
 
@@ -137,30 +138,30 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             return file;
         }
 
-        private ChapterFileModel HookChapterFileModel(ChapterFileModel cModel)
+        private BookFileModel HookBookFileModel(BookFileModel cModel)
         {
-            cModel.ChapterChanged += this.OnChapterModelChanged;
+            cModel.ChapterChanged += this.OnBookModelChanged;
             return cModel;
         }
 
-        private VerseFileModel CreateVerseFileModel(FileModel model)
+        private ChapterFileModel CreateChapterFileModel(FileModel model)
         {
-            VerseFileModel vModel = new VerseFileModel(model);
-            vModel.ChapterChanged += this.OnVerseModelChanged;
-            vModel.VerseChanged += this.OnVerseModelChanged;
+            ChapterFileModel vModel = new ChapterFileModel(model);
+            vModel.ChapterChanged += this.OnChapterModelChanged;
+            vModel.VerseChanged += this.OnChapterModelChanged;
             return vModel;
         }
 
-        private void OnChapterModelChanged(object sender, EventArgs e)
+        private void OnBookModelChanged(object sender, EventArgs e)
         {
-            this.SelectedFiles = this.SelectedFiles.OrderBy(c => ((ChapterFileModel) c).Chapter);
+            this.SelectedFiles = this.SelectedFiles.OrderBy(c => ((BookFileModel) c).Book);
             this.PushSelectedModelsList();
             App.Current.Dispatcher.Invoke(() => this.SelectedItemList = sender);
         }
 
-        private void OnVerseModelChanged(object sender, EventArgs e)
+        private void OnChapterModelChanged(object sender, EventArgs e)
         {
-            this.SelectedFiles = this.SelectedFiles.OrderBy(v => ((VerseFileModel) v).Verse).OrderBy(v => ((VerseFileModel) v).Chapter);
+            this.SelectedFiles = this.SelectedFiles.OrderBy(v => ((ChapterFileModel) v).Chapter).OrderBy(v => ((ChapterFileModel) v).Book);
             this.PushSelectedModelsList();
             App.Current.Dispatcher.Invoke(() => this.SelectedItemList = sender);
         }
@@ -171,16 +172,16 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             {
                 foreach (FileModel model in this.SelectedFiles)
                 {
-                    if (model is ChapterFileModel)
+                    if (model is BookFileModel)
                     {
-                        ChapterFileModel cModel = (ChapterFileModel) model;
-                        cModel.ChapterChanged -= this.OnChapterModelChanged;
+                        BookFileModel cModel = (BookFileModel) model;
+                        cModel.ChapterChanged -= this.OnBookModelChanged;
                     }
-                    else if (model is VerseFileModel)
+                    else if (model is ChapterFileModel)
                     {
-                        VerseFileModel vModel = (VerseFileModel) model;
-                        vModel.ChapterChanged -= this.OnVerseModelChanged;
-                        vModel.VerseChanged -= this.OnVerseModelChanged;
+                        ChapterFileModel vModel = (ChapterFileModel) model;
+                        vModel.ChapterChanged -= this.OnChapterModelChanged;
+                        vModel.VerseChanged -= this.OnChapterModelChanged;
                     }
                 }
             }
@@ -207,23 +208,23 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
             if (this.Files != null)
             {
-                if (this.ComboBoxTypeValue == ComboBoxType.Chapters)
+                if (this.ComboBoxTypeValue == ComboBoxType.Books)
                 {
-                    this.SelectedFiles = this.Files.Where(f => this.WhereRootFiles(f)).Select(f => new ChapterFileModel(this.SelectWithOrder(f, 1)));
+                    this.SelectedFiles = this.Files.Where(f => this.WhereRootFiles(f)).Select(f => new BookFileModel(this.SelectWithOrder(f, 1)));
 
                     for (int index = 0; index < this.SelectedFiles.Count(); index++)
                     {
-                        ChapterFileModel cModel = (ChapterFileModel) this.SelectedFiles.ElementAt(index);
-                        cModel.Chapter = index;
+                        BookFileModel cModel = (BookFileModel) this.SelectedFiles.ElementAt(index);
+                        cModel.Book = index;
                     }
 
-                    this.SelectedFiles.Select(c => this.HookChapterFileModel((ChapterFileModel) c)).OrderBy(c => c.Chapter);
+                    this.SelectedFiles.Select(c => this.HookBookFileModel((BookFileModel) c)).OrderBy(c => c.Book);
                     this.UnusedFiles = this.Files.Where(f => !this.WhereRootFiles(f)).Select(f => this.SelectWithOrder(f, 0));
                 }
                 else
                 {
-                    this.SelectedFiles = this.Files.Where(f => this.WhereSubRootFiles(f, 1)).Select(f => this.CreateVerseFileModel(this.SelectWithOrder(f, 1))).OrderBy(v => v.Verse).OrderBy(v => v.Chapter);
-                    this.UnusedFiles = this.Files.Where(f => !this.WhereSubRootFiles(f)).Select(f => this.SelectWithOrder(f, 0));
+                    this.SelectedFiles = this.Files.Where(f => this.WhereSubRootFiles(f, 1)).Select(f => this.CreateChapterFileModel(this.SelectWithOrder(f, 1))).OrderBy(v => v.Chapter).OrderBy(v => v.Book);
+                    this.UnusedFiles = this.Files.Where(f => !this.WhereSubRootFiles(f, 1)).Select(f => this.SelectWithOrder(f, 0));
                 }
 
                 this.PushSelectedModelsList();
