@@ -11,7 +11,8 @@
              d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:FileSizeToStringConverter x:Key="FileSizeToStringConverter"/>
-        
+        <converters:StringToColorValidationConverter x:Key="StringToColorValidationConverter"/>
+
         <DataTemplate x:Key="FileModelTemplate" DataType="{x:Type models:FileModel}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -134,7 +135,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Book Name:" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5 5 0 5"/>
+            <TextBlock Text="Book Name:" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5 5 0 5" Foreground="{Binding BookName, Converter={StaticResource StringToColorValidationConverter}}"/>
             <TextBox Text="{Binding BookName, Mode=TwoWay}" Grid.Column="1" Margin="5 5 5 5"/>
         </Grid>
 

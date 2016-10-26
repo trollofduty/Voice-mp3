@@ -75,7 +75,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         public string BookName
         {
             get { return this.bookName; }
-            set { this.Set(ref this.bookName, value); }
+            set
+            {
+                this.Set(ref this.bookName, value);
+                this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
+            }
         }
 
         private object selectedItemList;

@@ -79,6 +79,7 @@
     <Compile Include="Converters\CommandValidationColorConverter.cs" />
     <Compile Include="Converters\FileSizeToStringConverter.cs" />
     <Compile Include="Converters\NullBoolToBoolConverter.cs" />
+    <Compile Include="Converters\StringToColorValidationConverter.cs" />
     <Compile Include="DecoderServices.cs" />
     <Compile Include="Models\BookFileModel.cs" />
     <Compile Include="Models\FileHeaderModel.cs" />

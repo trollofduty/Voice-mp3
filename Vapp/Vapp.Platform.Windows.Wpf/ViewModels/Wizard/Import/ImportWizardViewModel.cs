@@ -38,7 +38,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 if (this.CurrentSubView.DataContext == this.ImportBibleSubViewModel)
                 {
                     return this.ImportBibleSubViewModel.SelectedModels != null && this.ImportBibleSubViewModel.SelectedModels.Count > 0
-                        && this.ImportBibleSubViewModel.SelectedFiles != null && this.ImportBibleSubViewModel.SelectedFiles.Count > 0;
+                        && this.ImportBibleSubViewModel.SelectedFiles != null && this.ImportBibleSubViewModel.SelectedFiles.Count > 0
+                        && this.ImportBibleSubViewModel.BookName != null && this.ImportBibleSubViewModel.BookName.Length > 0;
                 }
                 return base.HasNext;
             }
