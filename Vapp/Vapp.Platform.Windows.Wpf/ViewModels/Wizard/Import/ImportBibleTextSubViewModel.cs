@@ -69,6 +69,25 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         #region Methods
 
+        private void OnBookModelChanged(object sender, EventArgs e)
+        {
+            BookModel selected = this.SelectedBook;
+            IEnumerable<BookModel> tBookList = this.BookList.OrderBy(b => b.Order).ToList();
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                this.BookList.Clear();
+                this.BookList.AddRange(tBookList);
+                this.SelectedBook = selected;
+            });
+        }
+
+        private BookModel CreateBookModel(Book book)
+        {
+            BookModel model = new BookModel(book);
+            model.OrderChanged += this.OnBookModelChanged;
+            return model;
+        }
+
         public void OpenFile()
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
@@ -82,7 +101,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                     Stream stream = File.OpenRead(dlg.FileName);
 
                     if (this.decoder.TryDecode(stream, out this.bible) && bible.BookList.Count > 0)
-                        App.Current.Dispatcher.Invoke(() => this.BookList.AddRange(this.bible.BookList.Select(t => new BookModel(t.Value))));
+                        App.Current.Dispatcher.Invoke(() => this.BookList.AddRange(this.bible.BookList.Select(t => this.CreateBookModel(t.Value)).OrderBy(b => b.Order)));
                     else
                         MessageBox.Show("File has invalid format");
                 }
@@ -94,13 +113,19 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public void ClearList()
         {
+            foreach (BookModel model in this.BookList)
+                model.OrderChanged -= this.OnBookModelChanged;
+
             App.Current.Dispatcher.Invoke(this.BookList.Clear);
         }
 
         public void RemoveBook()
         {
             if (this.BookList.Contains(this.SelectedBook))
+            {
+                this.SelectedBook.OrderChanged -= this.OnBookModelChanged;
                 App.Current.Dispatcher.Invoke(() => this.BookList.Remove(this.SelectedBook));
+            }
         }
 
         public override void Loaded()

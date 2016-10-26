@@ -42,6 +42,7 @@ namespace Vapp.Platform.Windows.Wpf.Models
             {
                 this.Book.Order = value;
                 this.RaisePropertyChanged("Order");
+                this.OrderChanged?.Invoke(this, null);
             }
         }
 
@@ -74,6 +75,12 @@ namespace Vapp.Platform.Windows.Wpf.Models
                 return this.Book.VerseList.Count;
             }
         }
+
+        #endregion
+
+        #region Events
+
+        public EventHandler<EventArgs> OrderChanged { get; set; }
 
         #endregion
     }
