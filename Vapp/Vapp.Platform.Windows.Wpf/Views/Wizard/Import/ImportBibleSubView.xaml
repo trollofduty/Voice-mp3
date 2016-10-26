@@ -10,6 +10,8 @@
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
+        <converters:FileSizeToStringConverter x:Key="FileSizeToStringConverter"/>
+        
         <DataTemplate x:Key="FileModelTemplate" DataType="{x:Type models:FileModel}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -34,7 +36,7 @@
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize, Converter={StaticResource FileSizeToStringConverter}}"/>
             </Grid>
         </DataTemplate>
 
@@ -66,7 +68,7 @@
                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
-                <TextBlock Grid.Row="4" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize, Converter={StaticResource FileSizeToStringConverter}}"/>
             </Grid>
         </DataTemplate>
 
@@ -94,7 +96,7 @@
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize, Converter={StaticResource FileSizeToStringConverter}}"/>
             </Grid>
         </DataTemplate>
 

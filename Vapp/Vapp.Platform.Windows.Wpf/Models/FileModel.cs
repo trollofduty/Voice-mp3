@@ -33,6 +33,8 @@ namespace Vapp.Platform.Windows.Wpf.Models
 
         public FileModel(FileInfo fInfo)
         {
+            fInfo = new FileInfo(fInfo.FullName);
+
             string[] split = fInfo.Name.Split('.');
             string name = split[0];
             for (int index = 1; index < split.Length - 1; index++)
