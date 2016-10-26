@@ -154,9 +154,9 @@
                 <ComboBoxItem>Chapters</ComboBoxItem>
             </ComboBox>
 
-            <Button Content="Use Item" Grid.Column="4" Margin="5 5 5 5" Command="{Binding UseItemCommand}" IsEnabled="{Binding CanUse}"/>
-            <Button Content="Remove Item" Grid.Column="5" Margin="5 5 5 5" Command="{Binding RemoveItemCommand}"/>
-            <Button Content="Clear List" Grid.Column="6" Margin="5 5 5 5" Command="{Binding ClearListCommand}"/>
+            <Button Content="Use Item" Grid.Column="4" Margin="5 5 5 5" Command="{Binding UseItemCommand}" IsEnabled="{Binding IsSelected}"/>
+            <Button Content="Remove Item" Grid.Column="5" Margin="5 5 5 5" Command="{Binding RemoveItemCommand}" IsEnabled="{Binding IsSelected}"/>
+            <Button Content="Clear List" Grid.Column="6" Margin="5 5 5 5" Command="{Binding ClearListCommand}" IsEnabled="{Binding HasValues}"/>
         </Grid>
     </Grid>
 </UserControl>

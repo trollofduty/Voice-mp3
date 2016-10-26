@@ -52,7 +52,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         public ObservableCollection<object> SelectedModels
         {
             get { return this.selectedModels; }
-            set { this.Set(ref this.selectedModels, value); }
+            set
+            {
+                this.Set(ref this.selectedModels, value);
+                this.RaisePropertyChanged("HasValues");
+            }
         }
 
         public string RootDirectory { get; set; }
@@ -79,13 +83,18 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             set
             {
                 this.Set(ref this.selectedItemList, value);
-                this.RaisePropertyChanged("CanUse");
+                this.RaisePropertyChanged("IsSelected");
             }
         }
 
-        public bool CanUse
+        public bool IsSelected
         {
             get { return this.SelectedItemList != null; }
+        }
+
+        public bool HasValues
+        {
+            get { return this.SelectedModels != null && this.SelectedModels.Count > 0; }
         }
 
         private string selectedItemCombo;
@@ -214,6 +223,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             {
                 this.SelectedModels.Clear();
                 this.SelectedModels.AddRange(list);
+                this.RaisePropertyChanged("HasValues");
             });
         }
 
@@ -265,7 +275,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         {
             this.UnhookEvents();
             this.Files = null;
-            App.Current.Dispatcher.Invoke(this.SelectedModels.Clear);
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                this.SelectedModels.Clear();
+                this.RaisePropertyChanged("HasValues");
+            });
         }
 
         public void UseItem()
@@ -310,7 +324,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 this.UnhookEvent((FileModel) this.SelectedItemList);
                 IEnumerable<FileModel> files = this.Files.Where(f => f.FullPath == ((FileModel) this.SelectedItemList).FullPath).ToArray();
                 this.Files.RemoveRange(files);
-                App.Current.Dispatcher.Invoke(() => this.SelectedModels.Remove(this.SelectedItemList));
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    this.SelectedModels.Remove(this.SelectedItemList);
+                    this.RaisePropertyChanged("HasValues");
+                });
             }
         }
 
