@@ -175,14 +175,14 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         private void OnBookModelChanged(object sender, EventArgs e)
         {
-            this.SelectedFiles = this.SelectedFiles.OrderBy(f => f.ExpectedName).OrderBy(b => ((BookFileModel) b).Book).ToList();
+            this.SelectedFiles = this.SelectedFiles.OrderBy(b => ((BookFileModel) b).Book).ThenBy(f => f.ExpectedName).ToList();
             this.PushSelectedModelsList();
             App.Current.Dispatcher.Invoke(() => this.SelectedItemList = sender);
         }
 
         private void OnChapterModelChanged(object sender, EventArgs e)
         {
-            this.SelectedFiles = this.SelectedFiles.OrderBy(f => f.ExpectedName).OrderBy(c => ((ChapterFileModel) c).Chapter).OrderBy(c => ((ChapterFileModel) c).Book).ToList();
+            this.SelectedFiles = this.SelectedFiles.OrderBy(c => ((ChapterFileModel) c).Book).ThenBy(c => ((ChapterFileModel) c).Chapter).ThenBy(f => f.ExpectedName).ToList();
             this.PushSelectedModelsList();
             App.Current.Dispatcher.Invoke(() => this.SelectedItemList = sender);
         }
@@ -243,12 +243,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                         cModel.Book = index;
                     }
 
-                    this.SelectedFiles = this.SelectedFiles.Select(f => this.HookBookFileModel((BookFileModel) f)).OrderBy(b => b.ExpectedName).OrderBy(b => b.Book).Select(b => (FileModel) b).ToList();
+                    this.SelectedFiles = this.SelectedFiles.Select(f => this.HookBookFileModel((BookFileModel) f)).OrderBy(b => b.Book).ThenBy(b => b.ExpectedName).Select(b => (FileModel) b).ToList();
                     this.UnusedFiles = this.Files.Where(f => !this.WhereRootFiles(f)).Select(f => this.SelectWithOrder(f, 0)).OrderBy(f => f.ExpectedName).ToList();
                 }
                 else
                 {
-                    this.SelectedFiles = this.Files.Where(f => this.WhereSubRootFiles(f, 1)).Select(f => this.CreateChapterFileModel(this.SelectWithOrder(f, 1))).OrderBy(c => c.ExpectedName).OrderBy(c => c.Chapter).OrderBy(c => c.Book).Select(c => (FileModel) c).ToList();
+                    this.SelectedFiles = this.Files.Where(f => this.WhereSubRootFiles(f, 1)).Select(f => this.CreateChapterFileModel(this.SelectWithOrder(f, 1))).OrderBy(c => c.Book).ThenBy(c => c.Chapter).ThenBy(c => c.ExpectedName).Select(c => (FileModel) c).ToList();
                     this.UnusedFiles = this.Files.Where(f => !this.WhereSubRootFiles(f, 1)).Select(f => this.SelectWithOrder(f, 0)).OrderBy(f => f.ExpectedName).ToList();
                 }
 
@@ -302,12 +302,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 if (this.ComboBoxTypeValue == ComboBoxType.Books)
                 {
                     this.SelectedFiles.Add(this.HookBookFileModel(new BookFileModel(model)));
-                    this.SelectedFiles = this.SelectedFiles.OrderBy(f => f.ExpectedName).OrderBy(b => ((BookFileModel) b).Book).ToList();
+                    this.SelectedFiles = this.SelectedFiles.OrderBy(b => ((BookFileModel) b).Book).ThenBy(f => f.ExpectedName).ToList();
                 }
                 else
                 {
                     this.SelectedFiles.Add(this.CreateChapterFileModel(model));
-                    this.SelectedFiles = this.SelectedFiles.OrderBy(c => c.ExpectedName).OrderBy(c => ((ChapterFileModel) c).Chapter).OrderBy(c => ((ChapterFileModel) c).Book).ToList();
+                    this.SelectedFiles = this.SelectedFiles.OrderBy(c => ((ChapterFileModel) c).Book).ThenBy(c => ((ChapterFileModel) c).Chapter).ThenBy(c => c.ExpectedName).ToList();
                 }
             }
 

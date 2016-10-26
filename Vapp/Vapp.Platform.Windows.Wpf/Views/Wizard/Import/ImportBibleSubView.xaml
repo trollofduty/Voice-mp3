@@ -79,6 +79,8 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -89,14 +91,20 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="5 5 0 5" Text="Chapter Name: "/>
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding ExpectedName, Mode=TwoWay}"/>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="File Name: "/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileName}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="Book Number: "/>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding Book, Mode=TwoWay}"/>
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5 5 0 5" Text="File Path: "/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5 5 0 5" Text="Chapter Number: "/>
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding Chapter, Mode=TwoWay}"/>
 
-                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize, Converter={StaticResource FileSizeToStringConverter}}"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Text="File Name: "/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileName}"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Margin="5 5 0 5" Text="File Path: "/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize, Converter={StaticResource FileSizeToStringConverter}}"/>
             </Grid>
         </DataTemplate>
 
@@ -123,7 +131,6 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="69"/>
-                <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
