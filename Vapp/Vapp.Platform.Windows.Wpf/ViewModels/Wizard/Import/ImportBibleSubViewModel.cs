@@ -154,37 +154,15 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         private void OnChapterModelChanged(object sender, EventArgs e)
         {
             this.SelectedFiles = this.SelectedFiles.OrderBy(c => ((ChapterFileModel) c).Chapter);
-
-            List<object> list = new List<object>();
-            list.Add(this.SelectedHeader);
-            list.AddRange(this.SelectedFiles);
-            list.Add(this.UnusedHeader);
-            list.AddRange(this.UnusedFiles);
-
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                this.SelectedModels.Clear();
-                this.SelectedModels.AddRange(list);
-                this.SelectedItemList = sender;
-            });
+            this.PushSelectedModelsList();
+            App.Current.Dispatcher.Invoke(() => this.SelectedItemList = sender);
         }
 
         private void OnVerseModelChanged(object sender, EventArgs e)
         {
             this.SelectedFiles = this.SelectedFiles.OrderBy(v => ((VerseFileModel) v).Verse).OrderBy(v => ((VerseFileModel) v).Chapter);
-
-            List<object> list = new List<object>();
-            list.Add(this.SelectedHeader);
-            list.AddRange(this.SelectedFiles);
-            list.Add(this.UnusedHeader);
-            list.AddRange(this.UnusedFiles);
-
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                this.SelectedModels.Clear();
-                this.SelectedModels.AddRange(list);
-                this.SelectedItemList = sender;
-            });
+            this.PushSelectedModelsList();
+            App.Current.Dispatcher.Invoke(() => this.SelectedItemList = sender);
         }
 
         private void UnhookEvents()
@@ -206,6 +184,21 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                     }
                 }
             }
+        }
+
+        private void PushSelectedModelsList()
+        {
+            List<object> list = new List<object>();
+            list.Add(this.SelectedHeader);
+            list.AddRange(this.SelectedFiles);
+            list.Add(this.UnusedHeader);
+            list.AddRange(this.UnusedFiles);
+
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                this.SelectedModels.Clear();
+                this.SelectedModels.AddRange(list);
+            });
         }
 
         private void RefreshSelectedModels()
@@ -233,17 +226,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                     this.UnusedFiles = this.Files.Where(f => !this.WhereSubRootFiles(f)).Select(f => this.SelectWithOrder(f, 0));
                 }
 
-                List<object> list = new List<object>();
-                list.Add(this.SelectedHeader);
-                list.AddRange(this.SelectedFiles);
-                list.Add(this.UnusedHeader);
-                list.AddRange(this.UnusedFiles);
-
-                App.Current.Dispatcher.Invoke(() =>
-                {
-                    this.SelectedModels.Clear();
-                    this.SelectedModels.AddRange(list);
-                });
+                this.PushSelectedModelsList();
             }
         }
 
