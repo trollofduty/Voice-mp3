@@ -21,6 +21,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             this.Add(new ImportBibleTextSubView());
             this.Add(new ImportBibleGapSubView());
             this.ImportBibleTextSubViewModel.ImportBibleSubViewModel = this.ImportBibleSubViewModel;
+            this.ImportBibleGapSubViewModel.ImportBibleSubViewModel = this.ImportBibleSubViewModel;
+            this.ImportBibleGapSubViewModel.ImportBibleTextSubViewModel = this.ImportBibleTextSubViewModel;
             this.Start();
         }
 
