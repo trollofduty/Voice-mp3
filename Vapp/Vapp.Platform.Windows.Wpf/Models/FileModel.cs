@@ -17,8 +17,14 @@ namespace Vapp.Platform.Windows.Wpf.Models
         {
             string[] split = expectedName.Split('.');
             string name = "";
-            for (int index = 0; index < split.Length - 1; index++)
-                name += split[index];
+
+            if (split.Length > 1)
+            {
+                for (int index = 0; index < split.Length - 1; index++)
+                    name += split[index];
+            }
+            else if (split.Length == 1)
+                name = split[0];
 
             this.FullPath = fullPath;
             this.ExpectedName = name;

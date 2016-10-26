@@ -17,6 +17,15 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 {
     class ImportBibleSubViewModel : WizardSubViewModelBase
     {
+        #region Enum
+        private enum ComboBoxType
+        {
+            Chapters,
+            Verses
+        }
+
+        #endregion
+
         #region Constructor
 
         public ImportBibleSubViewModel()
@@ -32,6 +41,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         #region Properties
 
         public IEnumerable<FileModel> Files { get; set; }
+
+        public IEnumerable<FileModel> SelectedFiles { get; set; }
+
+        public IEnumerable<FileModel> UnusedFiles { get; set; }
 
         public ObservableCollection<object> selectedModels;
         public ObservableCollection<object> SelectedModels
@@ -55,8 +68,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             set { this.Set(ref this.bookName, value); }
         }
 
-        private FileModel selectedItemList;
-        public FileModel SelectedItemList
+        private object selectedItemList;
+        public object SelectedItemList
         {
             get { return this.selectedItemList; }
             set { this.Set(ref this.selectedItemList, value); }
@@ -66,8 +79,27 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         public string SelectedItemCombo
         {
             get { return this.selectedItemCombo; }
-            set { this.Set(ref this.selectedItemCombo, value); }
+            set
+            {
+                this.Set(ref this.selectedItemCombo, value);
+                this.RefreshSelectedModels();
+            }
         }
+
+        private ComboBoxType ComboBoxTypeValue
+        {
+            get
+            {
+                if (this.SelectedItemCombo == "System.Windows.Controls.ComboBoxItem: Chapters")
+                    return ComboBoxType.Chapters;
+                else
+                    return ComboBoxType.Verses;
+            }
+        }
+
+        private FileHeaderModel SelectedHeader { get; set; } = new FileHeaderModel("Selected Files", 1);
+
+        private FileHeaderModel UnusedHeader { get; set; } = new FileHeaderModel("Unused Files", 0);
 
         #endregion
 
@@ -86,10 +118,133 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 return false;
         }
 
+        private bool WhereSubRootFiles(FileModel file, int level = 0)
+        {
+            string[] split = file.FullPath.Split('\\', '/');
+            string output = split[0];
+            for (int index = 1; index < split.Length - 1 - level; index++)
+                output += string.Format("\\{0}", split[index]);
+
+            if (output == this.RootDirectory)
+                return true;
+            else
+                return false;
+        }
+
         private FileModel SelectWithOrder(FileModel file, int order = 0)
         {
             file.Order = order;
             return file;
+        }
+
+        private ChapterFileModel HookChapterFileModel(ChapterFileModel cModel)
+        {
+            cModel.ChapterChanged += this.OnChapterModelChanged;
+            return cModel;
+        }
+
+        private VerseFileModel CreateVerseFileModel(FileModel model)
+        {
+            VerseFileModel vModel = new VerseFileModel(model);
+            vModel.ChapterChanged += this.OnVerseModelChanged;
+            vModel.VerseChanged += this.OnVerseModelChanged;
+            return vModel;
+        }
+
+        private void OnChapterModelChanged(object sender, EventArgs e)
+        {
+            this.SelectedFiles = this.SelectedFiles.OrderBy(c => ((ChapterFileModel) c).Chapter);
+
+            List<object> list = new List<object>();
+            list.Add(this.SelectedHeader);
+            list.AddRange(this.SelectedFiles);
+            list.Add(this.UnusedHeader);
+            list.AddRange(this.UnusedFiles);
+
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                this.SelectedModels.Clear();
+                this.SelectedModels.AddRange(list);
+                this.SelectedItemList = sender;
+            });
+        }
+
+        private void OnVerseModelChanged(object sender, EventArgs e)
+        {
+            this.SelectedFiles = this.SelectedFiles.OrderBy(v => ((VerseFileModel) v).Verse).OrderBy(v => ((VerseFileModel) v).Chapter);
+
+            List<object> list = new List<object>();
+            list.Add(this.SelectedHeader);
+            list.AddRange(this.SelectedFiles);
+            list.Add(this.UnusedHeader);
+            list.AddRange(this.UnusedFiles);
+
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                this.SelectedModels.Clear();
+                this.SelectedModels.AddRange(list);
+                this.SelectedItemList = sender;
+            });
+        }
+
+        private void UnhookEvents()
+        {
+            if (this.SelectedFiles != null)
+            {
+                foreach (FileModel model in this.SelectedFiles)
+                {
+                    if (model is ChapterFileModel)
+                    {
+                        ChapterFileModel cModel = (ChapterFileModel) model;
+                        cModel.ChapterChanged -= this.OnChapterModelChanged;
+                    }
+                    else if (model is VerseFileModel)
+                    {
+                        VerseFileModel vModel = (VerseFileModel) model;
+                        vModel.ChapterChanged -= this.OnVerseModelChanged;
+                        vModel.VerseChanged -= this.OnVerseModelChanged;
+                    }
+                }
+            }
+        }
+
+        private void RefreshSelectedModels()
+        {
+            this.UnhookEvents();
+
+            if (this.Files != null)
+            {
+                if (this.ComboBoxTypeValue == ComboBoxType.Chapters)
+                {
+                    this.SelectedFiles = this.Files.Where(f => this.WhereRootFiles(f)).Select(f => new ChapterFileModel(this.SelectWithOrder(f, 1)));
+
+                    for (int index = 0; index < this.SelectedFiles.Count(); index++)
+                    {
+                        ChapterFileModel cModel = (ChapterFileModel) this.SelectedFiles.ElementAt(index);
+                        cModel.Chapter = index;
+                    }
+
+                    this.SelectedFiles.Select(c => this.HookChapterFileModel((ChapterFileModel) c)).OrderBy(c => c.Chapter);
+                    this.UnusedFiles = this.Files.Where(f => !this.WhereRootFiles(f)).Select(f => this.SelectWithOrder(f, 0));
+                }
+                else
+                {
+                    this.SelectedFiles = this.Files.Where(f => this.WhereSubRootFiles(f, 1)).Select(f => this.CreateVerseFileModel(this.SelectWithOrder(f, 1))).OrderBy(v => v.Verse).OrderBy(v => v.Chapter);
+                    this.UnusedFiles = this.Files.Where(f => !this.WhereSubRootFiles(f)).Select(f => this.SelectWithOrder(f, 0));
+                }
+
+                List<object> list = new List<object>();
+                list.Add(this.SelectedHeader);
+                list.AddRange(this.SelectedFiles);
+                list.Add(this.UnusedHeader);
+                list.AddRange(this.UnusedFiles);
+
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    this.SelectedModels.Clear();
+                    this.SelectedModels.AddRange(list);
+                });
+            }
         }
 
         public void SelectFolder()
@@ -102,20 +257,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 {
                     this.RootDirectory = dlg.SelectedPath;
                     this.Files = this.EnumerateSubDirectories(new DirectoryInfo(dlg.SelectedPath)).Where(f => DecoderServices.AudioDecoderRegisterService.Contains(f.Extension.Replace(".", ""))).Select(f => new FileModel(f));
-                    IEnumerable<FileModel> sFiles = this.Files.Where(f => this.WhereRootFiles(f)).Select(f => SelectWithOrder(f, 1));
-                    IEnumerable<FileModel> uFiles = this.Files.Where(f => !this.WhereRootFiles(f)).Select(f => SelectWithOrder(f, 0));
-
-                    List<object> list = new List<object>();
-                    list.Add(new FileHeaderModel("Selected Files", 1));
-                    list.AddRange(sFiles);
-                    list.Add(new FileHeaderModel("Unused Files", 0));
-                    list.AddRange(uFiles);
-
-                    App.Current.Dispatcher.Invoke(() =>
-                    {
-                        this.SelectedModels.Clear();
-                        this.SelectedModels.AddRange(list);
-                    });
+                    this.RefreshSelectedModels();
                 }
             }
         }

@@ -13,14 +13,22 @@ namespace Vapp.Platform.Windows.Wpf.Selectors
     {
         public DataTemplate FileModelTemplate { get; set; }
 
-        public DataTemplate FileModelHeaderTemplate { get; set; }
+        public DataTemplate ChapterFileModelTemplate { get; set; }
+
+        public DataTemplate VerseFileModelTemplate { get; set; }
+
+        public DataTemplate FileHeaderModelTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is FileModel)
+            if (item is ChapterFileModel)
+                return this.ChapterFileModelTemplate;
+            else if (item is VerseFileModel)
+                return this.VerseFileModelTemplate;
+            else if (item is FileModel)
                 return this.FileModelTemplate;
             else if (item is FileHeaderModel)
-                return this.FileModelHeaderTemplate;
+                return this.FileHeaderModelTemplate;
 
             return null;
         }

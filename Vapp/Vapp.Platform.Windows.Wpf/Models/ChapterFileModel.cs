@@ -30,5 +30,26 @@ namespace Vapp.Platform.Windows.Wpf.Models
         }
 
         #endregion
+
+        #region Properties
+
+        private int chapter;
+        public int Chapter
+        {
+            get { return this.chapter; }
+            set
+            {
+                this.Set(ref this.chapter, value);
+                this.ChapterChanged?.Invoke(this.chapter, null);
+            }
+        }
+
+        #endregion
+
+        #region Events
+
+        public EventHandler<EventArgs> ChapterChanged { get; set; }
+
+        #endregion
     }
 }

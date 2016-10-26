@@ -18,7 +18,7 @@ namespace Vapp.Platform.Windows.Wpf.Models
         }
 
         internal VerseFileModel(string fullPath, string expectedName, long fileSize)
-            :   base(fullPath, expectedName, fileSize)
+            : base(fullPath, expectedName, fileSize)
         {
             // Skip
         }
@@ -28,6 +28,40 @@ namespace Vapp.Platform.Windows.Wpf.Models
         {
             // Skip
         }
+
+        #endregion
+
+        #region Properties
+
+        private int chapter;
+        public int Chapter
+        {
+            get { return this.chapter; }
+            set
+            {
+                this.Set(ref this.chapter, value);
+                this.ChapterChanged?.Invoke(this, null);
+            }
+        }
+
+        private int verse;
+        public int Verse
+        {
+            get { return this.verse; }
+            set
+            {
+                this.Set(ref this.chapter, value);
+                this.VerseChanged?.Invoke(this, null);
+            }
+        }
+
+        #endregion
+
+        #region Events
+
+        public EventHandler<EventArgs> ChapterChanged { get; set; }
+
+        public EventHandler<EventArgs> VerseChanged { get; set; }
 
         #endregion
     }

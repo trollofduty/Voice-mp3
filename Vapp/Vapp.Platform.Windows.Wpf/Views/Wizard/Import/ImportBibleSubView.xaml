@@ -8,6 +8,7 @@
              xmlns:converters="clr-namespace:Vapp.Platform.Windows.Wpf.Converters"
              xmlns:selectors="clr-namespace:Vapp.Platform.Windows.Wpf.Selectors"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
@@ -38,8 +39,68 @@
                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
             </Grid>
         </DataTemplate>
+        
+        <DataTemplate x:Key="ChapterFileModelTemplate" DataType="{x:Type models:ChapterFileModel}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <DataTemplate x:Key="FileModelHeaderTemplate" DataType="{x:Type models:FileHeaderModel}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5 5 0 5" Text="Chapter Name: "/>
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding ExpectedName, Mode=TwoWay}"/>
+                
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="Chapter Number: "/>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding Chapter, Mode=TwoWay}"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5 5 0 5" Text="File Name: "/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileName}"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Text="File Path: "/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="VerseFileModelTemplate" DataType="{x:Type models:VerseFileModel}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5 5 0 5" Text="Chapter Name: "/>
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding ExpectedName, Mode=TwoWay}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="File Name: "/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileName}"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5 5 0 5" Text="File Path: "/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="FileHeaderModelTemplate" DataType="{x:Type models:FileHeaderModel}">
             <Grid>
                 <TextBlock Margin="5 5 5 5" Text="{Binding Text}" FontWeight="Bold" FontSize="20"/>
             </Grid>
@@ -47,7 +108,9 @@
         
         <selectors:FileModelListDataTemplateSelector x:Key="FileModelListDataTemplateSelector"
                                                      FileModelTemplate="{StaticResource FileModelTemplate}"
-                                                     FileModelHeaderTemplate="{StaticResource FileModelHeaderTemplate}"/>
+                                                     ChapterFileModelTemplate="{StaticResource ChapterFileModelTemplate}"
+                                                     VerseFileModelTemplate="{StaticResource VerseFileModelTemplate}"
+                                                     FileHeaderModelTemplate="{StaticResource FileHeaderModelTemplate}"/>
     </UserControl.Resources>
     
     <Grid>
