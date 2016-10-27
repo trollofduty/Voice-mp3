@@ -121,5 +121,10 @@ namespace Vapp.Platform.Windows.Wpf.Views.Media
         }
 
         #endregion
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
     }
 }
