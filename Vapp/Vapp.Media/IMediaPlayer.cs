@@ -94,6 +94,8 @@ namespace Vapp.Media
         /// </summary>
         void Next();
 
+        void Last();
+
         #endregion
     }
 }
