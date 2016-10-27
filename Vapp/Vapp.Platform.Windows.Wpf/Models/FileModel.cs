@@ -27,21 +27,19 @@ namespace Vapp.Platform.Windows.Wpf.Models
                 name = split[0];
 
             this.FullPath = fullPath;
-            this.ExpectedName = name;
+            this.ExpectedName = string.Join(" ", name.Split(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '_', ' ' }, StringSplitOptions.RemoveEmptyEntries));
             this.FileSize = fileSize;
         }
 
         public FileModel(FileInfo fInfo)
         {
-            fInfo = new FileInfo(fInfo.FullName);
-
             string[] split = fInfo.Name.Split('.');
-            string name = split[0];
+            string name = string.Join(".", split.Where(s => s != split.LastOrDefault()).ToArray());
             for (int index = 1; index < split.Length - 1; index++)
                 name += string.Format(".{0}", split[index]);
 
             this.FullPath = fInfo.FullName;
-            this.ExpectedName = name;
+            this.ExpectedName = string.Join(" ", name.Split(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '_', ' ' }, StringSplitOptions.RemoveEmptyEntries));
             this.FileSize = fInfo.Length;
         }
 

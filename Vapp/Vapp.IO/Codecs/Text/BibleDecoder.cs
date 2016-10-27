@@ -59,7 +59,7 @@ namespace Vapp.IO.Codecs.Text
                     if (line.ToLower().StartsWith("book"))
                     {
                         string name = line.Substring(8, line.Length - 8);
-                        Book book = ConvertToBook(name, order++, reader, stream);
+                        Book book = ConvertToBook(name, ++order, reader, stream);
                         bible.BookList.Add(name, book);
                     }
                 }

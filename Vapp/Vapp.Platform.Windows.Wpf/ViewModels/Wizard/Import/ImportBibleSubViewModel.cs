@@ -247,7 +247,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                     for (int index = 0; index < this.SelectedFiles.Count(); index++)
                     {
                         BookFileModel cModel = (BookFileModel) this.SelectedFiles.ElementAt(index);
-                        cModel.Book = index;
+                        cModel.Book = index + 1;
                     }
 
                     this.SelectedFiles = this.SelectedFiles.Select(f => this.HookBookFileModel((BookFileModel) f)).OrderBy(b => b.Book).ThenBy(b => b.ExpectedName).Select(b => (FileModel) b).ToList();
