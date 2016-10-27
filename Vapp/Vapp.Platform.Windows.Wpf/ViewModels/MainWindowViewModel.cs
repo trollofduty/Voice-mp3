@@ -203,7 +203,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                 System.Windows.Forms.DialogResult result = dlg.ShowDialog();
 
                 if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    this.MediaPlayer.Stop();
+                    this.MediaPlayer.Playlist.Clear();
                     this.MediaPlayer.AddToPlaylist(dlg.FileNames);
+                    this.MediaPlayer.Play();
+                }
             }
         }
 
