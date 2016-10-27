@@ -290,8 +290,22 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Media
 
             }
 
-            if (this.MediaPlayer.GetSource.Invoke() != null)
+            if (this.MediaPlayer.GetSource.Invoke() != null && filepath != null)
                 this.PlayedMedia.Add(filepath);
+        }
+
+        public void Last()
+        {
+            if (this.Playlist != null && this.Playlist.Count > 0)
+            {
+                while (this.Playlist.Last() != this.Playing)
+                    this.Next();
+            }
+            else if (this.QueuedMedia != null && this.QueuedMedia.Count > 0)
+            {
+                while (this.Playlist.Last() != this.Playing)
+                    this.Next();
+            }
         }
 
         public void AddToPlaylist(string filePath)

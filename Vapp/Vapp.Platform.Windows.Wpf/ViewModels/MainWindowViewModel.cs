@@ -207,6 +207,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels
                     this.MediaPlayer.Stop();
                     this.MediaPlayer.Playlist.Clear();
                     this.MediaPlayer.AddToPlaylist(dlg.FileNames);
+                    this.MediaPlayer.Last();
                     this.MediaPlayer.Play();
                 }
             }
