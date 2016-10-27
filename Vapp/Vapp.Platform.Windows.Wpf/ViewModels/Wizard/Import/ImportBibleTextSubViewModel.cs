@@ -60,6 +60,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 this.RaisePropertyChanged("IsSelected");
             }
         }
+
         public bool IsSelected
         {
             get { return this.SelectedBook != null; }
