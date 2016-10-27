@@ -88,6 +88,7 @@
     <Compile Include="Models\ChapterFileModel.cs" />
     <Compile Include="Models\GapFormatModel.cs" />
     <Compile Include="Selectors\FileModelListDataTemplateSelector.cs" />
+    <Compile Include="Selectors\GapFormatListDataTemplateSelector.cs" />
     <Compile Include="ViewModels\Wizard\Import\ImportBibleGapSubViewModel.cs" />
     <Compile Include="ViewModels\Wizard\WizardSubViewModelBase.cs" />
     <Compile Include="Models\BookModel.cs" />

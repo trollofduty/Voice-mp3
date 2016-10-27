@@ -108,6 +108,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard
             this.HasPrevious = this.ControlsIndex > 0;
             this.HasNext = this.ControlsIndex < this.WizardControls.Count - 1;
             this.CanFinish = this.ControlsIndex == this.WizardControls.Count - 1;
+
+            this.RaisePropertyChanged("HasNext");
         }
 
         protected virtual void Next()

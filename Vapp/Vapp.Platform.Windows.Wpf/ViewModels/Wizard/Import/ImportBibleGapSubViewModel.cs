@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Vapp.IO.Codecs.Text;
 using Vapp.Media.Audio;
 using Vapp.Media.Gaps;
 using Vapp.Platform.Windows.Wpf.Models;
@@ -27,7 +28,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         #region Properties
 
-        public ObservableCollection<GapFormat> GapList { get; private set; } = new ObservableCollection<GapFormat>();
+        public ObservableCollection<GapFormatModel> GapList { get; private set; } = new ObservableCollection<GapFormatModel>();
 
         private decimal threshold = 0.08m;
         public decimal Threshold
@@ -61,8 +62,19 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 {
                     Waveformat pcm;
                     if (DecoderServices.AudioDecoderRegisterService.TryDecode(out pcm, stream))
-                        App.Current.Dispatcher.Invoke(() => this.GapList.Add(GapFormat.CreateFrom(pcm, this.Threshold, this.MinPause)));
+                    {
+                        GapFormat gap = GapFormat.CreateFrom(pcm, this.Threshold, this.MinPause);
+                        Book book = this.ImportBibleTextSubViewModel.BookList.Where(b => b.Name == model.ExpectedName).Select(b => b.Book).FirstOrDefault();
 
+                        GapFormatModel gModel = null;
+                        if (model is ChapterFileModel)
+                            gModel = new ChapterGapFormatModel((ChapterFileModel) model, book, gap);
+                        else if (model is BookFileModel)
+                            gModel = new BookGapFormatModel((BookFileModel) model, book, gap);
+
+                        if (gModel != null)
+                            App.Current.Dispatcher.Invoke(() => this.GapList.Add(gModel));
+                    }
                     stream.Close();
                 }
 
