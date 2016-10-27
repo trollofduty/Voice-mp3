@@ -35,23 +35,30 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             this.SelectFolderCommand = new RelayCommand(this.SelectFolder);
             this.ClearListCommand = new RelayCommand(this.ClearList);
             this.RemoveItemCommand = new RelayCommand(this.RemoveItem);
+            this.UseItemCommand = new RelayCommand(this.UseItem);
         }
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<FileModel> Files { get; set; }
+        public ImportWizardViewModel ImportWizardViewModel { get; set; }
 
-        public IEnumerable<FileModel> SelectedFiles { get; set; }
+        public List<FileModel> Files { get; set; }
 
-        public IEnumerable<FileModel> UnusedFiles { get; set; }
+        public List<FileModel> SelectedFiles { get; set; }
+
+        public List<FileModel> UnusedFiles { get; set; }
 
         public ObservableCollection<object> selectedModels;
         public ObservableCollection<object> SelectedModels
         {
             get { return this.selectedModels; }
-            set { this.Set(ref this.selectedModels, value); }
+            set
+            {
+                this.Set(ref this.selectedModels, value);
+                this.RaisePropertyChanged("HasValues");
+            }
         }
 
         public string RootDirectory { get; set; }
@@ -62,18 +69,38 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public ICommand RemoveItemCommand { get; private set; }
 
+        public ICommand UseItemCommand { get; private set; }
+
         private string bookName;
         public string BookName
         {
             get { return this.bookName; }
-            set { this.Set(ref this.bookName, value); }
+            set
+            {
+                this.Set(ref this.bookName, value);
+                this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
+            }
         }
 
         private object selectedItemList;
         public object SelectedItemList
         {
             get { return this.selectedItemList; }
-            set { this.Set(ref this.selectedItemList, value); }
+            set
+            {
+                this.Set(ref this.selectedItemList, value);
+                this.RaisePropertyChanged("IsSelected");
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return this.SelectedItemList != null; }
+        }
+
+        public bool HasValues
+        {
+            get { return this.SelectedModels != null && this.SelectedModels.Count > 0; }
         }
 
         private string selectedItemCombo;
@@ -140,28 +167,28 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         private BookFileModel HookBookFileModel(BookFileModel cModel)
         {
-            cModel.ChapterChanged += this.OnBookModelChanged;
+            cModel.BookChanged += this.OnBookModelChanged;
             return cModel;
         }
 
         private ChapterFileModel CreateChapterFileModel(FileModel model)
         {
             ChapterFileModel vModel = new ChapterFileModel(model);
-            vModel.ChapterChanged += this.OnChapterModelChanged;
-            vModel.VerseChanged += this.OnChapterModelChanged;
+            vModel.BookChanged += this.OnChapterModelChanged;
+            vModel.BookChanged += this.OnChapterModelChanged;
             return vModel;
         }
 
         private void OnBookModelChanged(object sender, EventArgs e)
         {
-            this.SelectedFiles = this.SelectedFiles.OrderBy(c => ((BookFileModel) c).Book);
+            this.SelectedFiles = this.SelectedFiles.OrderBy(b => ((BookFileModel) b).Book).ThenBy(f => f.ExpectedName).ToList();
             this.PushSelectedModelsList();
             App.Current.Dispatcher.Invoke(() => this.SelectedItemList = sender);
         }
 
         private void OnChapterModelChanged(object sender, EventArgs e)
         {
-            this.SelectedFiles = this.SelectedFiles.OrderBy(v => ((ChapterFileModel) v).Chapter).OrderBy(v => ((ChapterFileModel) v).Book);
+            this.SelectedFiles = this.SelectedFiles.OrderBy(c => ((ChapterFileModel) c).Book).ThenBy(c => ((ChapterFileModel) c).Chapter).ThenBy(f => f.ExpectedName).ToList();
             this.PushSelectedModelsList();
             App.Current.Dispatcher.Invoke(() => this.SelectedItemList = sender);
         }
@@ -171,19 +198,22 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             if (this.SelectedFiles != null)
             {
                 foreach (FileModel model in this.SelectedFiles)
-                {
-                    if (model is BookFileModel)
-                    {
-                        BookFileModel cModel = (BookFileModel) model;
-                        cModel.ChapterChanged -= this.OnBookModelChanged;
-                    }
-                    else if (model is ChapterFileModel)
-                    {
-                        ChapterFileModel vModel = (ChapterFileModel) model;
-                        vModel.ChapterChanged -= this.OnChapterModelChanged;
-                        vModel.VerseChanged -= this.OnChapterModelChanged;
-                    }
-                }
+                    this.UnhookEvent(model);
+            }
+        }
+
+        private void UnhookEvent(FileModel model)
+        {
+            if (model is BookFileModel)
+            {
+                BookFileModel cModel = (BookFileModel) model;
+                cModel.BookChanged -= this.OnBookModelChanged;
+            }
+            else if (model is ChapterFileModel)
+            {
+                ChapterFileModel vModel = (ChapterFileModel) model;
+                vModel.BookChanged -= this.OnChapterModelChanged;
+                vModel.BookChanged -= this.OnChapterModelChanged;
             }
         }
 
@@ -199,6 +229,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             {
                 this.SelectedModels.Clear();
                 this.SelectedModels.AddRange(list);
+                this.RaisePropertyChanged("HasValues");
+                this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
             });
         }
 
@@ -210,7 +242,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             {
                 if (this.ComboBoxTypeValue == ComboBoxType.Books)
                 {
-                    this.SelectedFiles = this.Files.Where(f => this.WhereRootFiles(f)).Select(f => new BookFileModel(this.SelectWithOrder(f, 1)));
+                    this.SelectedFiles = this.Files.Where(f => this.WhereRootFiles(f)).Select(f => (FileModel) new BookFileModel(this.SelectWithOrder(f, 1))).ToList();
 
                     for (int index = 0; index < this.SelectedFiles.Count(); index++)
                     {
@@ -218,13 +250,13 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                         cModel.Book = index;
                     }
 
-                    this.SelectedFiles.Select(c => this.HookBookFileModel((BookFileModel) c)).OrderBy(c => c.Book);
-                    this.UnusedFiles = this.Files.Where(f => !this.WhereRootFiles(f)).Select(f => this.SelectWithOrder(f, 0));
+                    this.SelectedFiles = this.SelectedFiles.Select(f => this.HookBookFileModel((BookFileModel) f)).OrderBy(b => b.Book).ThenBy(b => b.ExpectedName).Select(b => (FileModel) b).ToList();
+                    this.UnusedFiles = this.Files.Where(f => !this.WhereRootFiles(f)).Select(f => this.SelectWithOrder(f, 0)).OrderBy(f => f.ExpectedName).ToList();
                 }
                 else
                 {
-                    this.SelectedFiles = this.Files.Where(f => this.WhereSubRootFiles(f, 1)).Select(f => this.CreateChapterFileModel(this.SelectWithOrder(f, 1))).OrderBy(v => v.Chapter).OrderBy(v => v.Book);
-                    this.UnusedFiles = this.Files.Where(f => !this.WhereSubRootFiles(f, 1)).Select(f => this.SelectWithOrder(f, 0));
+                    this.SelectedFiles = this.Files.Where(f => this.WhereSubRootFiles(f, 1)).Select(f => this.CreateChapterFileModel(this.SelectWithOrder(f, 1))).OrderBy(c => c.Book).ThenBy(c => c.Chapter).ThenBy(c => c.ExpectedName).Select(c => (FileModel) c).ToList();
+                    this.UnusedFiles = this.Files.Where(f => !this.WhereSubRootFiles(f, 1)).Select(f => this.SelectWithOrder(f, 0)).OrderBy(f => f.ExpectedName).ToList();
                 }
 
                 this.PushSelectedModelsList();
@@ -240,7 +272,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     this.RootDirectory = dlg.SelectedPath;
-                    this.Files = this.EnumerateSubDirectories(new DirectoryInfo(dlg.SelectedPath)).Where(f => DecoderServices.AudioDecoderRegisterService.Contains(f.Extension.Replace(".", ""))).Select(f => new FileModel(f));
+                    this.Files = this.EnumerateSubDirectories(new DirectoryInfo(dlg.SelectedPath)).Where(f => DecoderServices.AudioDecoderRegisterService.Contains(f.Extension.Replace(".", ""))).Select(f => new FileModel(f)).ToList();
                     this.RefreshSelectedModels();
                 }
             }
@@ -248,13 +280,65 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public void ClearList()
         {
-            App.Current.Dispatcher.Invoke(this.SelectedModels.Clear);
+            this.UnhookEvents();
+            this.Files = null;
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                this.SelectedModels.Clear();
+                this.RaisePropertyChanged("HasValues");
+                this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
+            });
+        }
+
+        public void UseItem()
+        {
+            if (!(this.SelectedItemList is FileModel) && !(this.SelectedItemList is BookFileModel) && !(this.SelectedItemList is ChapterFileModel))
+                return;
+
+            if (this.SelectedFiles.Contains(this.SelectedItemList))
+            {
+                this.UnhookEvent((FileModel) this.SelectedItemList);
+                this.SelectedFiles.Remove((FileModel) this.SelectedItemList);
+                this.UnusedFiles.Add(this.Files.Where(f => f.FullPath == ((FileModel) this.SelectedItemList).FullPath).FirstOrDefault());
+                this.UnusedFiles = this.UnusedFiles.OrderBy(f => f.ExpectedName).ToList();
+            }
+            else if (this.UnusedFiles.Contains(this.SelectedItemList))
+            {
+                FileModel model = this.Files.Where(f => f.FullPath == ((FileModel) this.SelectedItemList).FullPath).FirstOrDefault();
+                this.UnusedFiles.Remove((FileModel) this.SelectedItemList);
+
+                if (this.ComboBoxTypeValue == ComboBoxType.Books)
+                {
+                    this.SelectedFiles.Add(this.HookBookFileModel(new BookFileModel(model)));
+                    this.SelectedFiles = this.SelectedFiles.OrderBy(b => ((BookFileModel) b).Book).ThenBy(f => f.ExpectedName).ToList();
+                }
+                else
+                {
+                    this.SelectedFiles.Add(this.CreateChapterFileModel(model));
+                    this.SelectedFiles = this.SelectedFiles.OrderBy(c => ((ChapterFileModel) c).Book).ThenBy(c => ((ChapterFileModel) c).Chapter).ThenBy(c => c.ExpectedName).ToList();
+                }
+            }
+
+            this.PushSelectedModelsList();
         }
 
         public void RemoveItem()
         {
+            if (!(this.SelectedItemList is FileModel) && !(this.SelectedItemList is BookFileModel) && !(this.SelectedItemList is ChapterFileModel))
+                return;
+
             if (this.SelectedModels.Contains(this.SelectedItemList))
-                App.Current.Dispatcher.Invoke(() => this.SelectedModels.Remove(this.SelectedItemList));
+            {
+                this.UnhookEvent((FileModel) this.SelectedItemList);
+                IEnumerable<FileModel> files = this.Files.Where(f => f.FullPath == ((FileModel) this.SelectedItemList).FullPath).ToArray();
+                this.Files.RemoveRange(files);
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    this.SelectedModels.Remove(this.SelectedItemList);
+                    this.RaisePropertyChanged("HasValues");
+                    this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
+                });
+            }
         }
 
         public List<FileInfo> EnumerateSubDirectories (DirectoryInfo dInfo, List<FileInfo> result = null)
@@ -273,7 +357,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
 
         public override void Loaded()
         {
-            // Skip
+            this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
         }
 
         public override void Closed()

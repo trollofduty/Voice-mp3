@@ -40,7 +40,7 @@ namespace Vapp.Platform.Windows.Wpf.Models
             set
             {
                 this.Set(ref this.book, value);
-                this.ChapterChanged?.Invoke(this, null);
+                this.BookChanged?.Invoke(this, null);
             }
         }
 
@@ -50,8 +50,8 @@ namespace Vapp.Platform.Windows.Wpf.Models
             get { return this.chapter; }
             set
             {
-                this.Set(ref this.book, value);
-                this.VerseChanged?.Invoke(this, null);
+                this.Set(ref this.chapter, value);
+                this.ChapterChanged?.Invoke(this, null);
             }
         }
 
@@ -59,9 +59,9 @@ namespace Vapp.Platform.Windows.Wpf.Models
 
         #region Events
 
-        public EventHandler<EventArgs> ChapterChanged { get; set; }
+        public EventHandler<EventArgs> BookChanged { get; set; }
 
-        public EventHandler<EventArgs> VerseChanged { get; set; }
+        public EventHandler<EventArgs> ChapterChanged { get; set; }
 
         #endregion
     }

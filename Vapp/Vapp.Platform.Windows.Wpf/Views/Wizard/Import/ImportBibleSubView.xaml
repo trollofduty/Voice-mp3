@@ -7,11 +7,12 @@
              xmlns:models="clr-namespace:Vapp.Platform.Windows.Wpf.Models"
              xmlns:converters="clr-namespace:Vapp.Platform.Windows.Wpf.Converters"
              xmlns:selectors="clr-namespace:Vapp.Platform.Windows.Wpf.Selectors"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
     <UserControl.Resources>
+        <converters:FileSizeToStringConverter x:Key="FileSizeToStringConverter"/>
+        <converters:StringToColorValidationConverter x:Key="StringToColorValidationConverter"/>
+
         <DataTemplate x:Key="FileModelTemplate" DataType="{x:Type models:FileModel}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -36,10 +37,10 @@
                 <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize, Converter={StaticResource FileSizeToStringConverter}}"/>
             </Grid>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="BookFileModelTemplate" DataType="{x:Type models:BookFileModel}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -57,7 +58,7 @@
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="5 5 0 5" Text="Book Name: "/>
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding ExpectedName, Mode=TwoWay}"/>
-                
+
                 <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="Book Number: "/>
                 <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding Book, Mode=TwoWay}"/>
 
@@ -68,13 +69,15 @@
                 <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
-                <TextBlock Grid.Row="4" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize, Converter={StaticResource FileSizeToStringConverter}}"/>
             </Grid>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="ChapterFileModelTemplate" DataType="{x:Type models:ChapterFileModel}">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -89,14 +92,20 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Margin="5 5 0 5" Text="Chapter Name: "/>
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding ExpectedName, Mode=TwoWay}"/>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="File Name: "/>
-                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileName}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="5 5 0 5" Text="Book Number: "/>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding Book, Mode=TwoWay}"/>
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5 5 0 5" Text="File Path: "/>
-                <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="5 5 0 5" Text="Chapter Number: "/>
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="0 5 5 5" HorizontalAlignment="Stretch" Text="{Binding Chapter, Mode=TwoWay}"/>
 
-                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
-                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize}"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Margin="5 5 0 5" Text="File Name: "/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileName}"/>
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Margin="5 5 0 5" Text="File Path: "/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FullPath}"/>
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Margin="5 5 0 5" Text="File Size: "/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Margin="0 5 5 5" Text="{Binding FileSize, Converter={StaticResource FileSizeToStringConverter}}"/>
             </Grid>
         </DataTemplate>
 
@@ -105,14 +114,14 @@
                 <TextBlock Margin="5 5 5 5" Text="{Binding Text}" FontWeight="Bold" FontSize="20"/>
             </Grid>
         </DataTemplate>
-        
+
         <selectors:FileModelListDataTemplateSelector x:Key="FileModelListDataTemplateSelector"
                                                      FileModelTemplate="{StaticResource FileModelTemplate}"
                                                      ChapterFileModelTemplate="{StaticResource ChapterFileModelTemplate}"
                                                      BookFileModelTemplate="{StaticResource BookFileModelTemplate}"
                                                      FileHeaderModelTemplate="{StaticResource FileHeaderModelTemplate}"/>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -123,22 +132,22 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="69"/>
-                <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Book Name:" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5 5 0 5"/>
+            <TextBlock Text="Book Name:" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5 5 0 5" Foreground="{Binding BookName, Converter={StaticResource StringToColorValidationConverter}}"/>
+            
             <TextBox Text="{Binding BookName, Mode=TwoWay}" Grid.Column="1" Margin="5 5 5 5"/>
         </Grid>
 
-        <ListBox Grid.Row="1" Margin="5 5 5 5" HorizontalContentAlignment="Stretch" ItemsSource="{Binding SelectedModels}" SelectedItem="{Binding SelectedItemList, Mode=TwoWay}"
-                 ItemTemplateSelector="{StaticResource FileModelListDataTemplateSelector}"/>
-        
+        <ListBox Grid.Row="1" Margin="5 5 5 5" HorizontalContentAlignment="Stretch" ItemsSource="{Binding SelectedModels}" SelectedItem="{Binding SelectedItemList, Mode=TwoWay}" ItemTemplateSelector="{StaticResource FileModelListDataTemplateSelector}"/>
+
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="51"/>
+                <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="90"/>
@@ -153,9 +162,9 @@
                 <ComboBoxItem>Chapters</ComboBoxItem>
             </ComboBox>
 
-            <Button Content="Remove Item" Grid.Column="4" Margin="5 5 5 5" Command="{Binding RemoveItemCommand}"/>
-
-            <Button Content="Clear List" Grid.Column="5" Margin="5 5 5 5" Command="{Binding ClearListCommand}"/>
+            <Button Content="Use Item" Grid.Column="4" Margin="5 5 5 5" Command="{Binding UseItemCommand}" IsEnabled="{Binding IsSelected}"/>
+            <Button Content="Remove Item" Grid.Column="5" Margin="5 5 5 5" Command="{Binding RemoveItemCommand}" IsEnabled="{Binding IsSelected}"/>
+            <Button Content="Clear List" Grid.Column="6" Margin="5 5 5 5" Command="{Binding ClearListCommand}" IsEnabled="{Binding HasValues}"/>
         </Grid>
     </Grid>
 </UserControl>
