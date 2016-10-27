@@ -4,75 +4,8 @@
              xmlns:local="clr-namespace:Vapp.Platform.Windows.Wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-
-        <!--
-        <Style x:Key="SliderThumbStyle" TargetType="Thumb">
-            <Setter Property="SnapsToDevicePixels" Value="true"/>
-            <Setter Property="OverridesDefaultStyle" Value="false"/>
-            <Setter Property="Height" Value="18"/>
-            <Setter Property="Width" Value="18"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Thumb">
-                        <Ellipse  Stroke="Black"
-                          StrokeThickness="1"
-                          Name="Ellipse" 
-                          Fill="OrangeRed" />
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Ellipse" Property="Fill" Value="Orange"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter TargetName="Ellipse" Property="Fill" Value="Gray"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style> -->
         
-        <!--
-        <Style TargetType="Slider" x:Key="AppSliderStyle">
-            <Setter Property="OverridesDefaultStyle" Value="true"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Slider">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" Name="row" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="*" Name="column" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-                            <Border Name="PART_Border"
-                           BorderBrush="Black" BorderThickness="0"
-                           Padding="2"
-                          Grid.Row="1" Grid.Column="1"
-                           Width="{TemplateBinding Width}"
-                           Height="{TemplateBinding Height}"
-                           Background="Black"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Center" />
-                            <Track Name="PART_Track"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Center"
-                              Grid.Row="1" Grid.Column="1"
-                              Width="{TemplateBinding Width}"
-                              Height="{TemplateBinding Height}">
-                                <Track.Thumb>
-                                    <Thumb Style="{StaticResource SliderThumbStyle}" />
-                                </Track.Thumb>
-                            </Track>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style> -->
-
+        <!--Slider custom template-->
         <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -85,11 +18,7 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            
-            
-            
         </Style>
-
         <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -132,22 +61,60 @@
                 </Track>
             </Grid>
         </ControlTemplate>
-
         <Style x:Key="Horizontal_Slider" TargetType="Slider">
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Style.Triggers>
-                
+
                 <Trigger Property="Orientation" Value="Horizontal">
                     <Setter Property="MinHeight" Value="21" />
                     <Setter Property="MinWidth" Value="104" />
                     <Setter Property="Template" Value="{StaticResource Slider}" />
                 </Trigger>
             </Style.Triggers>
-
-            
         </Style>
+        <!--Slider custom template-->
+        
+        <!--Button custom template-->
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Gray" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="Century" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="1" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF4C4A4A" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="Button.Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="Black" Direction="320" ShadowDepth="3" BlurRadius="5" Opacity="0.5" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#808080" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--Button custom template-->
 
     </Application.Resources>
 </Application>
