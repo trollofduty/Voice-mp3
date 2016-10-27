@@ -21,7 +21,7 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             this.Add(new ImportBibleTextSubView());
             this.Add(new ImportBibleGapSubView());
             this.ImportBibleSubViewModel.ImportWizardViewModel = this;
-            this.ImportBibleTextSubViewModel.ImportBibleSubViewModel = this.ImportBibleSubViewModel;
+            this.ImportBibleTextSubViewModel.ImportWizardViewModel = this;
             this.ImportBibleGapSubViewModel.ImportBibleSubViewModel = this.ImportBibleSubViewModel;
             this.ImportBibleGapSubViewModel.ImportBibleTextSubViewModel = this.ImportBibleTextSubViewModel;
             this.Start();
@@ -40,6 +40,10 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                     return this.ImportBibleSubViewModel.SelectedModels != null && this.ImportBibleSubViewModel.SelectedModels.Count > 0
                         && this.ImportBibleSubViewModel.SelectedFiles != null && this.ImportBibleSubViewModel.SelectedFiles.Count > 0
                         && this.ImportBibleSubViewModel.BookName != null && this.ImportBibleSubViewModel.BookName.Length > 0;
+                }
+                else if (this.CurrentSubView.DataContext == this.ImportBibleTextSubViewModel)
+                {
+                    return this.ImportBibleTextSubViewModel.BookList != null && this.ImportBibleTextSubViewModel.BookList.Count() > 0;
                 }
                 return base.HasNext;
             }

@@ -35,15 +35,11 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             get { return this.ImportBibleSubViewModel.BookName; }
         }
 
-        private ImportBibleSubViewModel importBibleSubViewModel;
+        public ImportWizardViewModel ImportWizardViewModel { get; set; }
+        
         public ImportBibleSubViewModel ImportBibleSubViewModel
         {
-            get { return this.importBibleSubViewModel; }
-            set
-            {
-                this.importBibleSubViewModel = value;
-                this.RaisePropertyChanged("BookName");
-            }
+            get { return this.ImportWizardViewModel.ImportBibleSubViewModel; }
         }
 
         public ObservableCollection<BookModel> BookList { get; private set; } = new ObservableCollection<BookModel>();
@@ -58,7 +54,20 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
         public BookModel SelectedBook
         {
             get { return this.selectedBook; }
-            set { this.Set(ref this.selectedBook, value); }
+            set
+            {
+                this.Set(ref this.selectedBook, value);
+                this.RaisePropertyChanged("IsSelected");
+            }
+        }
+        public bool IsSelected
+        {
+            get { return this.SelectedBook != null; }
+        }
+
+        public bool HasValues
+        {
+            get { return this.BookList != null && this.BookList.Count > 0; }
         }
 
         private BibleDecoder decoder = new BibleDecoder();
@@ -78,6 +87,8 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                 this.BookList.Clear();
                 this.BookList.AddRange(tBookList);
                 this.SelectedBook = selected;
+                this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
+                this.RaisePropertyChanged("HasValues");
             });
         }
 
@@ -101,7 +112,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
                     Stream stream = File.OpenRead(dlg.FileName);
 
                     if (this.decoder.TryDecode(stream, out this.bible) && bible.BookList.Count > 0)
-                        App.Current.Dispatcher.Invoke(() => this.BookList.AddRange(this.bible.BookList.Select(t => this.CreateBookModel(t.Value)).OrderBy(b => b.Order)));
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            this.BookList.AddRange(this.bible.BookList.Select(t => this.CreateBookModel(t.Value)).OrderBy(b => b.Order));
+                            this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
+                            this.RaisePropertyChanged("HasValues");
+                        });
                     else
                         MessageBox.Show("File has invalid format");
                 }
@@ -116,7 +132,12 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             foreach (BookModel model in this.BookList)
                 model.OrderChanged -= this.OnBookModelChanged;
 
-            App.Current.Dispatcher.Invoke(this.BookList.Clear);
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                this.BookList.Clear();
+                this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
+                this.RaisePropertyChanged("HasValues");
+            });
         }
 
         public void RemoveBook()
@@ -124,13 +145,20 @@ namespace Vapp.Platform.Windows.Wpf.ViewModels.Wizard.Import
             if (this.BookList.Contains(this.SelectedBook))
             {
                 this.SelectedBook.OrderChanged -= this.OnBookModelChanged;
-                App.Current.Dispatcher.Invoke(() => this.BookList.Remove(this.SelectedBook));
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    this.BookList.Remove(this.SelectedBook);
+                    this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
+                    this.RaisePropertyChanged("HasValues");
+                });
             }
         }
 
         public override void Loaded()
         {
             this.RaisePropertyChanged("BookName");
+            this.RaisePropertyChanged("HasValues");
+            this.ImportWizardViewModel.RaisePropertyChanged("HasNext");
         }
 
         public override void Closed()
