@@ -82,8 +82,11 @@
     <Compile Include="Converters\StringToColorValidationConverter.cs" />
     <Compile Include="DecoderServices.cs" />
     <Compile Include="Models\BookFileModel.cs" />
+    <Compile Include="Models\BookGapFormatModel.cs" />
+    <Compile Include="Models\ChapterGapFormatModel.cs" />
     <Compile Include="Models\FileHeaderModel.cs" />
     <Compile Include="Models\ChapterFileModel.cs" />
+    <Compile Include="Models\GapFormatModel.cs" />
     <Compile Include="Selectors\FileModelListDataTemplateSelector.cs" />
     <Compile Include="ViewModels\Wizard\Import\ImportBibleGapSubViewModel.cs" />
     <Compile Include="ViewModels\Wizard\WizardSubViewModelBase.cs" />
